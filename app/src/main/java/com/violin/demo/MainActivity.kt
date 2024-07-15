@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.exts.binding
 import com.violin.demo.databinding.ActivityMainBinding
+import com.violin.views.views.ViewActivity
 
 class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     override val mBinding: ActivityMainBinding by binding<ActivityMainBinding>(R.layout.activity_main)
@@ -15,6 +16,7 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
 
     override fun setupView() {
         mBinding.btnView.setOnClickListener {
+            ViewActivity.start(this)
 
         }
     }
