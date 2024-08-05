@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="mainVM"
             type="com.violin.demo.MainActViewModel" />
@@ -20,5 +21,14 @@
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_common"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="common"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

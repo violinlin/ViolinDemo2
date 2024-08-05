@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.exts.binding
 import com.violin.demo.databinding.ActivityMainBinding
+import com.violin.features.common.CommonActivity
 import com.violin.views.views.ViewActivity
 
 class MainActivity : BaseBindingAct<ActivityMainBinding>() {
@@ -18,6 +19,9 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)
 
+        }
+        mBinding.btnCommon.setOnClickListener {
+            CommonActivity.start(this)
         }
     }
 
