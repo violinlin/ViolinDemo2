@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -38,4 +39,6 @@ dependencies {
     api libs.androidx.core.ktx
     api libs.androidx.appcompat
     api libs.material
+    api libs.glide
+    kapt libs.glide.compiler
 }
