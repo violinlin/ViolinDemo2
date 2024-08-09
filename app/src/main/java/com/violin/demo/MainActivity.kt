@@ -1,6 +1,7 @@
 package com.violin.demo
 
 import android.os.Bundle
+import cn.xiaochuankeji.VideoActivity
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.exts.binding
 import com.violin.demo.databinding.ActivityMainBinding
@@ -23,7 +24,11 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         mBinding.btnCommon.setOnClickListener {
             CommonActivity.start(this)
         }
+        mBinding.btnVideo.setOnClickListener {
+            VideoActivity.start(this)
+        }
     }
+
 
 
 }

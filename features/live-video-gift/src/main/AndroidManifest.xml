@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.violin.fretures.livevideogift">
+
+    <application>
+        <activity
+            android:name="cn.xiaochuankeji.VideoActivity"
+            android:exported="false" />
+        <activity
+            android:name="cn.xiaochuankeji.gift.VideoActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
