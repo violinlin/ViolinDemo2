@@ -4,10 +4,8 @@
 
     <application>
         <activity
+            android:hardwareAccelerated="true"
             android:name="cn.xiaochuankeji.VideoActivity"
-            android:exported="false" />
-        <activity
-            android:name="cn.xiaochuankeji.gift.VideoActivity"
             android:exported="false" />
     </application>
 

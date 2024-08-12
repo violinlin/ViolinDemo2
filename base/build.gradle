@@ -45,6 +45,12 @@ dependencies {
     api libs.material
     api libs.glide
     kapt libs.glide.compiler
+
+    api libs.ijkplayer.java
+    api libs.ijkplayer.arm64
+    api libs.ijkplayer.armv7a
+
     api libs.bundles.exoplayer
+//    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
 }
