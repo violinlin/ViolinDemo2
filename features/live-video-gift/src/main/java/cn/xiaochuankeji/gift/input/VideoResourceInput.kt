@@ -3,7 +3,7 @@ package cn.xiaochuankeji.gift.input
 import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.graphics.SurfaceTexture
-import android.media.MediaPlayer
+//import android.media.MediaPlayer
 import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.view.Surface
@@ -12,6 +12,8 @@ import cn.xiaochuankeji.gift.OnRepeatListener
 import cn.xiaochuankeji.gift.view.EffectGLTextureView
 import cn.xiaochuankeji.gift.view.GLTextureView
 import com.violin.base.act.LogUtil
+import tv.danmaku.ijk.media.player.IMediaPlayer
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import javax.microedition.khronos.opengles.GL10
 
 /**
@@ -21,22 +23,22 @@ import javax.microedition.khronos.opengles.GL10
  * start
  */
 class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
-    MediaPlayer.OnCompletionListener,
+    IMediaPlayer.OnCompletionListener,
     IEffectPlayer,
-    SurfaceTexture.OnFrameAvailableListener, MediaPlayer.OnPreparedListener {
+    SurfaceTexture.OnFrameAvailableListener, IMediaPlayer.OnPreparedListener {
 
     var repeatCount = 2
     protected var repeatNum = 0
     val mContext: Context = context
-    var mPlayer: MediaPlayer? = null
+    var mPlayer: IjkMediaPlayer? = null
     var mGLTextureView: GLTextureView? = null
     var mSurfaceTexture: SurfaceTexture? = null
 
     var isAsset = false
     var path: String? = null
-    var completionListener: MediaPlayer.OnCompletionListener? = null
+    var completionListener: IMediaPlayer.OnCompletionListener? = null
     var onRepeatListener: OnRepeatListener? = null
-    var onPreparedListener: MediaPlayer.OnPreparedListener? = null
+    var onPreparedListener: IMediaPlayer.OnPreparedListener? = null
 
 
     private var matrixHandle = 0
@@ -57,7 +59,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
         this.mGLTextureView = glTextureView
     }
 
-    fun setOnCompletionListener(l: MediaPlayer.OnCompletionListener?) {
+    fun setOnCompletionListener(l: IMediaPlayer.OnCompletionListener?) {
         this.completionListener = l
     }
 
@@ -92,7 +94,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
             stopAndReleasePlayer()
         }
         try {
-            mPlayer = MediaPlayer().apply {
+            mPlayer = IjkMediaPlayer().apply {
                 this.setOnCompletionListener(this@VideoResourceInput)
 //                mPlayer.setAudioAttributes(AudioAttributes.USAGE_MEDIA)
             }
@@ -103,7 +105,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
     }
 
     fun seekTo(seconds: Int) {
-        mPlayer?.seekTo(seconds * 1000)
+//        mPlayer?.seekTo(seconds * 1000)
     }
 
     private fun stopAndReleasePlayer() {
@@ -162,11 +164,11 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
         initPlayer()
         if (isAsset) {
             val afd: AssetFileDescriptor = mContext.assets.openFd(path!!)
-            mPlayer!!.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+//            mPlayer!!.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
         } else {
             mPlayer!!.setDataSource(path)
         }
-        mPlayer!!.prepare()
+        mPlayer!!.prepareAsync()
         repeatNum = 0
         setRenderSize(mPlayer!!.videoWidth / 2, mPlayer!!.videoHeight)
         if (mGLTextureView is EffectGLTextureView) {
@@ -248,7 +250,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
         try {
             super.onDrawFrame()
         } catch (e: Exception) {
-            completionListener?.onCompletion(null)
+//            completionListener?.onCompletion(null)
         }
     }
 
@@ -270,7 +272,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
         mGLTextureView?.requestRender()
     }
 
-    override fun onCompletion(mp: MediaPlayer?) {
+    override fun onCompletion(mp: IMediaPlayer?) {
         if (repeatCount == -1 || ++repeatNum < repeatCount) {
             mp?.start()
             onRepeatListener?.onRepeat()
@@ -279,7 +281,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
         }
     }
 
-    override fun onPrepared(mp: MediaPlayer?) {
+    override fun onPrepared(mp: IMediaPlayer?) {
         onPreparedListener?.onPrepared(mp)
     }
 

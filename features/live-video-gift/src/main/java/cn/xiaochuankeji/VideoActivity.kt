@@ -29,6 +29,7 @@ import cn.xiaochuankeji.gift.player.EffectPlayer
 import com.violin.base.act.FileUtils
 import com.violin.base.act.LogUtil
 import com.violin.fretures.livevideogift.R
+import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 import java.io.IOException
@@ -140,26 +141,26 @@ class VideoActivity : AppCompatActivity() {
         fl_layout = findViewById(R.id.fl_layout)
         surfaceView = findViewById(R.id.surface_view)
         findViewById<Button>(R.id.btn_start_play).setOnClickListener {
-            for (i in arrayOf("birthday.mp4", "birthday3.mp4", "leftColorRightAlpha.mp4")) {
-                val targetFile = File(this.getExternalFilesDir(null), i)
-//            val targetFile = File(this.getExternalFilesDir(null), "leftColorRightAlpha_1.mp4")
-                if (!targetFile.exists()) {
-                    FileUtils.copyAssetFileToTarget(
-                        this,
-                        i,
-                        targetFile.absolutePath
-                    )
-                }
-                val mimeType = getVideoMimeType(targetFile.absolutePath)
-                LogUtil.d("VideoActivity", "mimeType:${mimeType} $i")
-                mimeType?.let {
-                    getMaxSupportedBitrate(it)
-                }
-                val supportedVideoMimeTypes = getSupportedVideoMimeTypes()
-                for (i in supportedVideoMimeTypes) {
-                    LogUtil.d("VideoActivity", "supportedVideoMimeTypes:${mimeType}")
-                }
-            }
+//            for (i in arrayOf("birthday.mp4", "birthday3.mp4", "leftColorRightAlpha.mp4")) {
+//                val targetFile = File(this.getExternalFilesDir(null), i)
+////            val targetFile = File(this.getExternalFilesDir(null), "leftColorRightAlpha_1.mp4")
+//                if (!targetFile.exists()) {
+//                    FileUtils.copyAssetFileToTarget(
+//                        this,
+//                        i,
+//                        targetFile.absolutePath
+//                    )
+//                }
+//                val mimeType = getVideoMimeType(targetFile.absolutePath)
+//                LogUtil.d("VideoActivity", "mimeType:${mimeType} $i")
+//                mimeType?.let {
+//                    getMaxSupportedBitrate(it)
+//                }
+//                val supportedVideoMimeTypes = getSupportedVideoMimeTypes()
+//                for (i in supportedVideoMimeTypes) {
+//                    LogUtil.d("VideoActivity", "supportedVideoMimeTypes:${mimeType}")
+//                }
+//            }
 
 
             val fileName = "birthday.mp4"
@@ -171,9 +172,9 @@ class VideoActivity : AppCompatActivity() {
                     targetFile.absolutePath
                 )
             }
-//            startPlay(targetFile.absolutePath)
+            startPlay(targetFile.absolutePath)
 //            exoPlayer3(targetFile.absolutePath)
-            ijkPlayer(targetFile.absolutePath)
+//            ijkPlayer(targetFile.absolutePath)
 
         }
         try {
@@ -198,7 +199,7 @@ class VideoActivity : AppCompatActivity() {
                 Gravity.CENTER,
                 1,
                 object : EffectPlayer.OnPlayCompletionListener {
-                    override fun onPlayCompletion(mp: MediaPlayer?) {
+                    override fun onPlayCompletion(mp: IMediaPlayer?) {
                     }
                 }, object : OnRepeatListener {
                     override fun onRepeat() {

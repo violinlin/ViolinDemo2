@@ -2,7 +2,6 @@ package cn.xiaochuankeji.gift.player
 
 import android.content.Context
 import android.media.MediaMetadataRetriever
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
@@ -15,11 +14,12 @@ import cn.xiaochuankeji.gift.input.VideoResourceInput
 import cn.xiaochuankeji.gift.output.ScreenEndpoint
 import cn.xiaochuankeji.gift.view.EffectGLTextureView
 import cn.xiaochuankeji.gift.view.PlayerContainerView
+import tv.danmaku.ijk.media.player.IMediaPlayer
 
-class EffectPlayer constructor(context: Context) : MediaPlayer.OnCompletionListener,
-    OnRepeatListener, MediaPlayer.OnPreparedListener {
+class EffectPlayer constructor(context: Context) : IMediaPlayer.OnCompletionListener,
+    OnRepeatListener, IMediaPlayer.OnPreparedListener {
     public interface OnPlayCompletionListener {
-        fun onPlayCompletion(mp: MediaPlayer?)
+        fun onPlayCompletion(mp: IMediaPlayer?)
     }
 
     var handler = Handler()
@@ -34,7 +34,7 @@ class EffectPlayer constructor(context: Context) : MediaPlayer.OnCompletionListe
 
     var listener: OnPlayCompletionListener? = null
     var onRepeatListener: OnRepeatListener? = null
-    var onPreparedListener: MediaPlayer.OnPreparedListener? = null
+    var onPreparedListener: IMediaPlayer.OnPreparedListener? = null
     var starting = false
 
     init {
@@ -149,7 +149,7 @@ class EffectPlayer constructor(context: Context) : MediaPlayer.OnCompletionListe
             repeatCount: Int,
             l: OnPlayCompletionListener? = null,
             onRepeatListener: OnRepeatListener? = null,
-            onPreparedListener: MediaPlayer.OnPreparedListener? = null
+            onPreparedListener: IMediaPlayer.OnPreparedListener? = null
         ): EffectPlayer {
             val player = EffectPlayer(context)
             player.setDataSource(path)
@@ -180,7 +180,7 @@ class EffectPlayer constructor(context: Context) : MediaPlayer.OnCompletionListe
         }
     }
 
-    override fun onCompletion(mp: MediaPlayer?) {
+    override fun onCompletion(mp: IMediaPlayer?) {
         //停掉pipeline
         runOnUi(Runnable {
             stop()
@@ -200,7 +200,7 @@ class EffectPlayer constructor(context: Context) : MediaPlayer.OnCompletionListe
         onRepeatListener?.onRepeat()
     }
 
-    override fun onPrepared(mp: MediaPlayer?) {
+    override fun onPrepared(mp: IMediaPlayer?) {
         onPreparedListener?.onPrepared(mp)
     }
 }
