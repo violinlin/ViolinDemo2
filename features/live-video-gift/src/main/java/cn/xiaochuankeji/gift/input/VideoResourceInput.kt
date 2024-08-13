@@ -166,7 +166,7 @@ class VideoResourceInput(context: Context) : GLTextureOutputRenderer(),
             val afd: AssetFileDescriptor = mContext.assets.openFd(path!!)
 //            mPlayer!!.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
         } else {
-            mPlayer!!.setDataSource(path)
+            mPlayer!!.dataSource = path
         }
         mPlayer!!.prepareAsync()
         repeatNum = 0

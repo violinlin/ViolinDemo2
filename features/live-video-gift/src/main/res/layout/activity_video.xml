@@ -39,12 +39,18 @@
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@id/fl_layout" />
 
-        <androidx.media3.ui.PlayerView
-            android:visibility="gone"
-            android:id="@+id/player_view"
+        <cn.xiaochuankeji.VideoPlayer
+            android:id="@+id/video_player"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
 
 
     </LinearLayout>

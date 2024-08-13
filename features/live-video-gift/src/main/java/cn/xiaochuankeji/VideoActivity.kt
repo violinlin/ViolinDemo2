@@ -13,6 +13,7 @@ import android.view.Gravity
 import android.view.SurfaceView
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,7 @@ import java.io.IOException
 class VideoActivity : AppCompatActivity() {
     lateinit var fl_layout: ViewGroup
     lateinit var surfaceView: SurfaceView
+    lateinit var video_player: VideoPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -175,15 +177,24 @@ class VideoActivity : AppCompatActivity() {
             startPlay(targetFile.absolutePath)
 //            exoPlayer3(targetFile.absolutePath)
 //            ijkPlayer(targetFile.absolutePath)
+            initVideoView(targetFile.absolutePath)
 
         }
         try {
             IjkMediaPlayer.loadLibrariesOnce(null)
             IjkMediaPlayer.native_profileBegin("libijkplayer.so")
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
+    }
+
+    private fun initVideoView(path: String) {
+        if (!::video_player.isInitialized) {
+            video_player = findViewById(R.id.video_player)
+            video_player.setUp(path, mapOf())
+        }
+        video_player.start()
     }
 
 
