@@ -10,9 +10,23 @@
     tools:context=".views.ViewActivity">
 
     <com.violin.views.views.FilletTextView
+        android:id="@+id/tv_measure"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="测试一下字体"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.violin.views.views.MarqueeTextView
+        android:id="@+id/tv_marquee"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="sfsdfsd[pic]fsdfdsfdsfsdfdsfdsfdsfdsfdsfdsfdsfdsfdsfsdjfskdfsdlkfldslffjlfjsdlf"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_measure" />
 </androidx.constraintlayout.widget.ConstraintLayout>

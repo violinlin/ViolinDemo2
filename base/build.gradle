@@ -51,6 +51,7 @@ dependencies {
     api libs.ijkplayer.armv7a
 
     api libs.bundles.exoplayer
+    api libs.spannable
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
 }
