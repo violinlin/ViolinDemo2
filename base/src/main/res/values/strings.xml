@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="Hiya_lucky_gift_reward">Congratulations %s sent %s * %s, get %s times the reward</string>
     <string name="Hiya_lucky_gift_reward2">Congratulations %1$s sent %2$s * %3$s, get %4$s times the reward</string>

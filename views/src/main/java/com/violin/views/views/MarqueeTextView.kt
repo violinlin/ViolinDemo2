@@ -1,6 +1,8 @@
 package com.violin.views.views
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.text.style.AbsoluteSizeSpan
 import android.util.AttributeSet
@@ -12,6 +14,8 @@ import com.drake.spannable.replaceSpanFirst
 import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import com.drake.spannable.span.GlideImageSpan
+import com.violin.base.act.LogUtil
+import com.violin.views.R
 import java.lang.reflect.Field
 
 class MarqueeTextView @JvmOverloads constructor(
@@ -21,21 +25,72 @@ class MarqueeTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
-        val mytext = text.toString()
+
         setOnClickListener {
-            this.text = "头像".setSpan(
-                GlideImageSpan(this, "https://avatars.githubusercontent.com/u/21078112?v=4")
-                    .setRequestOption(RequestOptions.circleCropTransform()) // 圆形裁剪图片
-                    .setAlign(GlideImageSpan.Align.BOTTOM)
-                    .setDrawableSize(50)
-            ).addSpan("¥39.9 1000+ 人付款 ")
-                .replaceSpan("¥[\\d\\.]+".toRegex()) { // 匹配价格颜色(包含货币符号)
-                    ColorSpan("#479fd1")
-                }.replaceSpanFirst("[\\d\\.]+".toRegex()) { // 匹配价格字号
-                    AbsoluteSizeSpan(18, true)
-                }.addSpan("fdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdfsdfdsf")
+            val list = arrayListOf("", "")
+            val text = "".addSpan("")
+            for (item in list) {
+//                text.addSpan("¥39.9 1000+ 人付款 ")
+//                    .replaceSpan("¥39.9 1000+ 人付款 ") {
+//                        ColorSpan(Color.BLUE)
+//                    }
+//                    .addSpan(
+//                        "icon".setSpan(
+//                            GlideImageSpan(
+//                                this,
+//                                "https://avatars.githubusercontent.com/u/21078112?v=4"
+//                            )
+//                                .setRequestOption(RequestOptions.circleCropTransform()) // 圆形裁剪图片
+//                                .setAlign(GlideImageSpan.Align.BOTTOM)
+//                                .setDrawableSize(-1, -1)
+//                        )
+//                    )
+                addString()
+
+
+            }
+
+
+//            this.text = text
 
         }
+
+
+    }
+
+    @SuppressLint("StringFormatMatches")
+    private fun addString() {
+        val pic = arrayOf(
+            "https://img01.mehiya.com/img/png/id/232939151016",
+            "https://avatars.githubusercontent.com/u/21078112?v=4"
+        )
+        val placeholder = arrayOf("[name]", "[icon]", "[count]", "[times]")
+        val span = "".addSpan("")
+        for (item in pic) {
+            val string = context.getString(
+                R.string.Hiya_lucky_gift_reward2,
+                placeholder
+            )
+//        val array = string.split(Regex("%\\d?\\\$?s"))
+//        LogUtil.d("MainActivity", "array:" + array)
+            span.addSpan(string)
+
+            val nickName = "mynickname"
+            span.replaceSpan("[name]") {
+                nickName.replaceSpan(nickName){
+                    ColorSpan("#FFDA36")
+                }
+            }.replaceSpan(
+                "[icon]"
+            ) {
+                GlideImageSpan(this, item)
+                    .setAlign(GlideImageSpan.Align.BOTTOM)
+                    .setRequestOption(RequestOptions.circleCropTransform())
+                    .setDrawableSize(50)
+            }
+        }
+
+        text = span
 
 
     }

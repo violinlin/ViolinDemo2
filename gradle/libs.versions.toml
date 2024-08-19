@@ -15,7 +15,7 @@ media3Exoplayer = "1.4.0"
 alphaPlayer = "1.0.4"
 ijkplayerVersion = "0.8.8"
 spannable = "1.2.7"
-libpag = "4.3.56"
+libpag = "4.3.57"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
