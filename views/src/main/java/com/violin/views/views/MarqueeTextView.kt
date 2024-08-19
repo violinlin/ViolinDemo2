@@ -58,7 +58,6 @@ class MarqueeTextView @JvmOverloads constructor(
 
     }
 
-    @SuppressLint("StringFormatMatches")
     private fun addString() {
         val pic = arrayOf(
             "https://img01.mehiya.com/img/png/id/232939151016",
@@ -69,7 +68,10 @@ class MarqueeTextView @JvmOverloads constructor(
         for (item in pic) {
             val string = context.getString(
                 R.string.Hiya_lucky_gift_reward2,
-                placeholder
+                placeholder[0],
+                placeholder[1],
+                placeholder[2],
+                placeholder[3]
             )
 //        val array = string.split(Regex("%\\d?\\\$?s"))
 //        LogUtil.d("MainActivity", "array:" + array)
@@ -77,7 +79,7 @@ class MarqueeTextView @JvmOverloads constructor(
 
             val nickName = "mynickname"
             span.replaceSpan("[name]") {
-                nickName.replaceSpan(nickName){
+                nickName.replaceSpan(nickName) {
                     ColorSpan("#FFDA36")
                 }
             }.replaceSpan(
