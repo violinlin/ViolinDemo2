@@ -1,20 +1,16 @@
 package com.violin.views.views
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
-import android.text.style.AbsoluteSizeSpan
+import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.bumptech.glide.request.RequestOptions
 import com.drake.spannable.addSpan
 import com.drake.spannable.replaceSpan
-import com.drake.spannable.replaceSpanFirst
-import com.drake.spannable.setSpan
 import com.drake.spannable.span.ColorSpan
 import com.drake.spannable.span.GlideImageSpan
-import com.violin.base.act.LogUtil
+import com.violin.base.act.UIUtil
 import com.violin.views.R
 import java.lang.reflect.Field
 
@@ -25,37 +21,7 @@ class MarqueeTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
-
-        setOnClickListener {
-            val list = arrayListOf("", "")
-            val text = "".addSpan("")
-            for (item in list) {
-//                text.addSpan("¥39.9 1000+ 人付款 ")
-//                    .replaceSpan("¥39.9 1000+ 人付款 ") {
-//                        ColorSpan(Color.BLUE)
-//                    }
-//                    .addSpan(
-//                        "icon".setSpan(
-//                            GlideImageSpan(
-//                                this,
-//                                "https://avatars.githubusercontent.com/u/21078112?v=4"
-//                            )
-//                                .setRequestOption(RequestOptions.circleCropTransform()) // 圆形裁剪图片
-//                                .setAlign(GlideImageSpan.Align.BOTTOM)
-//                                .setDrawableSize(-1, -1)
-//                        )
-//                    )
-                addString()
-
-
-            }
-
-
-//            this.text = text
-
-        }
-
-
+        addString()
     }
 
     private fun addString() {
@@ -64,7 +30,10 @@ class MarqueeTextView @JvmOverloads constructor(
             "https://avatars.githubusercontent.com/u/21078112?v=4"
         )
         val placeholder = arrayOf("[name]", "[icon]", "[count]", "[times]")
-        val span = "".addSpan("")
+        val span = SpannableStringBuilder()
+        val nickName = "nickname"
+        val count = "1"
+        val times = "2"
         for (item in pic) {
             val string = context.getString(
                 R.string.Hiya_lucky_gift_reward2,
@@ -73,23 +42,29 @@ class MarqueeTextView @JvmOverloads constructor(
                 placeholder[2],
                 placeholder[3]
             )
-//        val array = string.split(Regex("%\\d?\\\$?s"))
-//        LogUtil.d("MainActivity", "array:" + array)
             span.addSpan(string)
 
-            val nickName = "mynickname"
-            span.replaceSpan("[name]") {
-                nickName.replaceSpan(nickName) {
-                    ColorSpan("#FFDA36")
+            span.addSpan(string)
+                .replaceSpan("[name]") {
+                    nickName.replaceSpan(nickName) {
+                        ColorSpan("#FFDA36")
+                    }
+                }.replaceSpan("[icon]") {
+                    GlideImageSpan(this, item ?: "")
+                        .setAlign(GlideImageSpan.Align.BOTTOM)
+                        .setRequestOption(RequestOptions.circleCropTransform())
+                        .setDrawableSize(UIUtil.dp2px(14f, context).toInt())
                 }
-            }.replaceSpan(
-                "[icon]"
-            ) {
-                GlideImageSpan(this, item)
-                    .setAlign(GlideImageSpan.Align.BOTTOM)
-                    .setRequestOption(RequestOptions.circleCropTransform())
-                    .setDrawableSize(50)
-            }
+                .replaceSpan("[count]") {
+                    count.replaceSpan(count) {
+                        ColorSpan("#FFDA36")
+                    }
+                }
+                .replaceSpan("[times]") {
+                    times.replaceSpan(times) {
+                        ColorSpan("#FFDA36")
+                    }
+                }.addSpan("  ")
         }
 
         text = span
