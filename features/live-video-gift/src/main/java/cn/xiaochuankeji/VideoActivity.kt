@@ -174,10 +174,10 @@ class VideoActivity : AppCompatActivity() {
                     targetFile.absolutePath
                 )
             }
-            startPlay(targetFile.absolutePath)
+//            startPlay(targetFile.absolutePath)
 //            exoPlayer3(targetFile.absolutePath)
 //            ijkPlayer(targetFile.absolutePath)
-//            initVideoView(targetFile.absolutePath)
+            initVideoView(targetFile.absolutePath)
 
         }
         try {

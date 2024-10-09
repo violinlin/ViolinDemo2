@@ -9,6 +9,34 @@
     android:paddingHorizontal="16dp"
     tools:context=".views.ViewActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_flipper">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_live_room_running_time"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7日"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            app:layout_constraintTop_toTopOf="@id/iv_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.violin.views.views.FilletTextView
         android:id="@+id/tv_measure"
         android:layout_width="match_parent"
@@ -32,10 +60,53 @@
 
     <org.libpag.PAGView
         android:id="@+id/pagview"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_marquee" />
+
+    <ViewFlipper
+        android:id="@+id/view_flipper"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:inAnimation="@anim/anim_marquee_in"
+        android:outAnimation="@anim/anim_marquee_out"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pagview">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffff00"
+            android:text="111111111" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ff0000"
+            android:text="2222222"
+            android:visibility="gone" />
+    </ViewFlipper>
+
+    <com.violin.views.views.ClipLinearLayout
+        android:id="@+id/ll_cliplayout"
+        android:layout_width="119dp"
+        android:layout_height="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_flipper">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#ff0000" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#00ff00" />
+    </com.violin.views.views.ClipLinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
