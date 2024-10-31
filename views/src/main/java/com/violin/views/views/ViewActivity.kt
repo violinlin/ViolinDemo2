@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import com.violin.views.R
+import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
 import org.libpag.PAGView
 
@@ -42,8 +43,14 @@ class ViewActivity : AppCompatActivity() {
 
         }
         initViewFlipper()
+        initFallingView()
 
 
+    }
+
+    private fun initFallingView() {
+        val fallingview = findViewById<FallingView>(R.id.fallingview)
+        fallingview.setDensity(80)
     }
 
     private fun initViewFlipper() {
