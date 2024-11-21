@@ -109,8 +109,5 @@
             android:layout_height="match_parent"
             android:background="#00ff00" />
     </com.violin.views.views.ClipLinearLayout>
-    <com.violin.views.views.fallingview.FallingView
-        android:id="@+id/fallingview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

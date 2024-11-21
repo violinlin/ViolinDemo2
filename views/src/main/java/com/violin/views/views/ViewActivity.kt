@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
@@ -48,9 +49,19 @@ class ViewActivity : AppCompatActivity() {
 
     }
 
+    var fallingView: FallingView? = null
     private fun initFallingView() {
-        val fallingview = findViewById<FallingView>(R.id.fallingview)
-        fallingview.setDensity(80)
+        if (fallingView == null) {
+            fallingView = FallingView(this)
+            addContentView(
+                fallingView, ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
+            fallingView?.setDensity(80)
+        }
+
     }
 
     private fun initViewFlipper() {
