@@ -11,9 +11,11 @@ import com.violin.demo.databinding.ActivityMainBinding
 import com.violin.features.common.CommonActivity
 import com.violin.views.views.ViewActivity
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.security.MessageDigest
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
@@ -37,12 +39,15 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         mBinding.btnVideo.setOnClickListener {
 //            VideoActivity.start(this)
             try {
-                val assetName = "file_test_4"
+                val assetName = "file_5"
                 val zipPath = File(this.getFilesDir(), assetName + ".zip")
+
                 val unzipPath = File(this.getFilesDir(), "unzipfile")
                 LogUtil.d("unzip", "path:" + zipPath.absolutePath)
                 FileUtils.copyAssetFileToTarget(this, assetName + ".zip", zipPath.absolutePath)
                 UnzipUtility.unzip(zipPath, unzipPath)
+                val md5 = UnzipUtility.getFileMD5(zipPath)
+                val md52 = MD5Utils.getFileMD5(zipPath)
 //                unzip(zipPath.absolutePath,unzipPath.absolutePath)
 //                unzip(zipPath.absolutePath,unzipPath.absolutePath)
 
@@ -53,6 +58,57 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         }
     }
 
+
+
+    /**
+     * 文件 MD5 生成工具类
+     */
+    object MD5Utils {
+
+        /**
+         * 计算文件的 MD5 值
+         *
+         * @param file 要计算 MD5 值的文件
+         * @return 文件的 MD5 值，如果计算失败则返回 null
+         */
+        fun getFileMD5(file: File): String? {
+            if (!file.exists() || !file.isFile) {
+                return null
+            }
+
+            try {
+                val digest = MessageDigest.getInstance("MD5")
+                FileInputStream(file).use { fis ->
+                    val buffer = ByteArray(1024 * 8)
+                    var bytesRead: Int
+                    while (fis.read(buffer).also { bytesRead = it } != -1) {
+                        digest.update(buffer, 0, bytesRead)
+                    }
+                }
+                return digest.digest().toHex()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
+            }
+        }
+
+        /**
+         * 将字节数组转换为十六进制字符串
+         *
+         * @return 转换后的十六进制字符串
+         */
+        private fun ByteArray.toHex(): String {
+            val hexString = StringBuilder()
+            for (byte in this) {
+                val hex = Integer.toHexString(0xFF and byte.toInt())
+                if (hex.length == 1) {
+                    hexString.append("0") // 补零
+                }
+                hexString.append(hex)
+            }
+            return hexString.toString()
+        }
+    }
 
 
 
