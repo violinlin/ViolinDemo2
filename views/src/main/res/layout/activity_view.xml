@@ -110,4 +110,12 @@
             android:background="#00ff00" />
     </com.violin.views.views.ClipLinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_cliplayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

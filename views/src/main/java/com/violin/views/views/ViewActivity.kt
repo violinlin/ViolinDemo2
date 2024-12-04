@@ -5,17 +5,22 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
+import com.bumptech.glide.Glide
 import com.violin.views.R
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
 import org.libpag.PAGView
+import kotlin.concurrent.timer
 
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -44,10 +49,60 @@ class ViewActivity : AppCompatActivity() {
 
         }
         initViewFlipper()
-        initFallingView()
-
+//        initFallingView()
+        initBannerIV()
 
     }
+
+    private val images = listOf(
+        "https://img01.mehiya.com/img/png/id/232939154967",
+        "https://img01.mehiya.com/img/png/id/232939137094"
+    )
+    private var currentIndex = 0
+    var iv_banner: ImageView? = null
+    private fun initBannerIV() {
+        iv_banner = findViewById<ImageView>(R.id.iv_banner)
+        startImageSlideshow()
+
+    }
+
+    var showAnim: ObjectAnimator? = null
+    val showNextRunnable = Runnable {
+        images.let { giftList ->
+            iv_banner?.let {iv_banner->
+                showAnim = ObjectAnimator.ofFloat(iv_banner, "alpha", 1f, 0f)
+                    .setDuration(320)
+                showAnim?.doOnEnd {
+                    currentIndex = (currentIndex + 1) % giftList.size
+                    Glide.with(iv_banner.context).load(giftList[currentIndex]).into(iv_banner)
+                    showAnim = ObjectAnimator.ofFloat(iv_banner, "alpha", 0f, 1f)
+                        .setDuration(320)
+                        showAnim?.doOnEnd {
+
+                            showNextImage()
+                        }
+                    showAnim?.start()
+
+                }
+                showAnim?.start()
+            }
+
+        }
+    }
+
+    fun startImageSlideshow() {
+        currentIndex = 0
+        iv_banner?.let {
+            Glide.with(it).load(images[currentIndex]).into(it)
+        }
+        showNextImage()
+    }
+
+    fun showNextImage() {
+        window.decorView.postDelayed(showNextRunnable, 360)
+
+    }
+
 
     var fallingView: FallingView? = null
     private fun initFallingView() {
