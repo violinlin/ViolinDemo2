@@ -4,12 +4,13 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ViewFlipper
@@ -20,7 +21,6 @@ import com.violin.views.R
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
 import org.libpag.PAGView
-import kotlin.concurrent.timer
 
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -64,6 +64,15 @@ class ViewActivity : AppCompatActivity() {
         iv_banner = findViewById<ImageView>(R.id.iv_banner)
         startImageSlideshow()
 
+
+        val et = findViewById<EditText>(R.id.et)
+            et.inputType = InputType.TYPE_CLASS_NUMBER
+        et.setText("hello")
+//        et.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+
+        iv_banner?.setOnClickListener{
+           val string =  et.text
+        }
     }
 
     var showAnim: ObjectAnimator? = null
