@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.bumptech.glide.Glide
 import com.violin.views.R
+import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
 import org.libpag.PAGView
@@ -25,29 +26,33 @@ import org.libpag.PAGView
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     var count = 0
+    private lateinit var binding: ActivityViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view)
+        binding = ActivityViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val pagview = findViewById<PAGView>(R.id.pagview)
-        pagview.composition = PAGFile.Load(assets, "piaopingdiban.pag")
-        pagview.setRepeatCount(-1)
-        pagview.play()
-        val animlist = arrayOf(
-            "anim_lucky_gift_level_3.pag",
-            "anim_lucky_gift_level_4.pag",
-            "bg03_bmp.pag",
-            "bg04_bmp.pag",
-            "half_bmp.pag"
-        )
-        pagview.setOnClickListener {
-            count++
-            pagview.composition = PAGFile.Load(assets, animlist[count % animlist.size])
-            Log.d("pagView:", "duration" + pagview.composition.duration())
-            pagview.setRepeatCount(-1)
-            pagview.play()
+        binding.pagview.apply {
+            composition = PAGFile.Load(assets, "piaopingdiban.pag")
+            setRepeatCount(-1)
+            play()
+            val animlist = arrayOf(
+                "anim_lucky_gift_level_3.pag",
+                "anim_lucky_gift_level_4.pag",
+                "bg03_bmp.pag",
+                "bg04_bmp.pag",
+                "half_bmp.pag"
+            )
+            setOnClickListener {
+                count++
+                composition = PAGFile.Load(assets, animlist[count % animlist.size])
+                Log.d("pagView:", "duration" + composition.duration())
+                setRepeatCount(-1)
+                play()
 
+            }
         }
+
         initViewFlipper()
 //        initFallingView()
         initBannerIV()
@@ -66,19 +71,19 @@ class ViewActivity : AppCompatActivity() {
 
 
         val et = findViewById<EditText>(R.id.et)
-            et.inputType = InputType.TYPE_CLASS_NUMBER
+        et.inputType = InputType.TYPE_CLASS_NUMBER
         et.setText("hello")
 //        et.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
-        iv_banner?.setOnClickListener{
-           val string =  et.text
+        iv_banner?.setOnClickListener {
+            val string = et.text
         }
     }
 
     var showAnim: ObjectAnimator? = null
     val showNextRunnable = Runnable {
         images.let { giftList ->
-            iv_banner?.let {iv_banner->
+            iv_banner?.let { iv_banner ->
                 showAnim = ObjectAnimator.ofFloat(iv_banner, "alpha", 1f, 0f)
                     .setDuration(320)
                 showAnim?.doOnEnd {
@@ -86,10 +91,10 @@ class ViewActivity : AppCompatActivity() {
                     Glide.with(iv_banner.context).load(giftList[currentIndex]).into(iv_banner)
                     showAnim = ObjectAnimator.ofFloat(iv_banner, "alpha", 0f, 1f)
                         .setDuration(320)
-                        showAnim?.doOnEnd {
+                    showAnim?.doOnEnd {
 
-                            showNextImage()
-                        }
+                        showNextImage()
+                    }
                     showAnim?.start()
 
                 }
@@ -129,7 +134,6 @@ class ViewActivity : AppCompatActivity() {
     }
 
     private fun initViewFlipper() {
-        val view_flipper = findViewById<ViewFlipper>(R.id.view_flipper)
         val tv2 = findViewById<TextView>(R.id.tv2)
 //        val view1 = TextView(this)
 //        view1.text = "111111111"
@@ -141,25 +145,27 @@ class ViewActivity : AppCompatActivity() {
 //        view2.setBackgroundColor(Color.BLUE)
 //        view_flipper.addView(view2)
 
+        binding.viewFlipper.apply {
+            flipInterval = 3 * 1000
+            startFlipping()
+            setOnClickListener {
+                if (tv2.visibility != View.VISIBLE) {
+                    tv2.visibility = View.VISIBLE
+                    startFlipping()
+                } else {
+                    tv2.visibility = View.GONE
 
-        view_flipper.flipInterval = 3 * 1000
-        view_flipper.startFlipping()
-        view_flipper.setOnClickListener {
-            if (tv2.visibility != View.VISIBLE) {
-                tv2.visibility = View.VISIBLE
-                view_flipper.startFlipping()
-            } else {
-                tv2.visibility = View.GONE
+                    val dis = displayedChild
+                    if (dis != 0) {
+                        showNext()
+                    }
 
-                val dis = view_flipper.displayedChild
-                if (dis != 0) {
-                    view_flipper.showNext()
+                    stopFlipping()
                 }
 
-                view_flipper.stopFlipping()
             }
-
         }
+
 
 
     }
