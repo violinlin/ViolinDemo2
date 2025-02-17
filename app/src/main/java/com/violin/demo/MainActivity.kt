@@ -9,6 +9,7 @@ import com.violin.base.act.exts.binding
 import com.violin.base.act.utils.UnzipUtility
 import com.violin.demo.databinding.ActivityMainBinding
 import com.violin.features.common.CommonActivity
+import com.violin.features.common.crash.CrashActivity
 import com.violin.views.views.ViewActivity
 import java.io.File
 import java.io.FileInputStream
@@ -16,9 +17,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.security.MessageDigest
-import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
-import java.util.zip.ZipInputStream
 
 class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     override val mBinding: ActivityMainBinding by binding<ActivityMainBinding>(R.layout.activity_main)
@@ -56,8 +55,10 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
             }
 
         }
+        mBinding.btnCrash.setOnClickListener {
+            CrashActivity.start(this)
+        }
     }
-
 
 
     /**
@@ -111,8 +112,6 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     }
 
 
-
-
     fun unzip(zipFilePath: String, outputDir: String) {
         val file = File(zipFilePath)
         val outputDirectory = File(outputDir)
@@ -153,7 +152,8 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
                 }
             }
         }
-    }}
+    }
+}
 
 
 
