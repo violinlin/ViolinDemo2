@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:background="#000000">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/ic_live_room_gift_influence_banner_ticket_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_influence_banner_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_influence_banner_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingEnd="10dp"
+        android:text="Influencers Award"
+        android:textColor="#FFF493"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/iv_influence_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/iv_influence_banner_ticket"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="66dp"
+        android:src="@drawable/ic_live_room_gift_influence_banner_ticket"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_influence_banner_title" />
+
+    <TextView
+        android:id="@+id/tv_influence_banner_ticket_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:textColor="#FFF493"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_influence_banner_ticket"
+        app:layout_constraintStart_toEndOf="@id/iv_influence_banner_ticket"
+        app:layout_constraintTop_toTopOf="@id/iv_influence_banner_ticket"
+        tools:text="2126" />
+
+    <ImageView
+        android:id="@+id/iv_influence_icon"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:src="@drawable/ic_live_room_gift_influence_banner_icon" />
+
+
+    <org.libpag.PAGView
+        android:id="@+id/pag_influence_add_ticket"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_influence_add_ticket"
+        app:layout_constraintStart_toStartOf="@id/tv_influence_add_ticket"
+        app:layout_constraintTop_toTopOf="@id/tv_influence_add_ticket"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_influence_add_ticket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="#FFFACD"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_influence_banner_ticket_count"
+        app:layout_constraintStart_toEndOf="@id/tv_influence_banner_ticket_count"
+        app:layout_constraintTop_toTopOf="@id/tv_influence_banner_ticket_count"
+        tools:text="+11" />
+</androidx.constraintlayout.widget.ConstraintLayout>

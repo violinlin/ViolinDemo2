@@ -1,28 +1,127 @@
 package com.violin.views.views
 
+import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatTextView
 import com.bumptech.glide.request.RequestOptions
 import com.drake.spannable.addSpan
 import com.drake.spannable.replaceSpan
 import com.drake.spannable.span.ColorSpan
 import com.drake.spannable.span.GlideImageSpan
+import com.drake.spannable.span.HighlightSpan
 import com.violin.base.act.UIUtil
 import com.violin.views.R
 import java.lang.reflect.Field
+import kotlin.math.ceil
+
 
 class MarqueeTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
+    var isPlay: Boolean = false
 
     init {
-        addString()
+//        addString()
+        appendString()
+        setOnClickListener {
+            if (!isPlay) {
+                isPlay = true
+                ellipsize = TextUtils.TruncateAt.MARQUEE // 设置为跑马灯
+                marqueeRepeatLimit = -1 // 无限循环（如果只滚动一次，设置为 1）
+                setLines(1)
+                isSingleLine = true
+                isSelected = true // 必须设置 selected 才会生效
+            } else {
+                ellipsize = TextUtils.TruncateAt.END // 设置为跑马灯
+//                marqueeRepeatLimit = -1 // 无限循环（如果只滚动一次，设置为 1）
+                setLines(2)
+                isSingleLine = false
+                isPlay = false
+            }
+        }
     }
+
+    fun getTextWidth(paint: Paint, str: String?): Float {
+        var iRet = 0f
+        if (str != null && str.length > 0) {
+            val len = str.length
+            val widths = FloatArray(len)
+            paint.getTextWidths(str, widths)
+            for (j in 0 until len) {
+                iRet += ceil(widths[j])
+            }
+        }
+        return iRet
+    }
+
+    private fun appendString() {
+        val pic = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
+        val span = SpannableStringBuilder()
+        for (item in pic) {
+            val content = "item:" + item
+            span.addSpan(content)
+//            if (item == 2) {
+//                span.replaceSpan(content) {
+//                    HighlightSpan("#FFDA36", Typeface.DEFAULT)
+//                }
+//            } else {
+//                span.replaceSpan(content) {
+//                    ColorSpan("#FFDA36")
+//                }
+//
+//            }
+            if (item % 2 == 0) {
+                val content = "item:" + item
+                span.addSpan(content)
+                if (item == 2) {
+                    span.replaceSpan(content) {
+                        HighlightSpan("#FFDA36", Typeface.DEFAULT)
+                    }
+                } else {
+                    span.replaceSpan(content) {
+                        ColorSpan("#FFDA36")
+                    }
+
+                }
+
+
+            } else {
+                span.addSpan("  ")
+                    .replaceSpan("  ") {
+                        GlideImageSpan(this, "https://avatars.githubusercontent.com/u/21078112?v=4")
+                            .setAlign(GlideImageSpan.Align.CENTER)
+                            .setRequestOption(RequestOptions.circleCropTransform())
+                            .setDrawableSize(UIUtil.dp2px(14f, getContext()).toInt())
+                    }
+            }
+        }
+        text = span
+        val textMeasureWidth = getTextWidth(this.paint, span.toString())
+        Log.d("Marquee", "字体长度" + textMeasureWidth)
+        Log.d("Marquee", "文本宽度" + UIUtil.dp2px(200F, context))
+//        startMarqueeAnimation()
+        post {
+            // 计算滚动时间（ms），系统默认滚动速度 0.07 px/ms
+            var scrollDuration = ((textMeasureWidth - width) / 0.07).toLong()
+            scrollDuration = Math.max(scrollDuration, 2000L)
+            Log.d("Marquee", "time" + scrollDuration + " width:" + width)
+            postDelayed({
+//                visibility = View.GONE
+            }, scrollDuration)
+        }
+    }
+
 
     private fun addString() {
         val pic = arrayOf(

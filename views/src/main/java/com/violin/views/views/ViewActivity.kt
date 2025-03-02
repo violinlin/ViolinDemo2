@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -17,6 +19,7 @@ import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.bumptech.glide.Glide
+import com.violin.base.act.UIUtil
 import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingView
@@ -56,6 +59,23 @@ class ViewActivity : AppCompatActivity() {
         initViewFlipper()
 //        initFallingView()
         initBannerIV()
+        val array = intArrayOf(10000)// 632
+        binding.btnAddTicket.setOnClickListener {
+            for (item in array) {
+                binding.viewSendGift.addTicket(item)
+            }
+            if (binding.btnAddTicket.background == null) {
+                GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = UIUtil.dp2px(30F,baseContext)
+                    setColor(Color.RED)
+                    binding.btnAddTicket.setBackgroundDrawable(this)
+                }
+            } else {
+                binding.btnAddTicket.setBackgroundDrawable(null)
+            }
+
+        }
 
     }
 
@@ -88,7 +108,10 @@ class ViewActivity : AppCompatActivity() {
                     .setDuration(320)
                 showAnim?.doOnEnd {
                     currentIndex = (currentIndex + 1) % giftList.size
-                    Glide.with(iv_banner.context).load(giftList[currentIndex]).into(iv_banner)
+                    Log.d("ViewActivity", "showAnim...." + this.isDestroyed)
+                    if (!this.isDestroyed) {
+                        Glide.with(iv_banner).load(giftList[currentIndex]).into(iv_banner)
+                    }
                     showAnim = ObjectAnimator.ofFloat(iv_banner, "alpha", 0f, 1f)
                         .setDuration(320)
                     showAnim?.doOnEnd {
@@ -115,6 +138,13 @@ class ViewActivity : AppCompatActivity() {
     fun showNextImage() {
         window.decorView.postDelayed(showNextRunnable, 360)
 
+    }
+
+    override fun onDestroy() {
+        Log.d("ViewActivity", "onDestroy")
+        showAnim?.cancel()
+        window.decorView.removeCallbacks(showNextRunnable)
+        super.onDestroy()
     }
 
 
@@ -165,7 +195,6 @@ class ViewActivity : AppCompatActivity() {
 
             }
         }
-
 
 
     }
