@@ -1,6 +1,5 @@
 package com.violin.views.views
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
@@ -10,7 +9,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatTextView
 import com.bumptech.glide.request.RequestOptions
 import com.drake.spannable.addSpan
@@ -116,10 +114,17 @@ class MarqueeTextView @JvmOverloads constructor(
             var scrollDuration = ((textMeasureWidth - width) / 0.07).toLong()
             scrollDuration = Math.max(scrollDuration, 2000L)
             Log.d("Marquee", "time" + scrollDuration + " width:" + width)
-            postDelayed({
-//                visibility = View.GONE
-            }, scrollDuration)
+            postDelayed(goneRunnable, scrollDuration)
         }
+    }
+
+    val goneRunnable = Runnable {
+        visibility = View.GONE
+    }
+
+    override fun onDetachedFromWindow() {
+        removeCallbacks(goneRunnable)
+        super.onDetachedFromWindow()
     }
 
 

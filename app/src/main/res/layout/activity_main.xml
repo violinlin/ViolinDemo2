@@ -31,6 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_view" />
 
+
         <Button
             android:id="@+id/btn_video"
             android:layout_width="match_parent"
@@ -59,6 +60,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_crash" />
 
-
+        <Button
+            android:id="@+id/btn_leak_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="leak_test"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_recyclerview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

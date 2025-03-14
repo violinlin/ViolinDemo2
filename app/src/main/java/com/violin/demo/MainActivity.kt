@@ -10,6 +10,7 @@ import com.violin.base.act.utils.UnzipUtility
 import com.violin.demo.databinding.ActivityMainBinding
 import com.violin.features.common.CommonActivity
 import com.violin.features.common.crash.CrashActivity
+import com.violin.features.common.leak.LeakTestActivity
 import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
 import java.io.File
@@ -61,6 +62,9 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         }
         mBinding.btnRecyclerview.setOnClickListener {
             RecyclerviewActivity.start(this)
+        }
+        mBinding.btnLeakTest.setOnClickListener {
+            LeakTestActivity.start(this)
         }
     }
 

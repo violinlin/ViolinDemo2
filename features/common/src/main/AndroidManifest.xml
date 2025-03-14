@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name="com.violin.features.common.leak.LeakTestActivity"
+            android:exported="false" />
+        <activity
             android:name="com.violin.features.common.crash.CrashActivity"
             android:exported="false" />
         <activity android:name="com.violin.features.common.CommonActivity" />

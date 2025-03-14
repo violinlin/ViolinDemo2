@@ -3,6 +3,7 @@ agp = "8.5.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 appcompat = "1.7.0"
+leakcanaryAndroid = "2.14"
 material = "1.12.0"
 databindingRuntime = "8.5.1"
 glide = "4.16.0"
@@ -20,6 +21,7 @@ libpag = "4.3.57"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-databinding-runtime = { group = "androidx.databinding", name = "databinding-runtime", version.ref = "databindingRuntime" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
