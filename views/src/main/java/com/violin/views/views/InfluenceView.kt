@@ -29,39 +29,43 @@ class InfluenceView @JvmOverloads constructor(
             LayoutInflater.from(context), this, true
         )
         setOnClickListener {
-            if (!isClear) {
-                Glide.with(mBinding.ivCenter).clear(mBinding.ivCenter)
-//                mBinding.pagLeft.composition = null
-                mBinding.pagLeft.apply {
-                    stop()
-                    composition = null
-                    postDelayed({invalidate()},1000)
-                    onDetachedFromWindow()
-                }
-                mBinding.pagRight.apply {
-                    stop()
-                    composition = null
-                    postDelayed({invalidate()},1000)
-                }
-                isClear = true
-            } else {
-                Glide.with(mBinding.ivCenter)
-                    .load("$host/influence/icon_center.png")
-                    .into(mBinding.ivCenter)
-
-                mBinding.pagLeft.apply {
-                    path = "$host/gold_miner_lord_0.pag"
-                    setRepeatCount(0)
-                    play()
-                }
-
-                mBinding.pagRight.apply {
-                    path = "$host/gold_miner_lord_1.pag"
-                    setRepeatCount(0)
-                    play()
-                }
-                isClear = false
-            }
+            Thread {
+                visibility = View.INVISIBLE
+                alpha = 1F
+            }.start()
+//            if (!isClear) {
+//                Glide.with(mBinding.ivCenter).clear(mBinding.ivCenter)
+////                mBinding.pagLeft.composition = null
+//                mBinding.pagLeft.apply {
+//                    stop()
+//                    composition = null
+//                    postDelayed({invalidate()},1000)
+//                    onDetachedFromWindow()
+//                }
+//                mBinding.pagRight.apply {
+//                    stop()
+//                    composition = null
+//                    postDelayed({invalidate()},1000)
+//                }
+//                isClear = true
+//            } else {
+//                Glide.with(mBinding.ivCenter)
+//                    .load("$host/influence/icon_center.png")
+//                    .into(mBinding.ivCenter)
+//
+//                mBinding.pagLeft.apply {
+//                    path = "$host/gold_miner_lord_0.pag"
+//                    setRepeatCount(0)
+//                    play()
+//                }
+//
+//                mBinding.pagRight.apply {
+//                    path = "$host/gold_miner_lord_1.pag"
+//                    setRepeatCount(0)
+//                    play()
+//                }
+//                isClear = false
+//            }
 
         }
     }
@@ -91,63 +95,66 @@ class InfluenceView @JvmOverloads constructor(
 //            .load("$host/influence/icon_cover_right.png")
 //            .into(mBinding.ivCoverRight)
 
+        mBinding.pagLeft.setPathAsync("$host/gold_miner_lord_0.pag",object :PAGFile.LoadListener{
+            override fun onLoad(p0: PAGFile?) {
 
-//        PAGFile.LoadAsync("$host/gold_miner_lord_0.pag",
-//            object : PAGFile.LoadListener {
-//                override fun onLoad(pagFIle: PAGFile?) {
-//                    mBinding.pagLeft.apply {
-//                        composition = pagFIle
-//                        setRepeatCount(-1)
-//                        play()
-//                    }
-//
-//                }
-//
-//            })
-//        mBinding.pagLeft.apply {
-//            path = "$host/gold_miner_lord_0.pag"
-//            setRepeatCount(0)
-//            play()
-////            if (visibility == View.VISIBLE) {
-////                visibility = View.GONE
-////            } else {
-////                visibility = View.VISIBLE
-////            }
-//        }
+            }
 
-//        PAGFile.LoadAsync("$host/gold_miner_lord_1.pag",
-//            object : PAGFile.LoadListener {
-//                override fun onLoad(pagFIle: PAGFile?) {
-//                    mBinding.pagRight.apply {
-//                        composition = pagFIle
-//                        setRepeatCount(-1)
-//                        play()
-//                        post({
-////                            if (visibility == View.VISIBLE) {
-////                                visibility = View.GONE
-////                            } else {
-////                                visibility = View.VISIBLE
-////                            }
-//                        })
-//
-//                    }
-//
-//                }
-//
-//            })
-//        val mcomposition = PAGFile.Load(context.assets, "anim_lucky_gift_level_3.pag")
-//        mBinding.pagLeft.apply {
-//            composition = mcomposition
-//            setRepeatCount(0)
-//            play()
-//        }
-//
-//        val mcompositionRight = PAGFile.Load(context.assets, "anim_lucky_gift_level_4.pag")
-//        mBinding.pagRight.apply {
-//            composition = mcompositionRight
-//            setRepeatCount(0)
-//            play()
-//        }
+        })
+        PAGFile.LoadAsync("$host/gold_miner_lord_0.pag",
+            object : PAGFile.LoadListener {
+                override fun onLoad(pagFIle: PAGFile?) {
+                    mBinding.pagLeft.apply {
+                        composition = pagFIle
+                        setRepeatCount(-1)
+                        play()
+                    }
+
+                }
+
+            })
+        mBinding.pagLeft.apply {
+            path = "$host/gold_miner_lord_0.pag"
+            setRepeatCount(0)
+            play()
+            if (visibility == View.VISIBLE) {
+                visibility = View.GONE
+            } else {
+                visibility = View.VISIBLE
+            }
+        }
+
+        PAGFile.LoadAsync("$host/gold_miner_lord_1.pag",
+            object : PAGFile.LoadListener {
+                override fun onLoad(pagFIle: PAGFile?) {
+                    mBinding.pagRight.apply {
+                        composition = pagFIle
+                        setRepeatCount(-1)
+                        play()
+                        if (visibility == View.VISIBLE) {
+                            visibility = View.GONE
+                        } else {
+                            visibility = View.VISIBLE
+                        }
+
+                    }
+
+                }
+
+            })
+        val mcomposition = PAGFile.Load(context.assets, "anim_lucky_gift_level_3.pag")
+        mBinding.pagLeft.apply {
+            composition = mcomposition
+            setRepeatCount(0)
+            play()
+        }
+
+        val mcompositionRight = PAGFile.Load(context.assets, "anim_lucky_gift_level_4.pag")
+        mBinding.pagRight.apply {
+            composition = mcompositionRight
+            setRepeatCount(0)
+            play()
+        }
 
     }
 
