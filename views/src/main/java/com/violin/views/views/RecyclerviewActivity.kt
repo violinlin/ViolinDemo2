@@ -27,14 +27,22 @@ class RecyclerviewActivity : AppCompatActivity() {
         initView()
     }
 
+    var isTop = true
     val repeatRunnable = Runnable {
         recyclerViewAdapter?.let {
             it.notifyDataSetChanged()
             repeatNotify()
+            if (isTop) {
+                isTop = false
+                mBinding.rclView.smoothScrollToPosition(it.itemCount)
+            } else {
+                isTop = true
+                mBinding.rclView.smoothScrollToPosition(0)
+            }
         }
     }
 
-    private fun repeatNotify(delayTime: Long = 1000) {
+    private fun repeatNotify(delayTime: Long = 100) {
         mBinding.rclView.postDelayed(repeatRunnable, delayTime)
     }
 
@@ -44,12 +52,12 @@ class RecyclerviewActivity : AppCompatActivity() {
         mBinding.rclView.adapter = recyclerViewAdapter
         mBinding.rclView.layoutManager = LinearLayoutManager(this)
         val list = ArrayList<RecyclerViewAdapter.MyBean>()
-        for (i in 0..1) {
+        for (i in 0..300) {
             list.add(RecyclerViewAdapter.MyBean())
         }
         recyclerViewAdapter?.setData(list)
 
-//        repeatNotify()
+        repeatNotify()
     }
 
 

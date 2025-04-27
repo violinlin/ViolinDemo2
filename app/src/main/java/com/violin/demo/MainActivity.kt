@@ -1,6 +1,12 @@
 package com.violin.demo
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.widget.Toast
 import cn.xiaochuankeji.VideoActivity
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.FileUtils
@@ -27,15 +33,31 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        heartbeat()
+    }
+
+    private val pollingTask = Runnable { heartbeat() }
+    fun heartbeat() {
+        mBinding.btnView.removeCallbacks(pollingTask)
+        mBinding.btnView.postDelayed(pollingTask, 12 * 1000)
+        LogUtil.d("MainActivity", "heartbeat...")
     }
 
     override fun setupView() {
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)
+            LogUtil.d("MainActivity",Log.getStackTraceString(Throwable()))
+            mBinding.btnView.post {
+                LogUtil.d("MainActivity","----" + Log.getStackTraceString(Throwable()))
+                LogUtil.d("MainActivity","----11" + Thread.currentThread().stackTrace)
+            }
 
         }
         mBinding.btnCommon.setOnClickListener {
             CommonActivity.start(this)
+            val wevView = WebView(this)
+            val webSettings = wevView.settings
+//            webSettings.setAppCachePath()
         }
         mBinding.btnVideo.setOnClickListener {
 //            VideoActivity.start(this)
@@ -65,6 +87,14 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         }
         mBinding.btnLeakTest.setOnClickListener {
             LeakTestActivity.start(this)
+        }
+        mBinding.btnClipBord.setOnClickListener {
+            mBinding.btnClipBord.postDelayed({
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val text = clipboard.primaryClip?.getItemAt(0)?.coerceToText(this)?.toString()
+                Toast.makeText(this, text ?: "clip bord is empty", Toast.LENGTH_SHORT).show()
+            }, 3000)
+
         }
     }
 

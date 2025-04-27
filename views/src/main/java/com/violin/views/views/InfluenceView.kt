@@ -28,46 +28,6 @@ class InfluenceView @JvmOverloads constructor(
         mBinding = ViewInfluenceViewBinding.inflate(
             LayoutInflater.from(context), this, true
         )
-        setOnClickListener {
-            Thread {
-                visibility = View.INVISIBLE
-                alpha = 1F
-            }.start()
-//            if (!isClear) {
-//                Glide.with(mBinding.ivCenter).clear(mBinding.ivCenter)
-////                mBinding.pagLeft.composition = null
-//                mBinding.pagLeft.apply {
-//                    stop()
-//                    composition = null
-//                    postDelayed({invalidate()},1000)
-//                    onDetachedFromWindow()
-//                }
-//                mBinding.pagRight.apply {
-//                    stop()
-//                    composition = null
-//                    postDelayed({invalidate()},1000)
-//                }
-//                isClear = true
-//            } else {
-//                Glide.with(mBinding.ivCenter)
-//                    .load("$host/influence/icon_center.png")
-//                    .into(mBinding.ivCenter)
-//
-//                mBinding.pagLeft.apply {
-//                    path = "$host/gold_miner_lord_0.pag"
-//                    setRepeatCount(0)
-//                    play()
-//                }
-//
-//                mBinding.pagRight.apply {
-//                    path = "$host/gold_miner_lord_1.pag"
-//                    setRepeatCount(0)
-//                    play()
-//                }
-//                isClear = false
-//            }
-
-        }
     }
 
     val host = "http://192.168.25.25:8000"
@@ -95,7 +55,7 @@ class InfluenceView @JvmOverloads constructor(
 //            .load("$host/influence/icon_cover_right.png")
 //            .into(mBinding.ivCoverRight)
 
-        mBinding.pagLeft.setPathAsync("$host/gold_miner_lord_0.pag",object :PAGFile.LoadListener{
+        mBinding.pagLeft.setPathAsync("$host/gold_miner_lord_0.pag", object : PAGFile.LoadListener {
             override fun onLoad(p0: PAGFile?) {
 
             }
@@ -117,11 +77,6 @@ class InfluenceView @JvmOverloads constructor(
             path = "$host/gold_miner_lord_0.pag"
             setRepeatCount(0)
             play()
-            if (visibility == View.VISIBLE) {
-                visibility = View.GONE
-            } else {
-                visibility = View.VISIBLE
-            }
         }
 
         PAGFile.LoadAsync("$host/gold_miner_lord_1.pag",
@@ -131,25 +86,33 @@ class InfluenceView @JvmOverloads constructor(
                         composition = pagFIle
                         setRepeatCount(-1)
                         play()
-                        if (visibility == View.VISIBLE) {
-                            visibility = View.GONE
-                        } else {
-                            visibility = View.VISIBLE
-                        }
-
                     }
 
                 }
 
             })
-        val mcomposition = PAGFile.Load(context.assets, "anim_lucky_gift_level_3.pag")
-        mBinding.pagLeft.apply {
-            composition = mcomposition
-            setRepeatCount(0)
-            play()
+        val fileList = context.assets.list("")
+        var pathLeft = "anim_lucky_gift_level_3.pag"
+        if (fileList != null) {
+            pathLeft = fileList.random()
         }
+        val mcomposition = PAGFile.Load(context.assets, pathLeft)
+        mBinding.pagLeft.apply {
+            pause()
+            setRepeatCount(0)
+//            setCacheAllFramesInMemory(false)
+            composition = mcomposition
+            play()
 
-        val mcompositionRight = PAGFile.Load(context.assets, "anim_lucky_gift_level_4.pag")
+//            composition = mcomposition
+//            setRepeatCount(0)
+//            play()
+        }
+        var pathRight = "anim_lucky_gift_level_4.pag"
+        if (fileList != null) {
+            pathRight = fileList.random()
+        }
+        val mcompositionRight = PAGFile.Load(context.assets, pathRight)
         mBinding.pagRight.apply {
             composition = mcompositionRight
             setRepeatCount(0)

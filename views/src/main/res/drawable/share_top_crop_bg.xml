@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:tileModeX="repeat"
+            android:gravity="top"
+            android:src="@drawable/share_bg" /> <!-- 保持顶部对齐 -->
+    </item>
+</layer-list>

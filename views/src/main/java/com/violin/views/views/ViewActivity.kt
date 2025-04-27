@@ -4,27 +4,29 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
+import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.bumptech.glide.Glide
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
 import com.violin.base.act.UIUtil
 import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
-import org.libpag.PAGView
+import org.libpag.PAGText
 
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -67,7 +69,7 @@ class ViewActivity : AppCompatActivity() {
             if (binding.btnAddTicket.background == null) {
                 GradientDrawable().apply {
                     shape = GradientDrawable.RECTANGLE
-                    cornerRadius = UIUtil.dp2px(30F,baseContext)
+                    cornerRadius = UIUtil.dp2px(30F, baseContext)
                     setColor(Color.RED)
                     binding.btnAddTicket.setBackgroundDrawable(this)
                 }
@@ -77,6 +79,23 @@ class ViewActivity : AppCompatActivity() {
 
         }
 
+        binding.textview.text =
+            "16".setSpan(AbsoluteSizeSpan(18, true))
+                .addSpan("&", AbsoluteSizeSpan(9, true))
+                .addSpan("OFF", AbsoluteSizeSpan(18, true))
+
+        val pagFile = PAGFile.Load(assets, "replace_text.pag")
+        val text1 = pagFile.getTextData(0)
+        text1.text = "测试 0"
+        val text2 = pagFile.getTextData(1)
+        text2.text = "测试 1"
+        binding.pagReplaceText.composition = pagFile
+        pagFile.replaceText(0, text1)
+        pagFile.replaceText(1, text2)
+
+//        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.share_bg)
+//        val drawable = TopCropDrawable(bitmap)
+//        binding.flTopCropBg.background = drawable
     }
 
     private val images = listOf(
