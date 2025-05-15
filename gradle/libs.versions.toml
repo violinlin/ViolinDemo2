@@ -17,6 +17,7 @@ alphaPlayer = "1.0.4"
 ijkplayerVersion = "0.8.8"
 spannable = "1.2.7"
 libpag = "4.3.57"
+matrix = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,11 +41,23 @@ ijkplayer-arm64 = { group = "tv.danmaku.ijk.media", name = "ijkplayer-arm64", ve
 spannable = { group = "com.github.liangjingkanji", name = "spannable", version.ref = "spannable" }
 libpag = { group = "com.tencent.tav", name = "libpag", version.ref = "libpag" }
 
+matrix-android-lib = { group = "com.tencent.matrix", name = "matrix-android-lib", version.ref = "matrix" }
+matrix-android-commons = { group = "com.tencent.matrix", name = "matrix-android-commons", version.ref = "matrix" }
+matrix-trace-canary = { group = "com.tencent.matrix", name = "matrix-trace-canary", version.ref = "matrix" }
+matrix-resource-canary-android = { group = "com.tencent.matrix", name = "matrix-resource-canary-android", version.ref = "matrix" }
+matrix-resource-canary-common = { group = "com.tencent.matrix", name = "matrix-resource-canary-common", version.ref = "matrix" }
+matrix-io-canary = { group = "com.tencent.matrix", name = "matrix-io-canary", version.ref = "matrix" }
+matrix-sqlite-lint-android-sdk = { group = "com.tencent.matrix", name = "matrix-sqlite-lint-android-sdk", version.ref = "matrix" }
+matrix-battery-canary = { group = "com.tencent.matrix", name = "matrix-battery-canary", version.ref = "matrix" }
+matrix-hooks = { group = "com.tencent.matrix", name = "matrix-hooks", version.ref = "matrix" }
+
 media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
 media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media3Exoplayer" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Exoplayer" }
 [bundles]
 exoplayer = ["media3-exoplayer", "media3-exoplayer-dash", "media3-ui"]
+matrix = ["matrix-android-lib", "matrix-android-commons", "matrix-trace-canary", "matrix-resource-canary-android", "matrix-resource-canary-common", "matrix-io-canary", "matrix-sqlite-lint-android-sdk", "matrix-battery-canary", "matrix-hooks"]
+
 
 
 
@@ -55,4 +68,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-android-extensions = { id = "kotlin-android-extensions" }
+matrix = { id = 'com.tencent.matrix-plugin', version.ref = "matrix" }
 

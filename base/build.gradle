@@ -53,6 +53,7 @@ dependencies {
     api libs.bundles.exoplayer
     api libs.spannable
     api libs.libpag
+    api libs.bundles.matrix
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
 }

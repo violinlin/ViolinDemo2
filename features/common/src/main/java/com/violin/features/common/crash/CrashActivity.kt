@@ -12,9 +12,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.violin.base.act.LogUtil
 import com.violin.fretures.common.R
 
 class CrashActivity : AppCompatActivity() {
+    val TAG = "CrashActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,6 +41,27 @@ class CrashActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.bitmap_oom_crash).setOnClickListener {
             bitmapOOM()
+        }
+        findViewById<View>(R.id.btn_test_anr).setOnClickListener {
+            testThreadAnr()
+        }
+    }
+
+    private fun testThreadAnr() {
+        try {
+            var number = 0
+            while (number++ < 5) {
+                LogUtil.e(TAG, "主线程睡眠导致的ANR:次数$number/5")
+                try {
+                    Thread.sleep(5000L)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                    LogUtil.e(TAG, "异常信息为:" + e.message)
+                }
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            LogUtil.e(TAG, "异常信息为:" + e.message)
         }
     }
 

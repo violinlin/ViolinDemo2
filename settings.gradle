@@ -12,6 +12,13 @@ pluginManagement {
 
 
     }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.tencent.matrix-plugin") {
+                useModule("com.tencent.matrix:matrix-gradle-plugin:$MATRIX_VERSION")
+            }
+        }
+    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
