@@ -10,7 +10,8 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
 
-
+// ijkplayer 仓库
+        maven { url "https://artifactory.appodeal.com/appodeal-public/" }
     }
     resolutionStrategy {
         eachPlugin {
@@ -25,8 +26,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven { url 'https://jitpack.io' }
+        // ijkplayer 仓库
+        maven { url "https://artifactory.appodeal.com/appodeal-public/" }
         flatDir {
             dirs 'libs'
         }
