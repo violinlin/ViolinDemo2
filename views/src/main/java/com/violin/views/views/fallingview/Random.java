@@ -1,6 +1,5 @@
 package com.violin.views.views.fallingview;
 
-import android.util.Log;
 
 /**
  * Created by dingmouren on 2017/4/28.
@@ -20,6 +19,14 @@ class Random {
 
     public int getRandom(int upper) {
         return RANDOM.nextInt(upper);
+    }
+
+    public double roundAwayFromZero(double value) {
+        if (value > 0) {
+            return Math.ceil(value);
+        } else {
+            return Math.floor(value);
+        }
     }
 
 }

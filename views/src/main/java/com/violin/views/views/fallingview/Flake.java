@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 
 
 /**
@@ -35,24 +34,25 @@ public class Flake {
         this.mPaint = paint;
     }
 
-    public static Flake create(int width,int height,Paint paint,int flakeSize){
+    public static Flake create(int width, int height, Paint paint, int flakeSize) {
         int x = mRandom.getRandom(width);
         int y = mRandom.getRandom(height);
-        Point positon = new Point(x,y);
+        Point positon = new Point(x, y);
         float angle = mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE;
         float increment = mRandom.getRandom(INCREMENT_LOWER, INCREMENT_UPPER);
-        return new Flake(positon,angle,increment,flakeSize,paint);
+        return new Flake(positon, angle, increment, flakeSize, paint);
     }
 
     public void draw(Canvas canvas, Bitmap flakeBitmap) {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
         move(width, height);
-        canvas.drawBitmap(flakeBitmap,mPoint.x,mPoint.y,mPaint);
+        canvas.drawBitmap(flakeBitmap, mPoint.x, mPoint.y, mPaint);
     }
 
     private void move(int width, int height) {
-        double x = mPoint.x + (mIncrement * Math.cos(mAngle));
+        double xIncrement = (mIncrement * Math.cos(mAngle));
+        double x = mPoint.x + mRandom.roundAwayFromZero(xIncrement);
         double y = mPoint.y + (mIncrement * Math.sin(mAngle));
         mAngle += mRandom.getRandom(-ANGLE_SEED, ANGLE_SEED) / ANGLE_DIVISOR;
         mPoint.set((int) x, (int) y);
@@ -64,7 +64,7 @@ public class Flake {
     private boolean isInside(int width, int height) {
         int x = mPoint.x;
         int y = mPoint.y;
-        return x >= -mFlakeSize - 1 && x + mFlakeSize <= width && y >= -mFlakeSize - 1 && y - mFlakeSize < height;
+        return x >= -mFlakeSize - 1 && x - mFlakeSize <= width && y >= -mFlakeSize - 1 && y - mFlakeSize < height;
     }
 
     private void reset(int width) {

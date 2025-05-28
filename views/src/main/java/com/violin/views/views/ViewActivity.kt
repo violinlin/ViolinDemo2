@@ -59,7 +59,7 @@ class ViewActivity : AppCompatActivity() {
         }
 
         initViewFlipper()
-//        initFallingView()
+        initFallingView()
         initBannerIV()
         val array = intArrayOf(10000)// 632
         binding.btnAddTicket.setOnClickListener {
