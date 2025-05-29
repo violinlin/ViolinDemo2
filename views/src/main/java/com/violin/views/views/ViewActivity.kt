@@ -4,8 +4,9 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
@@ -19,6 +20,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
 import com.violin.base.act.UIUtil
@@ -26,7 +29,6 @@ import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
-import org.libpag.PAGText
 
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -170,14 +172,35 @@ class ViewActivity : AppCompatActivity() {
     var fallingView: FallingView? = null
     private fun initFallingView() {
         if (fallingView == null) {
-            fallingView = FallingView(this)
-            addContentView(
-                fallingView, ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-            )
-            fallingView?.setDensity(80)
+            val size = UIUtil.dp2px(60f, this).toInt()
+            Glide.with(this)
+                .asBitmap()
+                .override(size, size)
+                .load("https://img01.mehiya.com/img/png/id/244767108462")
+                .into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap?>?
+                    ) {
+                        fallingView = FallingView(this@ViewActivity)
+                            .apply {
+                                setBitmap(resource, size)
+                                setDensity(40)
+                                setDelay(10)
+                                addContentView(
+                                    this, ViewGroup.LayoutParams(
+                                        ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT
+                                    )
+                                )
+                            }
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
+                })
+
         }
 
     }

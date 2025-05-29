@@ -1,31 +1,30 @@
-package com.violin.views.views.fallingview;
+package com.violin.views.views.fallingview
+
+import java.util.Random
+import kotlin.math.*
 
 
-/**
- * Created by dingmouren on 2017/4/28.
- */
-class Random {
-    private static final java.util.Random RANDOM = new java.util.Random();
-
-    public float getRandom(float lower, float upper) {
-        float min = Math.min(lower, upper);
-        float max = Math.max(lower, upper);
-        return getRandom(max - min) + min;
+object Random {
+    private val RANDOM = Random()
+    fun getRandom(lower: Float, upper: Float): Float {
+        val min = min(lower.toDouble(), upper.toDouble()).toFloat()
+        val max = max(lower.toDouble(), upper.toDouble()).toFloat()
+        return getRandom(max - min) + min
     }
 
-    public float getRandom(float upper) {
-        return RANDOM.nextFloat() * upper;
+    fun getRandom(upper: Float): Float {
+        return RANDOM.nextFloat() * upper
     }
 
-    public int getRandom(int upper) {
-        return RANDOM.nextInt(upper);
+    fun getRandom(upper: Int): Int {
+        return RANDOM.nextInt(upper)
     }
 
-    public double roundAwayFromZero(double value) {
-        if (value > 0) {
-            return Math.ceil(value);
+    fun roundAwayFromZero(value: Double): Double {
+        return if (value > 0) {
+            ceil(value)
         } else {
-            return Math.floor(value);
+            floor(value)
         }
     }
 

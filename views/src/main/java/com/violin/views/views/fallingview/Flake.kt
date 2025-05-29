@@ -1,77 +1,74 @@
-package com.violin.views.views.fallingview;
+package com.violin.views.views.fallingview
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Point;
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Point
+import android.util.Log
+import kotlin.math.cos
+import kotlin.math.sin
 
+class Flake(
+    private val mPoint: Point,
+    private var mAngle: Float,
+    private val mIncrement: Float,
+    private val mFlakeSize: Int,
+    private val mPaint: Paint
+) {
 
-/**
- * Created by dingmouren on 2017/4/28.
- */
-
-public class Flake {
-    private static final String TAG = Flake.class.getName();
-    private static final float ANGE_RANGE = 0.1f;
-    private static final float HALF_ANGLE_RANGE = ANGE_RANGE / 2f;
-    private static final float HALF_PI = (float) Math.PI / 2f;
-    private static final float ANGLE_SEED = 25f;
-    private static final float ANGLE_DIVISOR = 10000f;
-    private static final float INCREMENT_LOWER = 2f;
-    private static final float INCREMENT_UPPER = 4f;
-    private static Random mRandom = new Random();
-    private Point mPoint;
-    private float mAngle;
-    private float mIncrement;
-    private float mFlakeSize;
-    private Paint mPaint;
-
-    public Flake(Point positon, float angle, float increment, int flakeSize, Paint paint) {
-        this.mPoint = positon;
-        this.mAngle = angle;
-        this.mIncrement = increment;
-        this.mFlakeSize = flakeSize;
-        this.mPaint = paint;
+    fun draw(canvas: Canvas, flakeBitmap: Bitmap) {
+        val width = canvas.width
+        val height = canvas.height
+        move(width, height)
+        canvas.drawBitmap(flakeBitmap, mPoint.x.toFloat(), mPoint.y.toFloat(), mPaint)
     }
 
-    public static Flake create(int width, int height, Paint paint, int flakeSize) {
-        int x = mRandom.getRandom(width);
-        int y = mRandom.getRandom(height);
-        Point positon = new Point(x, y);
-        float angle = mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE;
-        float increment = mRandom.getRandom(INCREMENT_LOWER, INCREMENT_UPPER);
-        return new Flake(positon, angle, increment, flakeSize, paint);
-    }
-
-    public void draw(Canvas canvas, Bitmap flakeBitmap) {
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-        move(width, height);
-        canvas.drawBitmap(flakeBitmap, mPoint.x, mPoint.y, mPaint);
-    }
-
-    private void move(int width, int height) {
-        double xIncrement = (mIncrement * Math.cos(mAngle));
-        double x = mPoint.x + mRandom.roundAwayFromZero(xIncrement);
-        double y = mPoint.y + (mIncrement * Math.sin(mAngle));
-        mAngle += mRandom.getRandom(-ANGLE_SEED, ANGLE_SEED) / ANGLE_DIVISOR;
-        mPoint.set((int) x, (int) y);
+    private fun move(width: Int, height: Int) {
+        val xIncrement = (mIncrement * cos(mAngle.toDouble()))
+        val x = mPoint.x + mRandom.roundAwayFromZero(xIncrement)
+        val yIncrement = (mIncrement * sin(mAngle.toDouble()))
+        val y = mPoint.y + yIncrement
+        mAngle += mRandom.getRandom(-ANGLE_SEED, ANGLE_SEED) / ANGLE_DIVISOR
+        mPoint.set(x.toInt(), y.toInt())
         if (!isInside(width, height)) {
-            reset(width);
+            reset(width)
         }
     }
 
-    private boolean isInside(int width, int height) {
-        int x = mPoint.x;
-        int y = mPoint.y;
-        return x >= -mFlakeSize - 1 && x - mFlakeSize <= width && y >= -mFlakeSize - 1 && y - mFlakeSize < height;
+    private fun isInside(width: Int, height: Int): Boolean {
+        val x = mPoint.x
+        val y = mPoint.y
+        return x >= -mFlakeSize - 1 && x - mFlakeSize <= width && y >= -mFlakeSize - 1 && y - mFlakeSize < height
     }
 
-    private void reset(int width) {
-        mPoint.x = mRandom.getRandom(width);
-        mPoint.y = (int) (-mFlakeSize - 1);
-        mAngle = mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE;
+    private fun reset(width: Int) {
+        mPoint.x = mRandom.getRandom(width)
+        mPoint.y = (-mFlakeSize - 1).toInt()
+        mAngle =
+            mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE
     }
 
 
+    companion object {
+        private val TAG: String = Flake::class.java.name
+        private const val ANGE_RANGE = 0.1f
+        private const val HALF_ANGLE_RANGE = ANGE_RANGE / 2f
+        private const val HALF_PI = Math.PI.toFloat() / 2f
+        private const val ANGLE_SEED = 25f
+        private const val ANGLE_DIVISOR = 10000f
+        private const val INCREMENT_LOWER = 2f
+        private const val INCREMENT_UPPER = 4f
+        private val mRandom = Random
+
+        @JvmStatic
+        fun create(width: Int, height: Int, paint: Paint, flakeSize: Int): Flake {
+            val x = mRandom.getRandom(width)
+            val y = mRandom.getRandom(height)
+            val positon = Point(x, y)
+            val angle =
+                mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE
+            val increment = mRandom.getRandom(INCREMENT_LOWER, INCREMENT_UPPER)
+            return Flake(positon, angle, increment, flakeSize, paint)
+        }
+    }
 }
