@@ -1,18 +1,20 @@
 package com.violin.views.views.fallingview
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.violin.views.R
-import com.violin.views.views.fallingview.FallingView
-import com.violin.views.views.fallingview.Flake.Companion.create
-import androidx.core.graphics.scale
+import androidx.core.animation.doOnEnd
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.violin.base.act.UIUtil
 
 class FallingView @JvmOverloads constructor(
     context: Context,
@@ -28,10 +30,23 @@ class FallingView @JvmOverloads constructor(
     private var mWidth = 0
     private var mHeight = 0
     private var mFlakeSize = 0
+    private var mAnimTime = 3 * 1000L
+    private val mRunnable = Runnable { invalidate() }
+    private val mCloseRunnable = Runnable {
+        if (this.parent is ViewGroup) {
+            ObjectAnimator.ofFloat(this, "alpha", 1f, 0f).apply {
+                duration = 300
+                start()
+            }.doOnEnd {
+                (parent as ViewGroup).removeView(this)
+            }
+        }
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         initView()
+        handler?.postDelayed(mCloseRunnable, mAnimTime)
     }
 
     private fun initView() {
@@ -54,15 +69,19 @@ class FallingView @JvmOverloads constructor(
         for (flake in mFlakes) {
             flake.draw(canvas, mFlakeBitmap!!)
         }
-        handler.postDelayed(mRunnable, mDelay.toLong())
+        handler?.postDelayed(mRunnable, mDelay.toLong())
     }
 
-    private val mRunnable = Runnable { invalidate() }
 
+    override fun onDetachedFromWindow() {
+        handler?.removeCallbacks(mRunnable)
+        handler?.removeCallbacks(mCloseRunnable)
+        super.onDetachedFromWindow()
+    }
 
     private fun initDensity(w: Int, h: Int, flakeSize: Int) {
         mFlakes = Array(mFlakesDensity) {
-            create(w, h, mPaint, flakeSize)
+            Flake.create(w, h, mPaint, flakeSize)
         }
     }
 
@@ -79,12 +98,64 @@ class FallingView @JvmOverloads constructor(
         }
     }
 
+    fun setAnimTime(animTimeSecond: Int) {
+        this.mAnimTime = animTimeSecond * 1000L
+    }
+
     fun setDelay(delay: Int) {
         this.mDelay = delay
     }
 
+    data class GiftFallingJson(
+        var gift_id: Long? = null,
+        var icon: String? = null,
+        var rain_level: Int? = null,// 礼物等级
+        var count: Int? = null
+    )
+
     companion object {
         private const val DEFAULT_FLAKES_DENSITY = 80// 默认礼物数
         private const val DEFAULT_DELAY = 10// 默认刷新时间
+
+        fun startAnim(giftFallingJson: GiftFallingJson, context: Context, container: ViewGroup) {
+            giftFallingJson.icon?.let {
+                val size = UIUtil.dp2px(60F, context).toInt()
+                Glide.with(context)
+                    .asBitmap()
+                    .override(size, size)
+                    .load(it)
+                    .into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            val fallingView = FallingView(context)
+                                .apply {
+                                    setBitmap(resource, size)
+                                    setDensity(60)
+                                    setDelay(10)
+                                    giftFallingJson.rain_level?.let {
+                                        if (it == 1) {
+                                            setAnimTime(3)
+                                        } else if (it == 2) {
+                                            setAnimTime(6)
+                                        }
+                                    }
+                                }
+                            container.removeAllViews()
+                            container.addView(
+                                fallingView, ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
+                            )
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+
+                        }
+                    })
+            }
+        }
     }
 }

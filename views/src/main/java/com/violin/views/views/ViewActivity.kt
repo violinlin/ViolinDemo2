@@ -61,7 +61,6 @@ class ViewActivity : AppCompatActivity() {
         }
 
         initViewFlipper()
-        initFallingView()
         initBannerIV()
         val array = intArrayOf(10000)// 632
         binding.btnAddTicket.setOnClickListener {
@@ -79,6 +78,13 @@ class ViewActivity : AppCompatActivity() {
                 binding.btnAddTicket.setBackgroundDrawable(null)
             }
 
+        }
+        binding.btnGiftFalling.setOnClickListener {
+            FallingView.startAnim(
+                FallingView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
+                this,
+                binding.flGiftFallingContainer
+            )
         }
 
         binding.textview.text =
@@ -168,42 +174,6 @@ class ViewActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-
-    var fallingView: FallingView? = null
-    private fun initFallingView() {
-        if (fallingView == null) {
-            val size = UIUtil.dp2px(60f, this).toInt()
-            Glide.with(this)
-                .asBitmap()
-                .override(size, size)
-                .load("https://img01.mehiya.com/img/png/id/244767108462")
-                .into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap?>?
-                    ) {
-                        fallingView = FallingView(this@ViewActivity)
-                            .apply {
-                                setBitmap(resource, size)
-                                setDensity(40)
-                                setDelay(10)
-                                addContentView(
-                                    this, ViewGroup.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT,
-                                        ViewGroup.LayoutParams.MATCH_PARENT
-                                    )
-                                )
-                            }
-                    }
-
-                    override fun onLoadCleared(placeholder: Drawable?) {
-
-                    }
-                })
-
-        }
-
-    }
 
     private fun initViewFlipper() {
         val tv2 = findViewById<TextView>(R.id.tv2)
