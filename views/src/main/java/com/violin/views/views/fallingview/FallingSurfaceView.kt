@@ -96,12 +96,7 @@ class FallingSurfaceView @JvmOverloads constructor(
         this.mDelay = delay
     }
 
-    data class GiftFallingJson(
-        var gift_id: Long? = null,
-        var icon: String? = null,
-        var rain_level: Int? = null,// 礼物等级
-        var count: Int? = null
-    )
+
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         handler?.postDelayed(mCloseRunnable, mAnimTime)

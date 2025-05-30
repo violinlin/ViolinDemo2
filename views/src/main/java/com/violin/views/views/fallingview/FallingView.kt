@@ -110,12 +110,6 @@ class FallingView @JvmOverloads constructor(
         this.mDelay = delay
     }
 
-    data class GiftFallingJson(
-        var gift_id: Long? = null,
-        var icon: String? = null,
-        var rain_level: Int? = null,// 礼物等级
-        var count: Int? = null
-    )
 
     companion object {
         private const val DEFAULT_FLAKES_DENSITY = 80// 默认礼物数

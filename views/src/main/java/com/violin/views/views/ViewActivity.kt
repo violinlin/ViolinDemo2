@@ -29,6 +29,7 @@ import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingSurfaceView
 import com.violin.views.views.fallingview.FallingView
+import com.violin.views.views.fallingview.GiftFallingJson
 import org.libpag.PAGFile
 
 class ViewActivity : AppCompatActivity() {
@@ -82,7 +83,7 @@ class ViewActivity : AppCompatActivity() {
         }
         binding.btnGiftFalling.setOnClickListener {
             FallingSurfaceView.startAnim(
-                FallingSurfaceView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
+                GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
                 this,
                 binding.flGiftFallingContainer
             )
