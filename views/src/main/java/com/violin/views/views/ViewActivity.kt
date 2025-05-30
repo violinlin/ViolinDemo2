@@ -27,6 +27,7 @@ import com.drake.spannable.setSpan
 import com.violin.base.act.UIUtil
 import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
+import com.violin.views.views.fallingview.FallingSurfaceView
 import com.violin.views.views.fallingview.FallingView
 import org.libpag.PAGFile
 
@@ -80,11 +81,17 @@ class ViewActivity : AppCompatActivity() {
 
         }
         binding.btnGiftFalling.setOnClickListener {
-            FallingView.startAnim(
-                FallingView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
+            FallingSurfaceView.startAnim(
+                FallingSurfaceView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
                 this,
                 binding.flGiftFallingContainer
             )
+
+//            FallingView.startAnim(
+//                FallingView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
+//                this,
+//                binding.flGiftFallingContainer1
+//            )
         }
 
         binding.textview.text =
