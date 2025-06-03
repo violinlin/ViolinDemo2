@@ -10,6 +10,7 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicInteger
 
 class FallingSurfaceView @JvmOverloads constructor(
     context: Context,
@@ -33,15 +35,17 @@ class FallingSurfaceView @JvmOverloads constructor(
     SurfaceView(context, attrs, defStyleAttr), SurfaceHolder.Callback {
     private var mFlakesDensity = DEFAULT_FLAKES_DENSITY
     private var mDelay = DEFAULT_DELAY
-    private var mFlakes: Array<Flake> = emptyArray()
+    private var mFlakes: ArrayList<Flake> = ArrayList()
     private var mFlakeBitmap: Bitmap? = null
     private var mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var mWidth = 0
     private var mHeight = 0
-    private var mFlakeSize = 0
+    private var mConfig: FallingViewConfig? = null
     private var mAnimTime = 3 * 1000L
     private var animationFallingJob: Job? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private var mAddCount: AtomicInteger? = null
+    val TAG = "FallingSurfaceView"
 
     init {
         initView()
@@ -72,15 +76,16 @@ class FallingSurfaceView @JvmOverloads constructor(
     }
 
 
-    private fun initDensity(w: Int, h: Int, flakeSize: Int) {
-        mFlakes = Array(mFlakesDensity) {
-            Flake.create(w, h, mPaint, flakeSize)
+    private fun initDensity(w: Int, h: Int, configData: FallingViewConfig) {
+        for (i in 0..<mFlakesDensity) {
+            val fake = Flake.create(w, h, mPaint, config = configData)
+            mFlakes.add(fake)
         }
     }
 
-    fun setBitmap(bitmap: Bitmap, size: Int) {
-        mFlakeSize = size
+    fun setBitmap(bitmap: Bitmap, config: FallingViewConfig) {
         mFlakeBitmap = bitmap
+        mConfig = config
     }
 
 
@@ -96,17 +101,22 @@ class FallingSurfaceView @JvmOverloads constructor(
         this.mDelay = delay
     }
 
+    fun addFakes(addCount: Int) {
+        mAddCount = AtomicInteger(addCount)
+    }
 
 
     override fun surfaceCreated(holder: SurfaceHolder) {
-        handler?.postDelayed(mCloseRunnable, mAnimTime)
+//        handler?.postDelayed(mCloseRunnable, mAnimTime)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
         if (mWidth != width || mHeight != height) {
             mWidth = width
             mHeight = height
-            initDensity(mWidth, mHeight, mFlakeSize)
+            mConfig?.let {
+                initDensity(mWidth, mHeight, it)
+            }
             startFalling()
         }
     }
@@ -127,6 +137,7 @@ class FallingSurfaceView @JvmOverloads constructor(
             while (isActive) {
                 drawToSurface()
                 delay(mDelay)
+                Log.d(TAG, "thread drawToSurface:${Thread.currentThread().name}")
             }
         }
     }
@@ -143,6 +154,16 @@ class FallingSurfaceView @JvmOverloads constructor(
             }
             canvas?.let {
                 canvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR)
+                val addCount = mAddCount?.get() ?: 0
+                if (addCount > 0) {
+                    mConfig?.let {
+                        for (i in 0..<addCount) {
+                            mFlakes.add(Flake.create(mWidth, mHeight, mPaint, it))
+                        }
+                    }
+                    mFlakesDensity += addCount
+                    mAddCount = null
+                }
                 for (flake in mFlakes) {
                     flake.draw(canvas, mFlakeBitmap!!)
                 }
@@ -170,12 +191,17 @@ class FallingSurfaceView @JvmOverloads constructor(
         var useHardware = false
 
 
-        fun startAnim(giftFallingJson: GiftFallingJson, context: Context, container: ViewGroup) {
+        fun startAnim(
+            configData: FallingViewConfig,
+            context: Context,
+            container: ViewGroup,
+            startCallback: ((FallingSurfaceView) -> Unit)? = null
+        ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 useHardware = true
             }
-            giftFallingJson.icon?.let {
-                val size = UIUtil.dp2px(60F, context).toInt()
+            val size = configData.iconSizePX
+            configData.icon?.let {
                 Glide.with(context)
                     .asBitmap()
                     .override(size, size)
@@ -187,21 +213,16 @@ class FallingSurfaceView @JvmOverloads constructor(
                         ) {
                             val fallingView = FallingSurfaceView(context)
                                 .apply {
-                                    setBitmap(resource, size)
+                                    setBitmap(resource, configData)
                                     if (useHardware) {
-                                        setDensity(60)
+                                        setDensity(configData.maxDensity)
                                         setDelay(16)
                                     } else {
-                                        setDensity(30)
+                                        setDensity(Math.max(configData.maxDensity, 30))
                                         setDelay(10)
                                     }
-
-                                    giftFallingJson.rain_level?.let {
-                                        if (it == 1) {
-                                            setAnimTime(3)
-                                        } else if (it == 2) {
-                                            setAnimTime(6)
-                                        }
+                                    configData.animTimeSecond?.let {
+                                        setAnimTime(it)
                                     }
                                 }
                             container.removeAllViews()
@@ -211,6 +232,7 @@ class FallingSurfaceView @JvmOverloads constructor(
                                     ViewGroup.LayoutParams.MATCH_PARENT
                                 )
                             )
+                            startCallback?.invoke(fallingView)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {

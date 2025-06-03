@@ -29,7 +29,7 @@ import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingSurfaceView
 import com.violin.views.views.fallingview.FallingView
-import com.violin.views.views.fallingview.GiftFallingJson
+import com.violin.views.views.fallingview.FallingViewConfig
 import org.libpag.PAGFile
 
 class ViewActivity : AppCompatActivity() {
@@ -81,18 +81,45 @@ class ViewActivity : AppCompatActivity() {
             }
 
         }
+        var fallingView: FallingSurfaceView? = null
         binding.btnGiftFalling.setOnClickListener {
+            binding.flGiftFallingContainerMatch.removeAllViews()
+            if (fallingView != null) {
+                fallingView?.addFakes(10)
+                return@setOnClickListener
+            }
             FallingSurfaceView.startAnim(
-                GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
+                FallingViewConfig(
+                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+                    animTimeSecond = -1,
+                    iconSizePX = UIUtil.dp2px(36F, this@ViewActivity).toInt(),
+                    maxDensity = 1,
+                    direction = 1,
+                    isMoveX = false
+                ),
                 this,
                 binding.flGiftFallingContainer
-            )
+            ) { resultView ->
+                fallingView = resultView
+            }
 
 //            FallingView.startAnim(
 //                FallingView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
 //                this,
 //                binding.flGiftFallingContainer1
 //            )
+        }
+        binding.btnGiftFallingDown.setOnClickListener {
+            binding.flGiftFallingContainer.removeAllViews()
+            FallingSurfaceView.startAnim(
+                FallingViewConfig(
+                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+                    iconSizePX = UIUtil.dp2px(60F, this@ViewActivity).toInt(),
+                    maxDensity = 60
+                ),
+                this,
+                binding.flGiftFallingContainerMatch
+            )
         }
 
         binding.textview.text =

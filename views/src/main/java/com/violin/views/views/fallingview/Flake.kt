@@ -11,8 +11,8 @@ class Flake(
     private val mPoint: Point,
     private var mAngle: Float,
     private val mIncrement: Float,
-    private val mFlakeSize: Int,
-    private val mPaint: Paint
+    private val mPaint: Paint,
+    private val config: FallingViewConfig
 ) {
 
     fun draw(canvas: Canvas, flakeBitmap: Bitmap) {
@@ -24,25 +24,37 @@ class Flake(
 
     private fun move(width: Int, height: Int) {
         val xIncrement = (mIncrement * cos(mAngle.toDouble()))
-        val x = mPoint.x + mRandom.roundAwayFromZero(xIncrement)
-        val yIncrement = (mIncrement * sin(mAngle.toDouble()))
+        var x = mPoint.x.toDouble()
+        if (config.isMoveX) {
+            x = mPoint.x + mRandom.roundAwayFromZero(xIncrement)
+        }
+        var yIncrement = (mIncrement * sin(mAngle.toDouble()))
+        if (config.direction == 1) {
+            yIncrement = -yIncrement
+        }
         val y = mPoint.y + yIncrement
         mAngle += mRandom.getRandom(-ANGLE_SEED, ANGLE_SEED) / ANGLE_DIVISOR
         mPoint.set(x.toInt(), y.toInt())
         if (!isInside(width, height)) {
-            reset(width)
+            reset(width, height)
         }
     }
 
     private fun isInside(width: Int, height: Int): Boolean {
+        val flakeSize = config.iconSizePX
         val x = mPoint.x
         val y = mPoint.y
-        return x >= -mFlakeSize - 1 && x - mFlakeSize <= width && y >= -mFlakeSize - 1 && y - mFlakeSize < height
+        return x >= -flakeSize - 1 && x - flakeSize <= width && y >= -flakeSize - 1 && y - flakeSize < height
     }
 
-    private fun reset(width: Int) {
-        mPoint.x = mRandom.getRandom(width)
-        mPoint.y = (-mFlakeSize - 1).toInt()
+    private fun reset(width: Int, height: Int) {
+        val flakeSize = config.iconSizePX
+        mPoint.x = mRandom.getRandom(0F, width - flakeSize.toFloat()).toInt()
+        if (config.direction == 1) {
+            mPoint.y = height - flakeSize
+        } else {
+            mPoint.y = (-flakeSize - 1).toInt()
+        }
         mAngle =
             mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE
     }
@@ -60,14 +72,14 @@ class Flake(
         private val mRandom = Random
 
         @JvmStatic
-        fun create(width: Int, height: Int, paint: Paint, flakeSize: Int): Flake {
-            val x = mRandom.getRandom(width)
+        fun create(width: Int, height: Int, paint: Paint, config: FallingViewConfig): Flake {
+            val x = mRandom.getRandom(0F, width - config.iconSizePX.toFloat()).toInt()
             val y = mRandom.getRandom(height)
             val positon = Point(x, y)
             val angle =
                 mRandom.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE
             val increment = mRandom.getRandom(INCREMENT_LOWER, INCREMENT_UPPER)
-            return Flake(positon, angle, increment, flakeSize, paint)
+            return Flake(positon, angle, increment, paint, config = config)
         }
     }
 }

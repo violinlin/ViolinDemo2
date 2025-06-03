@@ -30,7 +30,7 @@ class FallingView @JvmOverloads constructor(
     private var mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var mWidth = 0
     private var mHeight = 0
-    private var mFlakeSize = 0
+    private var mConfig: FallingViewConfig? = null
     private var mAnimTime = 3 * 1000L
     private val mRunnable = Runnable { invalidate() }
     val TAG = "FallingView"
@@ -62,7 +62,7 @@ class FallingView @JvmOverloads constructor(
         if (w != oldw || h != oldh) {
             mWidth = w
             mHeight = h
-            initDensity(w, h, mFlakeSize)
+            initDensity(w, h)
         }
     }
 
@@ -83,14 +83,13 @@ class FallingView @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    private fun initDensity(w: Int, h: Int, flakeSize: Int) {
+    private fun initDensity(w: Int, h: Int) {
         mFlakes = Array(mFlakesDensity) {
-            Flake.create(w, h, mPaint, flakeSize)
+            Flake.create(w, h, mPaint, config = mConfig!!)
         }
     }
 
     fun setBitmap(bitmap: Bitmap, size: Int) {
-        mFlakeSize = size
         mFlakeBitmap = bitmap
     }
 
@@ -98,7 +97,7 @@ class FallingView @JvmOverloads constructor(
     fun setDensity(density: Int) {
         this.mFlakesDensity = density
         if (mWidth > 0 && mHeight > 0) {
-            initDensity(mWidth, mHeight, mFlakeSize)
+            initDensity(mWidth, mHeight)
         }
     }
 
@@ -115,45 +114,5 @@ class FallingView @JvmOverloads constructor(
         private const val DEFAULT_FLAKES_DENSITY = 80// 默认礼物数
         private const val DEFAULT_DELAY = 10// 默认刷新时间
 
-        fun startAnim(giftFallingJson: GiftFallingJson, context: Context, container: ViewGroup) {
-            giftFallingJson.icon?.let {
-                val size = UIUtil.dp2px(60F, context).toInt()
-                Glide.with(context)
-                    .asBitmap()
-                    .override(size, size)
-                    .load(it)
-                    .into(object : CustomTarget<Bitmap?>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?
-                        ) {
-                            val fallingView = FallingView(context)
-                                .apply {
-                                    setBitmap(resource, size)
-                                    setDensity(60)
-                                    setDelay(10)
-                                    giftFallingJson.rain_level?.let {
-                                        if (it == 1) {
-                                            setAnimTime(3)
-                                        } else if (it == 2) {
-                                            setAnimTime(6)
-                                        }
-                                    }
-                                }
-                            container.removeAllViews()
-                            container.addView(
-                                fallingView, ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT
-                                )
-                            )
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-
-                        }
-                    })
-            }
-        }
     }
 }
