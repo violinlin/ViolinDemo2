@@ -214,12 +214,14 @@ class FallingSurfaceView @JvmOverloads constructor(
                             val fallingView = FallingSurfaceView(context)
                                 .apply {
                                     setBitmap(resource, configData)
+                                    configData.delayTime?.let { delay ->
+                                        setDelay(delay.toLong())
+                                    }
                                     if (useHardware) {
                                         setDensity(configData.maxDensity)
-                                        setDelay(16)
                                     } else {
-                                        setDensity(Math.max(configData.maxDensity, 30))
-                                        setDelay(10)
+                                        setDensity(Math.min(configData.maxDensity, 15))
+                                        setDelay(5)
                                     }
                                     configData.animTimeSecond?.let {
                                         setAnimTime(it)

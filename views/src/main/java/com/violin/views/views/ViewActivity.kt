@@ -111,11 +111,32 @@ class ViewActivity : AppCompatActivity() {
         }
         binding.btnGiftFallingDown.setOnClickListener {
             binding.flGiftFallingContainer.removeAllViews()
+            var delayTime = 16
+            var ySpeedBuffer = 0
+            var maxDensity = 60
+            var iconSizePX = 60
+            var isMoveX = true
+            var scale = 0.2F
+            val nums = binding.etFalling.text.split(":")
+            try {
+                delayTime = nums[0].toInt()
+                ySpeedBuffer = nums[1].toInt()
+                maxDensity = nums[2].toInt()
+                iconSizePX = nums[3].toInt()
+                isMoveX = nums[4].toInt() == 1
+                scale = nums[5].toFloat()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             FallingSurfaceView.startAnim(
                 FallingViewConfig(
                     icon = "https://img01.mehiya.com/img/png/id/244767108462",
-                    iconSizePX = UIUtil.dp2px(60F, this@ViewActivity).toInt(),
-                    maxDensity = 60
+                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
+                    maxDensity = maxDensity,
+                    ySpeedBuffer = ySpeedBuffer,
+                    delayTime = delayTime,
+                    isMoveX = isMoveX,
+                    sizeScale = scale
                 ),
                 this,
                 binding.flGiftFallingContainerMatch
