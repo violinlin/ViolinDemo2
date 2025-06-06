@@ -33,7 +33,7 @@ class Flake(
         if (config.isMoveX) {
             x = mPoint.x + mRandom.roundAwayFromZero(xIncrement)
         }
-        var yIncrement = (mIncrement * sin(mAngle.toDouble())) + config.ySpeedBuffer
+        var yIncrement = (mIncrement * sin(mAngle.toDouble())) * (1 + config.ySpeedBuffer)
         Log.d("Fake", "yIncrement:${yIncrement}")
         if (config.direction == 1) {
             yIncrement = -yIncrement

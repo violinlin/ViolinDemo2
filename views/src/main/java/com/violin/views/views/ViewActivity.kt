@@ -4,30 +4,26 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
 import com.violin.base.act.UIUtil
 import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingSurfaceView
+import com.violin.views.views.fallingview.FallingTextureView
 import com.violin.views.views.fallingview.FallingView
 import com.violin.views.views.fallingview.FallingViewConfig
 import org.libpag.PAGFile
@@ -103,16 +99,12 @@ class ViewActivity : AppCompatActivity() {
                 fallingView = resultView
             }
 
-//            FallingView.startAnim(
-//                FallingView.GiftFallingJson(icon = "https://img01.mehiya.com/img/png/id/244767108462"),
-//                this,
-//                binding.flGiftFallingContainer1
-//            )
+
         }
         binding.btnGiftFallingDown.setOnClickListener {
             binding.flGiftFallingContainer.removeAllViews()
             var delayTime = 16
-            var ySpeedBuffer = 0
+            var ySpeedBuffer = 0F
             var maxDensity = 60
             var iconSizePX = 60
             var isMoveX = true
@@ -120,7 +112,7 @@ class ViewActivity : AppCompatActivity() {
             val nums = binding.etFalling.text.split(":")
             try {
                 delayTime = nums[0].toInt()
-                ySpeedBuffer = nums[1].toInt()
+                ySpeedBuffer = nums[1].toFloat()
                 maxDensity = nums[2].toInt()
                 iconSizePX = nums[3].toInt()
                 isMoveX = nums[4].toInt() == 1
@@ -141,6 +133,22 @@ class ViewActivity : AppCompatActivity() {
                 this,
                 binding.flGiftFallingContainerMatch
             )
+
+//            FallingView.startAnim(
+//                FallingViewConfig(
+//                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+//                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
+//                    maxDensity = maxDensity,
+//                    ySpeedBuffer = ySpeedBuffer,
+//                    delayTime = delayTime,
+//                    isMoveX = isMoveX,
+//                    sizeScale = scale
+//                ),
+//                this,
+//                binding.flGiftFallingContainer1
+//            ){
+//
+//            }
         }
 
         binding.textview.text =
