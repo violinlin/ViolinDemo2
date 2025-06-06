@@ -26,6 +26,8 @@ import com.violin.views.views.fallingview.FallingSurfaceView
 import com.violin.views.views.fallingview.FallingTextureView
 import com.violin.views.views.fallingview.FallingView
 import com.violin.views.views.fallingview.FallingViewConfig
+import com.violin.views.views.fallingview.snowfalll.SnowParamsConfig
+import com.violin.views.views.fallingview.snowfalll.SnowfallView
 import org.libpag.PAGFile
 
 class ViewActivity : AppCompatActivity() {
@@ -80,59 +82,69 @@ class ViewActivity : AppCompatActivity() {
         var fallingView: FallingSurfaceView? = null
         binding.btnGiftFalling.setOnClickListener {
             binding.flGiftFallingContainerMatch.removeAllViews()
-            if (fallingView != null) {
-                fallingView?.addFakes(10)
-                return@setOnClickListener
-            }
-            FallingSurfaceView.startAnim(
-                FallingViewConfig(
-                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
-                    animTimeSecond = -1,
-                    iconSizePX = UIUtil.dp2px(36F, this@ViewActivity).toInt(),
-                    maxDensity = 1,
+//            if (fallingView != null) {
+//                fallingView?.addFakes(10)
+//                return@setOnClickListener
+//            }
+//            FallingSurfaceView.startAnim(
+//                FallingViewConfig(
+//                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+//                    animTimeSecond = -1,
+//                    iconSizePX = UIUtil.dp2px(36F, this@ViewActivity).toInt(),
+//                    maxDensity = 1,
+//                    direction = 1,
+//                    isMoveX = false
+//                ),
+//                this,
+//                binding.flGiftFallingContainer
+//            ) { resultView ->
+//                fallingView = resultView
+//            }
+
+            SnowfallView.startAnim(
+                SnowParamsConfig(
+                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
                     direction = 1,
-                    isMoveX = false
-                ),
-                this,
-                binding.flGiftFallingContainer
-            ) { resultView ->
-                fallingView = resultView
-            }
+                    speedMin = 4,
+                    speedMax = 6,
+                    sizeMaxInPx = UIUtil.dp2px(36F, this).toInt(),
+                    sizeMinInPx = UIUtil.dp2px(30F, this).toInt(),
+                    snowflakesNum = 10
+                ), binding.flGiftFallingContainer
+            )
 
 
         }
         binding.btnGiftFallingDown.setOnClickListener {
             binding.flGiftFallingContainer.removeAllViews()
-            var delayTime = 16
-            var ySpeedBuffer = 0F
-            var maxDensity = 60
-            var iconSizePX = 60
+            var count = 20
+            var size = 80
+            var minSpeed = 6
+            var alpha = true
             var isMoveX = true
-            var scale = 0.2F
             val nums = binding.etFalling.text.split(":")
             try {
-                delayTime = nums[0].toInt()
-                ySpeedBuffer = nums[1].toFloat()
-                maxDensity = nums[2].toInt()
-                iconSizePX = nums[3].toInt()
+                count = nums[0].toInt()
+                size = nums[1].toInt()
+                minSpeed = nums[2].toInt()
+                alpha = nums[3].toInt() == 1
                 isMoveX = nums[4].toInt() == 1
-                scale = nums[5].toFloat()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            FallingSurfaceView.startAnim(
-                FallingViewConfig(
-                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
-                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
-                    maxDensity = maxDensity,
-                    ySpeedBuffer = ySpeedBuffer,
-                    delayTime = delayTime,
-                    isMoveX = isMoveX,
-                    sizeScale = scale
-                ),
-                this,
-                binding.flGiftFallingContainerMatch
-            )
+//            FallingSurfaceView.startAnim(
+//                FallingViewConfig(
+//                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+//                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
+//                    maxDensity = maxDensity,
+//                    ySpeedBuffer = ySpeedBuffer,
+//                    delayTime = delayTime,
+//                    isMoveX = isMoveX,
+//                    sizeScale = scale
+//                ),
+//                this,
+//                binding.flGiftFallingContainerMatch
+//            )
 
 //            FallingView.startAnim(
 //                FallingViewConfig(
@@ -149,6 +161,20 @@ class ViewActivity : AppCompatActivity() {
 //            ){
 //
 //            }
+
+            SnowfallView.startAnim(
+                SnowParamsConfig(
+                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
+                    speedMin = minSpeed,
+                    speedMax = (minSpeed * 1.5).toInt(),
+                    sizeMaxInPx = UIUtil.dp2px((size * 1.5F), this).toInt(),
+                    sizeMinInPx = UIUtil.dp2px(size.toFloat(), this).toInt(),
+                    snowflakesNum = count,
+                    fadingEnabled = alpha,
+                    isMoveX = isMoveX
+//                    animTimeSecond = 3
+                ), binding.flGiftFallingContainer1
+            )
         }
 
         binding.textview.text =

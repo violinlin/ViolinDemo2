@@ -234,22 +234,9 @@
         android:id="@+id/et_falling"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="6:0.2:30:80:0:0.4"
+        android:text="20:60:6:1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <com.violin.views.views.fallingview.snowfalll.SnowfallView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:snowflakeAlphaMax="255"
-        app:snowflakeAlphaMin="150"
-        app:snowflakeAngleMax="5"
-        app:snowflakeImage="@drawable/snow_gift"
-        app:snowflakeSizeMax="80dp"
-        app:snowflakeSizeMin="60dp"
-        app:snowflakeSpeedMax="12"
-        app:snowflakeSpeedMin="4"
-        app:snowflakesAlreadyFalling="false"
-        app:snowflakesFadingEnabled="true"
-        app:snowflakesNum="30" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

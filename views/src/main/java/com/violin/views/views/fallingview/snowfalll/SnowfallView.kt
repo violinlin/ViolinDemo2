@@ -1,79 +1,63 @@
 package com.violin.views.views.fallingview.snowfalll
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.AttributeSet
 import android.view.View
-import com.violin.views.R
+import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.violin.base.act.UIUtil
 
-class SnowfallView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-
-
-    private val snowflakesNum: Int
-    private val snowflakeImage: Bitmap?
-    private val snowflakeAlphaMin: Int
-    private val snowflakeAlphaMax: Int
-    private val snowflakeAngleMax: Int
-    private val snowflakeSizeMinInPx: Int
-    private val snowflakeSizeMaxInPx: Int
-    private val snowflakeSpeedMin: Int
-    private val snowflakeSpeedMax: Int
-    private val snowflakesFadingEnabled: Boolean
-    private val snowflakesAlreadyFalling: Boolean
-
+class SnowfallView(context: Context, val config: SnowParamsConfig) : View(context) {
     private lateinit var updateSnowflakesThread: UpdateSnowflakesThread
     private var snowflakes: Array<Snowflake>? = null
+    var closeAnim: ObjectAnimator? = null
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.SnowfallView)
-        try {
-            snowflakesNum = a.getInt(R.styleable.SnowfallView_snowflakesNum, DEFAULT_SNOWFLAKES_NUM)
-            snowflakeImage = a.getDrawable(R.styleable.SnowfallView_snowflakeImage)?.toBitmap()
-            snowflakeAlphaMin =
-                a.getInt(R.styleable.SnowfallView_snowflakeAlphaMin, DEFAULT_SNOWFLAKE_ALPHA_MIN)
-            snowflakeAlphaMax =
-                a.getInt(R.styleable.SnowfallView_snowflakeAlphaMax, DEFAULT_SNOWFLAKE_ALPHA_MAX)
-            snowflakeAngleMax =
-                a.getInt(R.styleable.SnowfallView_snowflakeAngleMax, DEFAULT_SNOWFLAKE_ANGLE_MAX)
-            snowflakeSizeMinInPx = a.getDimensionPixelSize(
-                R.styleable.SnowfallView_snowflakeSizeMin,
-                dpToPx(DEFAULT_SNOWFLAKE_SIZE_MIN_IN_DP)
-            )
-            snowflakeSizeMaxInPx = a.getDimensionPixelSize(
-                R.styleable.SnowfallView_snowflakeSizeMax,
-                dpToPx(DEFAULT_SNOWFLAKE_SIZE_MAX_IN_DP)
-            )
-            snowflakeSpeedMin =
-                a.getInt(R.styleable.SnowfallView_snowflakeSpeedMin, DEFAULT_SNOWFLAKE_SPEED_MIN)
-            snowflakeSpeedMax =
-                a.getInt(R.styleable.SnowfallView_snowflakeSpeedMax, DEFAULT_SNOWFLAKE_SPEED_MAX)
-            snowflakesFadingEnabled = a.getBoolean(
-                R.styleable.SnowfallView_snowflakesFadingEnabled,
-                DEFAULT_SNOWFLAKES_FADING_ENABLED
-            )
-            snowflakesAlreadyFalling = a.getBoolean(
-                R.styleable.SnowfallView_snowflakesAlreadyFalling,
-                DEFAULT_SNOWFLAKES_ALREADY_FALLING
-            )
+        setLayerType(LAYER_TYPE_HARDWARE, null)
+    }
 
-            setLayerType(LAYER_TYPE_HARDWARE, null)
+    private val mCloseRunnable = Runnable {
+        closeAnim = ObjectAnimator.ofFloat(this, "alpha", 1f, 0f).apply {
+            duration = 300
+            start()
+        }
+        closeAnim?.doOnEnd {
+            close()
+        }
 
-        } finally {
-            a.recycle()
+    }
+
+    private fun close() {
+        if (this.parent is ViewGroup) {
+            (parent as ViewGroup).removeView(this)
         }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         updateSnowflakesThread = UpdateSnowflakesThread()
+        if (config.animTimeSecond > 0) {
+            handler?.postDelayed(mCloseRunnable, config.animTimeSecond * 1000L)
+        }
     }
 
     override fun onDetachedFromWindow() {
-        updateSnowflakesThread.quit()
+        release()
         super.onDetachedFromWindow()
+    }
+
+    private fun release() {
+        closeAnim?.cancel()
+        updateSnowflakesThread.quit()
+        handler?.removeCallbacks(mCloseRunnable)
     }
 
     private fun dpToPx(dp: Int): Int {
@@ -126,33 +110,12 @@ class SnowfallView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
-    fun stopFalling() {
-        snowflakes?.forEach { it.shouldRecycleFalling = false }
-    }
-
-    fun restartFalling() {
-        snowflakes?.forEach { it.shouldRecycleFalling = true }
-    }
 
     private fun createSnowflakes(): Array<Snowflake> {
         val randomizer = Randomizer()
-
-        val snowflakeParams = Snowflake.Params(
-            parentWidth = width,
-            parentHeight = height,
-            image = snowflakeImage,
-            alphaMin = snowflakeAlphaMin,
-            alphaMax = snowflakeAlphaMax,
-            angleMax = snowflakeAngleMax,
-            sizeMinInPx = snowflakeSizeMinInPx,
-            sizeMaxInPx = snowflakeSizeMaxInPx,
-            speedMin = snowflakeSpeedMin,
-            speedMax = snowflakeSpeedMax,
-            fadingEnabled = snowflakesFadingEnabled,
-            alreadyFalling = snowflakesAlreadyFalling
-        )
-
-        return Array(snowflakesNum) { Snowflake(randomizer, snowflakeParams) }
+        config.parentWidth = width
+        config.parentHeight = height
+        return Array(config.snowflakesNum) { Snowflake(randomizer, config) }
     }
 
     private fun updateSnowflakes() {
@@ -184,15 +147,64 @@ class SnowfallView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     companion object {
-        private const val DEFAULT_SNOWFLAKES_NUM = 200
-        private const val DEFAULT_SNOWFLAKE_ALPHA_MIN = 150
-        private const val DEFAULT_SNOWFLAKE_ALPHA_MAX = 250
-        private const val DEFAULT_SNOWFLAKE_ANGLE_MAX = 10
-        private const val DEFAULT_SNOWFLAKE_SIZE_MIN_IN_DP = 2
-        private const val DEFAULT_SNOWFLAKE_SIZE_MAX_IN_DP = 8
-        private const val DEFAULT_SNOWFLAKE_SPEED_MIN = 2
-        private const val DEFAULT_SNOWFLAKE_SPEED_MAX = 8
-        private const val DEFAULT_SNOWFLAKES_FADING_ENABLED = false
-        private const val DEFAULT_SNOWFLAKES_ALREADY_FALLING = false
+        const val DEFAULT_SNOWFLAKE_ALPHA_MIN = 150
+        const val DEFAULT_SNOWFLAKE_ALPHA_MAX = 250
+        const val DEFAULT_SNOWFLAKE_ANGLE_MAX = 5
+        const val DEFAULT_SNOWFLAKE_SIZE_MIN_IN_DP = 60
+        const val DEFAULT_SNOWFLAKE_SIZE_MAX_IN_DP = 80
+        const val DEFAULT_SNOWFLAKE_SPEED_MIN = 6
+        const val DEFAULT_SNOWFLAKE_SPEED_MAX = 12
+        const val DEFAULT_SNOWFLAKES_FADING_ENABLED = true
+        const val DEFAULT_SNOWFLAKES_ALREADY_FALLING = false
+        private fun setDefaultConfigParams(config: SnowParamsConfig, viewContainer: ViewGroup) {
+            if (config.sizeMaxInPx == 0) {
+                config.sizeMaxInPx =
+                    UIUtil.dp2px(DEFAULT_SNOWFLAKE_SIZE_MAX_IN_DP.toFloat(), viewContainer.context)
+                        .toInt()
+            }
+            if (config.sizeMinInPx == 0) {
+                config.sizeMinInPx =
+                    UIUtil.dp2px(DEFAULT_SNOWFLAKE_SIZE_MIN_IN_DP.toFloat(), viewContainer.context)
+                        .toInt()
+            }
+        }
+
+        fun startAnim(config: SnowParamsConfig, viewContainer: ViewGroup) {
+            config.imageUrl?.let {
+                setDefaultConfigParams(config, viewContainer)
+                val bitmapSize = config.sizeMaxInPx
+                Glide.with(viewContainer.context)
+                    .asBitmap()
+                    .override(bitmapSize, bitmapSize)
+                    .load(it)
+                    .into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            try {
+                                config.image = resource
+                                val snowfallView = SnowfallView(viewContainer.context, config)
+                                viewContainer.removeAllViews()
+                                viewContainer.addView(
+                                    snowfallView, ViewGroup.LayoutParams(
+                                        ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                        }
+
+                    })
+            }
+
+
+        }
+
     }
 }
