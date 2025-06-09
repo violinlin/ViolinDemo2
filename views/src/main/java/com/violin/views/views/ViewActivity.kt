@@ -108,8 +108,10 @@ class ViewActivity : AppCompatActivity() {
                     speedMin = 4,
                     speedMax = 6,
                     sizeMaxInPx = UIUtil.dp2px(36F, this).toInt(),
-                    sizeMinInPx = UIUtil.dp2px(30F, this).toInt(),
-                    snowflakesNum = 10
+                    sizeMinInPx = UIUtil.dp2px(36F * 1.5F, this).toInt(),
+                    snowflakesNum = 4,
+                    isMoveX = false,
+                    fadingEnabled = false
                 ), binding.flGiftFallingContainer
             )
 
@@ -167,7 +169,7 @@ class ViewActivity : AppCompatActivity() {
                     imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
                     speedMin = minSpeed,
                     speedMax = (minSpeed * 1.5).toInt(),
-                    sizeMaxInPx = UIUtil.dp2px((size * 1.5F), this).toInt(),
+                    sizeMaxInPx = UIUtil.dp2px((size * 2F), this).toInt(),
                     sizeMinInPx = UIUtil.dp2px(size.toFloat(), this).toInt(),
                     snowflakesNum = count,
                     fadingEnabled = alpha,
