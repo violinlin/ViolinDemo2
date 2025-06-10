@@ -26,7 +26,9 @@ import com.violin.views.views.fallingview.FallingSurfaceView
 import com.violin.views.views.fallingview.FallingTextureView
 import com.violin.views.views.fallingview.FallingView
 import com.violin.views.views.fallingview.FallingViewConfig
+import com.violin.views.views.fallingview.snowfalll.SnowFallInterface
 import com.violin.views.views.fallingview.snowfalll.SnowParamsConfig
+import com.violin.views.views.fallingview.snowfalll.SnowfallSurfaceView
 import com.violin.views.views.fallingview.snowfalll.SnowfallView
 import org.libpag.PAGFile
 
@@ -80,6 +82,7 @@ class ViewActivity : AppCompatActivity() {
 
         }
         var fallingView: FallingSurfaceView? = null
+        var view: SnowFallInterface? = null
         binding.btnGiftFalling.setOnClickListener {
             binding.flGiftFallingContainerMatch.removeAllViews()
 //            if (fallingView != null) {
@@ -101,6 +104,10 @@ class ViewActivity : AppCompatActivity() {
 //                fallingView = resultView
 //            }
 
+            if (view != null) {
+                view?.addFakes(3)
+                return@setOnClickListener
+            }
             SnowfallView.startAnim(
                 SnowParamsConfig(
                     imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
@@ -111,9 +118,10 @@ class ViewActivity : AppCompatActivity() {
                     sizeMinInPx = UIUtil.dp2px(36F * 1.5F, this).toInt(),
                     snowflakesNum = 4,
                     isMoveX = false,
-                    fadingEnabled = false
-                ), binding.flGiftFallingContainer
-            )
+                    fadingEnabled = true
+                ), binding.flGiftFallingContainer, startCallback = {
+                    view = it
+                })
 
 
         }
@@ -121,14 +129,14 @@ class ViewActivity : AppCompatActivity() {
             binding.flGiftFallingContainer.removeAllViews()
             var count = 20
             var size = 80
-            var minSpeed = 6
+            var minSpeed = 10
             var alpha = true
             var isMoveX = true
             val nums = binding.etFalling.text.split(":")
             try {
                 count = nums[0].toInt()
                 size = nums[1].toInt()
-                minSpeed = nums[2].toInt()
+//                minSpeed = nums[2].toInt()
                 alpha = nums[3].toInt() == 1
                 isMoveX = nums[4].toInt() == 1
             } catch (e: Exception) {
@@ -164,15 +172,28 @@ class ViewActivity : AppCompatActivity() {
 //
 //            }
 
+//            SnowfallView.startAnim(
+//                SnowParamsConfig(
+//                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
+//                    speedMin = minSpeed,
+//                    speedMax = (minSpeed * 1.5).toInt(),
+//                    sizeMaxInPx = UIUtil.dp2px((120F), this).toInt(),
+//                    sizeMinInPx = UIUtil.dp2px(110F, this).toInt(),
+//                    snowflakesNum = count,
+//                    fadingEnabled = alpha,
+//                    isMoveX = isMoveX
+////                    animTimeSecond = 3
+//                ), binding.flGiftFallingContainer1
+//            )
+
             SnowfallView.startAnim(
                 SnowParamsConfig(
                     imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
                     speedMin = minSpeed,
                     speedMax = (minSpeed * 1.5).toInt(),
-                    sizeMaxInPx = UIUtil.dp2px((size * 2F), this).toInt(),
-                    sizeMinInPx = UIUtil.dp2px(size.toFloat(), this).toInt(),
+                    sizeMaxInPx = UIUtil.dp2px((80F), this).toInt(),
+                    sizeMinInPx = UIUtil.dp2px(60F, this).toInt(),
                     snowflakesNum = count,
-                    fadingEnabled = alpha,
                     isMoveX = isMoveX
 //                    animTimeSecond = 3
                 ), binding.flGiftFallingContainer1

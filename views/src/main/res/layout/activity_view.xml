@@ -234,7 +234,7 @@
         android:id="@+id/et_falling"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="10:65:7:0:0"
+        android:text="20:65:7:0:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Style
 import android.graphics.Rect
+import android.util.Log
 import java.lang.Math.toRadians
 
 internal class Snowflake(
@@ -14,6 +15,7 @@ internal class Snowflake(
 ) {
     private var size: Int = 0
     private var alpha: Int = 255
+    private var minAlpha :Int = 100
     private var bitmap: Bitmap? = null
     private var speedX: Double = 0.0
     private var speedY: Double = 0.0
@@ -41,6 +43,7 @@ internal class Snowflake(
     }
 
     internal fun reset(positionY: Double? = null) {
+        Log.d("Snowflake","reset reset alpha ${ paint.alpha} = y ${positionY} size${size}")
         shouldRecycleFalling = true
         size = randomizer.randomInt(params.sizeMinInPx, params.sizeMaxInPx, gaussian = true)
         bitmap = params.image
@@ -52,9 +55,6 @@ internal class Snowflake(
             speedX = speed * kotlin.math.sin(angle)
         }
         speedY = speed * kotlin.math.cos(angle)
-
-        alpha = randomizer.randomInt(params.alphaMin, params.alphaMax)
-        paint.alpha = alpha
         positionX = randomizer.randomDouble(params.parentWidth - size)
         if (positionY != null) {
             this.positionY = positionY
@@ -92,8 +92,17 @@ internal class Snowflake(
                 }
             }
             if (params.fadingEnabled) {
-                paint.alpha =
-                    (alpha * (1 - ((params.parentHeight - positionY).toFloat() / params.parentHeight))).toInt()
+                val pY = if (positionY > params.parentHeight) {
+                    params.parentHeight
+                } else if (positionY < 0) {
+                    0F
+                } else {
+                    positionY
+                }
+                var disAlpha = alpha - minAlpha
+                disAlpha =
+                    (disAlpha * (1 - ((params.parentHeight - pY.toFloat()) / params.parentHeight))).toInt()
+                paint.alpha = minAlpha + disAlpha
             }
         } else {
             positionY += speedY

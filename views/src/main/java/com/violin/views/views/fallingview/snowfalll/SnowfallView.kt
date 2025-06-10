@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.view.View
@@ -14,11 +15,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.violin.base.act.UIUtil
+import java.util.concurrent.atomic.AtomicInteger
 
-class SnowfallView(context: Context, val config: SnowParamsConfig) : View(context) {
+class SnowfallView(context: Context, val config: SnowParamsConfig) : View(context),
+    SnowFallInterface {
     private lateinit var updateSnowflakesThread: UpdateSnowflakesThread
-    private var snowflakes: Array<Snowflake>? = null
+    private var snowflakes: ArrayList<Snowflake> = ArrayList()
     var closeAnim: ObjectAnimator? = null
+    val randomizer = Randomizer()
+    private var mAddCount: AtomicInteger? = null
 
     init {
         setLayerType(LAYER_TYPE_HARDWARE, null)
@@ -82,7 +87,13 @@ class SnowfallView(context: Context, val config: SnowParamsConfig) : View(contex
         if (isInEditMode) {
             return
         }
-
+        val addCount = mAddCount?.get() ?: 0
+        if (addCount > 0) {
+            for (i in 0 until addCount) {
+                snowflakes.add(Snowflake(randomizer, config))
+            }
+            mAddCount = null
+        }
         var haveAtLeastOneVisibleSnowflake = false
 
         val localSnowflakes = snowflakes
@@ -110,12 +121,18 @@ class SnowfallView(context: Context, val config: SnowParamsConfig) : View(contex
         }
     }
 
+    override fun addFakes(amount: Int) {
+        mAddCount = AtomicInteger(amount)
+    }
 
-    private fun createSnowflakes(): Array<Snowflake> {
-        val randomizer = Randomizer()
+    private fun createSnowflakes(): ArrayList<Snowflake> {
         config.parentWidth = width
         config.parentHeight = height
-        return Array(config.snowflakesNum) { Snowflake(randomizer, config) }
+        snowflakes.clear()
+        for (i in 0 until config.snowflakesNum) {
+            snowflakes.add(Snowflake(randomizer, config))
+        }
+        return snowflakes
     }
 
     private fun updateSnowflakes() {
@@ -169,7 +186,12 @@ class SnowfallView(context: Context, val config: SnowParamsConfig) : View(contex
             }
         }
 
-        fun startAnim(config: SnowParamsConfig, viewContainer: ViewGroup) {
+        fun startAnim(
+            config: SnowParamsConfig,
+            viewContainer: ViewGroup,
+            startCallback: ((SnowFallInterface) -> Unit)? = null,
+            userSurfaceView: Boolean = true
+        ) {
             config.imageUrl?.let {
                 setDefaultConfigParams(config, viewContainer)
                 val bitmapSize = config.sizeMaxInPx
@@ -183,15 +205,29 @@ class SnowfallView(context: Context, val config: SnowParamsConfig) : View(contex
                             transition: Transition<in Bitmap?>?
                         ) {
                             try {
-                                config.image = resource
-                                val snowfallView = SnowfallView(viewContainer.context, config)
-                                viewContainer.removeAllViews()
-                                viewContainer.addView(
-                                    snowfallView, ViewGroup.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT,
-                                        ViewGroup.LayoutParams.MATCH_PARENT
-                                    )
-                                )
+                                var snowfallView: SnowFallInterface? = null
+                                if (userSurfaceView) {
+                                    // 需要支持硬件加速
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        snowfallView =
+                                            SnowfallSurfaceView(viewContainer.context, config)
+                                    }
+                                } else {
+                                    snowfallView = SnowfallView(viewContainer.context, config)
+                                }
+                                snowfallView?.let {
+                                    if (snowfallView is View) {
+                                        config.image = resource
+                                        viewContainer.removeAllViews()
+                                        viewContainer.addView(
+                                            snowfallView, ViewGroup.LayoutParams(
+                                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                                ViewGroup.LayoutParams.MATCH_PARENT
+                                            )
+                                        )
+                                        startCallback?.invoke(snowfallView)
+                                    }
+                                }
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
