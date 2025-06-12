@@ -142,50 +142,50 @@ class ViewActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-//            FallingSurfaceView.startAnim(
-//                FallingViewConfig(
-//                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
-//                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
-//                    maxDensity = maxDensity,
-//                    ySpeedBuffer = ySpeedBuffer,
-//                    delayTime = delayTime,
-//                    isMoveX = isMoveX,
-//                    sizeScale = scale
-//                ),
-//                this,
-//                binding.flGiftFallingContainerMatch
-//            )
-
-//            FallingView.startAnim(
-//                FallingViewConfig(
-//                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
-//                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
-//                    maxDensity = maxDensity,
-//                    ySpeedBuffer = ySpeedBuffer,
-//                    delayTime = delayTime,
-//                    isMoveX = isMoveX,
-//                    sizeScale = scale
-//                ),
-//                this,
-//                binding.flGiftFallingContainer1
-//            ){
+////            FallingSurfaceView.startAnim(
+////                FallingViewConfig(
+////                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+////                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
+////                    maxDensity = maxDensity,
+////                    ySpeedBuffer = ySpeedBuffer,
+////                    delayTime = delayTime,
+////                    isMoveX = isMoveX,
+////                    sizeScale = scale
+////                ),
+////                this,
+////                binding.flGiftFallingContainerMatch
+////            )
 //
-//            }
-
-//            SnowfallView.startAnim(
-//                SnowParamsConfig(
-//                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
-//                    speedMin = minSpeed,
-//                    speedMax = (minSpeed * 1.5).toInt(),
-//                    sizeMaxInPx = UIUtil.dp2px((120F), this).toInt(),
-//                    sizeMinInPx = UIUtil.dp2px(110F, this).toInt(),
-//                    snowflakesNum = count,
-//                    fadingEnabled = alpha,
-//                    isMoveX = isMoveX
-////                    animTimeSecond = 3
-//                ), binding.flGiftFallingContainer1
-//            )
-
+////            FallingView.startAnim(
+////                FallingViewConfig(
+////                    icon = "https://img01.mehiya.com/img/png/id/244767108462",
+////                    iconSizePX = UIUtil.dp2px(iconSizePX.toFloat(), this@ViewActivity).toInt(),
+////                    maxDensity = maxDensity,
+////                    ySpeedBuffer = ySpeedBuffer,
+////                    delayTime = delayTime,
+////                    isMoveX = isMoveX,
+////                    sizeScale = scale
+////                ),
+////                this,
+////                binding.flGiftFallingContainer1
+////            ){
+////
+////            }
+//
+////            SnowfallView.startAnim(
+////                SnowParamsConfig(
+////                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
+////                    speedMin = minSpeed,
+////                    speedMax = (minSpeed * 1.5).toInt(),
+////                    sizeMaxInPx = UIUtil.dp2px((120F), this).toInt(),
+////                    sizeMinInPx = UIUtil.dp2px(110F, this).toInt(),
+////                    snowflakesNum = count,
+////                    fadingEnabled = alpha,
+////                    isMoveX = isMoveX
+//////                    animTimeSecond = 3
+////                ), binding.flGiftFallingContainer1
+////            )
+//
             SnowfallView.startAnim(
                 SnowParamsConfig(
                     imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
@@ -194,8 +194,8 @@ class ViewActivity : AppCompatActivity() {
                     sizeMaxInPx = UIUtil.dp2px((80F), this).toInt(),
                     sizeMinInPx = UIUtil.dp2px(60F, this).toInt(),
                     snowflakesNum = count,
-                    isMoveX = isMoveX
-//                    animTimeSecond = 3
+                    isMoveX = isMoveX,
+                    animTimeSecond = 3
                 ), binding.flGiftFallingContainer1
             )
         }

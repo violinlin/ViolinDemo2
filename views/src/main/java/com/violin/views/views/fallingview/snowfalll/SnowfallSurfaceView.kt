@@ -10,6 +10,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -122,6 +123,9 @@ class SnowfallSurfaceView(context: Context, val config: SnowParamsConfig) : Surf
     private fun drawToSurface() {
         var canvas: Canvas? = null
         try {
+            if (!holder.surface.isValid) {
+                return
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 canvas = holder.lockHardwareCanvas()
             }
@@ -142,17 +146,15 @@ class SnowfallSurfaceView(context: Context, val config: SnowParamsConfig) : Surf
                     updateSnowflakes()
                 }
             }
+            canvas?.let {
+                holder.unlockCanvasAndPost(canvas)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             post {
                 close()
             }
-        } finally {
-            canvas?.let {
-                holder.unlockCanvasAndPost(canvas)
-            }
         }
-
     }
 
 

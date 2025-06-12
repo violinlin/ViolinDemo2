@@ -15,7 +15,7 @@ internal class Snowflake(
 ) {
     private var size: Int = 0
     private var alpha: Int = 255
-    private var minAlpha :Int = 100
+    private var minAlpha :Int = 0
     private var bitmap: Bitmap? = null
     private var speedX: Double = 0.0
     private var speedY: Double = 0.0
