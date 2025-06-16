@@ -5,17 +5,23 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.drake.spannable.addSpan
 import com.drake.spannable.setSpan
@@ -23,14 +29,11 @@ import com.violin.base.act.UIUtil
 import com.violin.views.R
 import com.violin.views.databinding.ActivityViewBinding
 import com.violin.views.views.fallingview.FallingSurfaceView
-import com.violin.views.views.fallingview.FallingTextureView
-import com.violin.views.views.fallingview.FallingView
-import com.violin.views.views.fallingview.FallingViewConfig
 import com.violin.views.views.fallingview.snowfalll.SnowFallInterface
 import com.violin.views.views.fallingview.snowfalll.SnowParamsConfig
-import com.violin.views.views.fallingview.snowfalll.SnowfallSurfaceView
 import com.violin.views.views.fallingview.snowfalll.SnowfallView
 import org.libpag.PAGFile
+
 
 class ViewActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -40,7 +43,7 @@ class ViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        initPlaceHolderDrawable()
         binding.pagview.apply {
             composition = PAGFile.Load(assets, "piaopingdiban.pag")
             setRepeatCount(-1)
@@ -126,6 +129,7 @@ class ViewActivity : AppCompatActivity() {
 
         }
         binding.btnGiftFallingDown.setOnClickListener {
+            dumpViewHierarchy(binding.main)
             binding.flGiftFallingContainer.removeAllViews()
             var count = 20
             var size = 80
@@ -217,6 +221,86 @@ class ViewActivity : AppCompatActivity() {
 //        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.share_bg)
 //        val drawable = TopCropDrawable(bitmap)
 //        binding.flTopCropBg.background = drawable
+    }
+
+    private fun initPlaceHolderDrawable() {
+        val placeDrawable = createLayerDrawable(
+            this,
+            gradientColors = intArrayOf(
+                Color.parseColor("#32323F"),
+                Color.parseColor("#32323F")
+            ),
+            cornerRadius = UIUtil.dp2px(8F, this)
+        )
+        placeDrawable?.let {
+            binding.flDrawablePlaceholder.background = it
+        }
+    }
+
+    fun createLayerDrawable(
+        context: Context,
+        gradientColors: IntArray,
+        cornerRadius: Float
+    ): Drawable? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val logoDrawable = ContextCompat.getDrawable(context, R.drawable.logo2)
+            val gradientDrawable = GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                gradientColors
+            ).apply {
+                this.cornerRadius = cornerRadius
+            }
+            val layers = arrayOf<Drawable>(gradientDrawable, logoDrawable!!)
+            val layerDrawable = LayerDrawable(layers)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                layerDrawable.setLayerGravity(1, Gravity.CENTER)
+            }
+            return layerDrawable
+        } else {
+            return null
+        }
+    }
+
+    private fun dumpViewHierarchy(view: View?) {
+        if (view == null) {
+            return
+        }
+        dumpViewRecursive(view, 0)
+    }
+
+    private fun dumpViewRecursive(view: View, depth: Int) {
+        try {
+            if (view is ViewGroup) {
+                val group = view
+                for (i in 0 until group.childCount) {
+                    var child = group.getChildAt(i)
+                    if (child == null) { // 重点：记录空子视图位置
+                        val parentViewInfo =
+                            "parent:${group.javaClass.simpleName}," +
+                                    "id:${getViewIDName(group)}," +
+                                    "childIndex:${i},depth:${depth}"
+                        Log.d("ViewDump", parentViewInfo)
+                        break
+                    } else {
+                        dumpViewRecursive(child, depth + 1)
+                    }
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getViewIDName(view: View): String {
+        // 获取视图ID信息
+        var idName = "null"
+        if (view.id != View.NO_ID) {
+            try {
+                idName = view.resources.getResourceName(view.id)
+            } catch (ignored: java.lang.Exception) {
+            }
+        }
+        return idName
     }
 
     private val images = listOf(

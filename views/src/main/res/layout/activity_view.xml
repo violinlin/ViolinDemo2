@@ -238,5 +238,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    
+    <FrameLayout
+        android:id="@+id/fl_drawable_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="349dp"
+        android:layout_height="98dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
