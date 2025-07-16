@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -63,6 +64,9 @@ class ViewActivity : AppCompatActivity() {
                 play()
 
             }
+        }
+        binding.btnViewPager.setOnClickListener {
+            ViewPagerActivity.start(this)
         }
 
         initViewFlipper()
@@ -221,6 +225,9 @@ class ViewActivity : AppCompatActivity() {
 //        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.share_bg)
 //        val drawable = TopCropDrawable(bitmap)
 //        binding.flTopCropBg.background = drawable
+
+        binding.tvTextUnderline.paintFlags =
+            binding.tvTextUnderline.paintFlags or Paint.UNDERLINE_TEXT_FLAG
     }
 
     private fun initPlaceHolderDrawable() {

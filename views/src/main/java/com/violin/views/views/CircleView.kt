@@ -35,6 +35,7 @@ class CircleView @JvmOverloads constructor(
     private var oval: RectF? = null
 
     init {
+        rotationY = 180F
         setWillNotDraw(false)
         mPaint = Paint()
         // 设置画笔为抗锯齿

@@ -141,13 +141,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_gift_falling" />
 
-    <com.violin.views.views.CircleView
-        android:id="@+id/circle_view"
+    <Button
+        android:id="@+id/btn_view_pager"
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="52dp"
+        android:text="view pager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_gift_falling_down" />
+
+    <TextView
+        android:id="@+id/tv_text_underline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="领取详情"
+        android:background="@color/Red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/btn_view_pager" />
+
+
 
     <com.violin.views.views.LiveGiftInfluenceSendGiftView
         android:id="@+id/view_send_gift"
@@ -230,6 +242,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <EditText
         android:id="@+id/et_falling"
         android:layout_width="match_parent"
@@ -238,13 +251,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <FrameLayout
         android:id="@+id/fl_drawable_placeholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="349dp"
-        android:layout_height="98dp"/>
+        android:layout_height="98dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.violin.views.views.CircleView
+        android:id="@+id/circle_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

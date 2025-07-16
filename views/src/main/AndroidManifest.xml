@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".views.ViewPagerActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.RecyclerviewActivity"
             android:exported="false" />
         <activity

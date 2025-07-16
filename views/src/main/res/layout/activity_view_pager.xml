@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".views.ViewPagerActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="380dp">
+
+        <ImageView
+            android:id="@+id/iv_light"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_red_packet_result_light" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="380dp" />
+
+        <View
+            android:id="@+id/view_pre_page"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start" />
+
+        <View
+            android:id="@+id/view_next_page"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end" />
+
+    </FrameLayout>
+
+</LinearLayout>
