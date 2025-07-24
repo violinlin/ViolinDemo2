@@ -17,6 +17,7 @@ import com.violin.demo.databinding.ActivityMainBinding
 import com.violin.features.common.CommonActivity
 import com.violin.features.common.crash.CrashActivity
 import com.violin.features.common.leak.LeakTestActivity
+import com.violin.nativelib.NativeLib
 import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
 import kotlinx.android.synthetic.main.activity_main.btn_view
@@ -36,6 +37,7 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         heartbeat()
         btn_view.text = "hello world"
+        mBinding.btnNative.text = NativeLib().stringFromJNI()
     }
 
     private val pollingTask = Runnable { heartbeat() }
