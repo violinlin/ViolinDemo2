@@ -5,9 +5,10 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kapt) apply false
     alias(libs.plugins.matrix) apply false
+    alias(libs.plugins.kace) apply false
 }
 ext {
-    compileSdkVersion = 34
-    targetSdkVersion = 34
+    compileSdkVersion = 35
+    targetSdkVersion = 35
     minSdkVersion = 21
 }

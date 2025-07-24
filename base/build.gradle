@@ -38,7 +38,7 @@ android {
 
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.aar'])
+//    api fileTree(dir: 'libs', include: ['*.aar'])
 
     api libs.androidx.core.ktx
     api libs.androidx.appcompat
@@ -54,6 +54,7 @@ dependencies {
     api libs.spannable
     api libs.libpag
     api libs.bundles.matrix
+    api libs.fresco
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
 }

@@ -19,6 +19,7 @@ import com.violin.features.common.crash.CrashActivity
 import com.violin.features.common.leak.LeakTestActivity
 import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
+import kotlinx.android.synthetic.main.activity_main.btn_view
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -34,6 +35,7 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         heartbeat()
+        btn_view.text = "hello world"
     }
 
     private val pollingTask = Runnable { heartbeat() }
@@ -46,10 +48,10 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     override fun setupView() {
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)
-            LogUtil.d("MainActivity",Log.getStackTraceString(Throwable()))
+            LogUtil.d("MainActivity", Log.getStackTraceString(Throwable()))
             mBinding.btnView.post {
-                LogUtil.d("MainActivity","----" + Log.getStackTraceString(Throwable()))
-                LogUtil.d("MainActivity","----11" + Thread.currentThread().stackTrace)
+                LogUtil.d("MainActivity", "----" + Log.getStackTraceString(Throwable()))
+                LogUtil.d("MainActivity", "----11" + Thread.currentThread().stackTrace)
             }
 
         }

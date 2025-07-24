@@ -18,8 +18,10 @@ ijkplayerVersion = "0.8.8"
 spannable = "1.2.7"
 libpag = "4.3.57"
 matrix = "2.1.0"
-
+kace = "2.0.0-1.2.0"
+fresco = "3.6.0"
 [libraries]
+fresco = { group = "com.facebook.fresco", name = "fresco", version.ref = "fresco" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
@@ -67,6 +69,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kace = { id = "com.kanyun.kace", version.ref = "kace" }
 kotlin-android-extensions = { id = "kotlin-android-extensions" }
 matrix = { id = 'com.tencent.matrix-plugin', version.ref = "matrix" }
 
