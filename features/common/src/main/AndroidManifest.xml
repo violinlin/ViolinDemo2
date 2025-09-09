@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+        <service
+            android:name="com.violin.features.common.service.ViolinService"
+            android:enabled="true"
+            android:foregroundServiceType="dataSync"
+            android:exported="true"></service>
+ <service
+            android:name="com.violin.features.common.service.ViolinNormalService"
+            android:enabled="true"
+            android:foregroundServiceType="dataSync"
+            android:exported="true"></service>
+
         <activity
             android:name="com.violin.features.common.leak.LeakTestActivity"
             android:exported="false" />
