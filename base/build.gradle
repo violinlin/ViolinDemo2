@@ -38,7 +38,8 @@ android {
 
 
 dependencies {
-//    api fileTree(dir: 'libs', include: ['*.aar'])
+    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r25-16k.aar'])
+//    api fileTree(dir: 'libs', include: ['smart-exception-java-0.2.1.jar'])
 
     api libs.androidx.core.ktx
     api libs.androidx.appcompat
@@ -55,6 +56,8 @@ dependencies {
     api libs.libpag
     api libs.bundles.matrix
     api libs.fresco
+    api libs.smartexceptionjava
+//    api libs.ffmpegkit
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
 }

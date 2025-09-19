@@ -20,6 +20,8 @@ libpag = "4.3.57"
 matrix = "2.1.0"
 kace = "2.0.0-1.2.0"
 fresco = "3.6.0"
+ffmpegkit = "2025.08.21"
+smart-exception-java = "0.2.1"
 [libraries]
 fresco = { group = "com.facebook.fresco", name = "fresco", version.ref = "fresco" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,9 +58,16 @@ matrix-hooks = { group = "com.tencent.matrix", name = "matrix-hooks", version.re
 media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
 media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media3Exoplayer" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Exoplayer" }
+
+ffmpegkit = { group = "ai.instavision", name = "ffmpegkit", version.ref = "ffmpegkit"}
+
+smartexceptionjava = {group = "com.arthenica",name="smart-exception-java",version.ref="smart-exception-java"}
+
 [bundles]
 exoplayer = ["media3-exoplayer", "media3-exoplayer-dash", "media3-ui"]
 matrix = ["matrix-android-lib", "matrix-android-commons", "matrix-trace-canary", "matrix-resource-canary-android", "matrix-resource-canary-common", "matrix-io-canary", "matrix-sqlite-lint-android-sdk", "matrix-battery-canary", "matrix-hooks"]
+
+
 
 
 

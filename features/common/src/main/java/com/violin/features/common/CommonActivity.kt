@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.violin.features.common.ffmpegkit.FFmpegkitActivity
 import com.violin.features.common.service.ViolinNormalService
 import com.violin.features.common.service.ViolinService
 import com.violin.fretures.common.R
@@ -61,6 +62,9 @@ class CommonActivity : AppCompatActivity() {
         }
         mBinding.serviceStop.setOnClickListener {
             ViolinService.stop(this)
+        }
+        mBinding.ffmpeg.setOnClickListener {
+            FFmpegkitActivity.start(this)
         }
 
     }

@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk tools:overrideLibrary="ai.instavision.ffmpegkit" />
     <application>
+        <activity
+            android:name="com.violin.features.common.ffmpegkit.FFmpegkitActivity"
+            android:exported="false" />
+
         <service
             android:name="com.violin.features.common.service.ViolinService"
             android:enabled="true"
-            android:foregroundServiceType="dataSync"
-            android:exported="true"></service>
- <service
+            android:exported="true"
+            android:foregroundServiceType="dataSync" />
+        <service
             android:name="com.violin.features.common.service.ViolinNormalService"
             android:enabled="true"
-            android:foregroundServiceType="dataSync"
-            android:exported="true"></service>
+            android:exported="true"
+            android:foregroundServiceType="dataSync" />
 
         <activity
             android:name="com.violin.features.common.leak.LeakTestActivity"
