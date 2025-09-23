@@ -38,7 +38,8 @@ android {
 
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r25-16k.aar'])
+//    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r25-16k.aar'])
+    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r23-16k-release.aar'])
 //    api fileTree(dir: 'libs', include: ['smart-exception-java-0.2.1.jar'])
 
     api libs.androidx.core.ktx
