@@ -46,6 +46,7 @@ dependencies {
     api libs.androidx.appcompat
     api libs.material
     api libs.glide
+    api libs.okhttp3.integration
     kapt libs.glide.compiler
 
     api libs.ijkplayer.java
@@ -58,6 +59,7 @@ dependencies {
     api libs.bundles.matrix
     api libs.fresco
     api libs.smartexceptionjava
+    api(libs.okhttp)
 //    api libs.ffmpegkit
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer

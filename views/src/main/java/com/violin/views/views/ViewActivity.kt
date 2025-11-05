@@ -117,7 +117,7 @@ class ViewActivity : AppCompatActivity() {
             }
             SnowfallView.startAnim(
                 SnowParamsConfig(
-                    imageUrl = "https://img01.mehiya.com/img/png/id/244767108462",
+                    imageUrl = "http://me-media-gateway.test03.youyisia.com/accountv2/view/id/1262556591/sz/src",
                     direction = 1,
                     speedMin = 4,
                     speedMax = 6,
