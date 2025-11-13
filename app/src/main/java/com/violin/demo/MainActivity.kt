@@ -64,23 +64,23 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
 //            webSettings.setAppCachePath()
         }
         mBinding.btnVideo.setOnClickListener {
-//            VideoActivity.start(this)
-            try {
-                val assetName = "file_5"
-                val zipPath = File(this.getFilesDir(), assetName + ".zip")
-
-                val unzipPath = File(this.getFilesDir(), "unzipfile")
-                LogUtil.d("unzip", "path:" + zipPath.absolutePath)
-                FileUtils.copyAssetFileToTarget(this, assetName + ".zip", zipPath.absolutePath)
-                UnzipUtility.unzip(zipPath, unzipPath)
-                val md5 = UnzipUtility.getFileMD5(zipPath)
-                val md52 = MD5Utils.getFileMD5(zipPath)
-//                unzip(zipPath.absolutePath,unzipPath.absolutePath)
-//                unzip(zipPath.absolutePath,unzipPath.absolutePath)
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            VideoActivity.start(this)
+//            try {
+//                val assetName = "file_5"
+//                val zipPath = File(this.getFilesDir(), assetName + ".zip")
+//
+//                val unzipPath = File(this.getFilesDir(), "unzipfile")
+//                LogUtil.d("unzip", "path:" + zipPath.absolutePath)
+//                FileUtils.copyAssetFileToTarget(this, assetName + ".zip", zipPath.absolutePath)
+//                UnzipUtility.unzip(zipPath, unzipPath)
+//                val md5 = UnzipUtility.getFileMD5(zipPath)
+//                val md52 = MD5Utils.getFileMD5(zipPath)
+////                unzip(zipPath.absolutePath,unzipPath.absolutePath)
+////                unzip(zipPath.absolutePath,unzipPath.absolutePath)
+//
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
 
         }
         mBinding.btnCrash.setOnClickListener {

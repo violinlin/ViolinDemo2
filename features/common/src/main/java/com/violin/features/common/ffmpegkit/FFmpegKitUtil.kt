@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.arthenica.ffmpegkit.FFmpegKit
 import com.arthenica.ffmpegkit.FFprobeKit
+import com.arthenica.ffmpegkit.ReturnCode
 import com.violin.base.act.LogUtil
 import java.io.File
 
@@ -122,5 +123,32 @@ object FFmpegKitUtil {
         val session = FFprobeKit.execute(cmd)
         val output = session.output?.trim() ?: return 0
         return output.toIntOrNull() ?: 0
+    }
+
+    fun resetVideoSize(inputPath: String, outputPath: String) {
+
+//        val command = "-i \"$inputPath\" -c copy -movflags +faststart \"$outputPath\""
+
+//        val command = "-y -i $inputPath -vf scale=trunc(iw/16)*16:trunc(ih/16)*16 -c:v h264_mediacodec -pix_fmt nv12 -c:a copy $outputPath"
+// 1080 2408
+        val width = 1500
+        val height = 1334
+        val command = arrayOf(
+            "-i",
+            inputPath,
+            "-vf",
+            "scale=${width}:${height}:force_original_aspect_ratio=decrease:flags=lanczos", // 对齐分辨率
+//            "-c:v", "h264_mediacodec",
+//            "-pix_fmt", "nv12", // 三星设备推荐格式
+//            "-g", "25", // 设置 GOP，大约等于 fps
+//            "-b:v", "2M", // 指定视频码率，避免自动取值失败
+            "-c:a",
+            "copy",
+            outputPath
+        )
+        val session = FFmpegKit.execute(command.joinToString(" "))
+        val returnCode = session.returnCode
+        ReturnCode.isSuccess(returnCode)
+
     }
 }

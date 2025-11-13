@@ -8,6 +8,7 @@ import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.util.Range
 import android.view.Gravity
 import android.view.SurfaceView
@@ -30,6 +31,7 @@ import cn.xiaochuankeji.gift.player.EffectPlayer
 import com.violin.base.act.FileUtils
 import com.violin.base.act.LogUtil
 import com.violin.fretures.livevideogift.R
+import com.zuiyou.media.ffmpegkitwrapper.FFmpegKitUtil
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
@@ -142,6 +144,20 @@ class VideoActivity : AppCompatActivity() {
     private fun initView() {
         fl_layout = findViewById(R.id.fl_layout)
         surfaceView = findViewById(R.id.surface_view)
+        val fileName = "birthday.mp4"
+        findViewById<Button>(R.id.btn_start_play).setOnLongClickListener {
+            val targetFile = File(this.getExternalFilesDir(null), fileName)
+            if (!targetFile.exists()) {
+                FileUtils.copyAssetFileToTarget(
+                    this,
+                    fileName,
+                    targetFile.absolutePath
+                )
+            }
+            startPlay(targetFile.absolutePath)
+
+            return@setOnLongClickListener true
+        }
         findViewById<Button>(R.id.btn_start_play).setOnClickListener {
 //            for (i in arrayOf("birthday.mp4", "birthday3.mp4", "leftColorRightAlpha.mp4")) {
 //                val targetFile = File(this.getExternalFilesDir(null), i)
@@ -165,7 +181,11 @@ class VideoActivity : AppCompatActivity() {
 //            }
 
 
-            val fileName = "birthday.mp4"
+//            val fileName = "enter_copy.mp4"
+//            val fileName = "enter_copy_1.mp4"
+//            val fileName = "birthday_1.mp4"
+//            val fileName = "leftColorRightAlpha.mp4"
+
             val targetFile = File(this.getExternalFilesDir(null), fileName)
             if (!targetFile.exists()) {
                 FileUtils.copyAssetFileToTarget(
@@ -174,10 +194,22 @@ class VideoActivity : AppCompatActivity() {
                     targetFile.absolutePath
                 )
             }
-//            startPlay(targetFile.absolutePath)
+            val size = FFmpegKitUtil.getVideoSize(targetFile.absolutePath)
+            Log.d("VideoActivity11111", "${size.first},${size.second}")
+            val resizeFile = File(targetFile.parentFile, "resize16" + targetFile.name)
+            val resizePath = resizeFile.absolutePath
+            if (resizeFile.exists()) {
+                resizeFile.delete()
+            }
+            FFmpegKitUtil.resetVideoSize(
+                targetFile.absolutePath,
+                resizePath
+            )
+
+            startPlay(resizePath)
 //            exoPlayer3(targetFile.absolutePath)
 //            ijkPlayer(targetFile.absolutePath)
-            initVideoView(targetFile.absolutePath)
+//            initVideoView(targetFile.absolutePath)
 
         }
         try {
@@ -210,7 +242,11 @@ class VideoActivity : AppCompatActivity() {
                 Gravity.CENTER,
                 1,
                 object : EffectPlayer.OnPlayCompletionListener {
-                    override fun onPlayCompletion(mp: IMediaPlayer?) {
+
+
+                    override fun onPlayCompletion(mp: MediaPlayer?) {
+
+
                     }
                 }, object : OnRepeatListener {
                     override fun onRepeat() {
@@ -235,8 +271,7 @@ class VideoActivity : AppCompatActivity() {
         if (!::player_view.isInitialized) {
             player_view = findViewById(R.id.player_view)
             val factory = DefaultRenderersFactory(this)
-                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
-            MediaCodec.createByCodecName("c2.android.avc.decoder")
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
             val exoPlayer = ExoPlayer.Builder(this, factory)
                 .build()
 

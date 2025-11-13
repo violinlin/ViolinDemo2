@@ -4,7 +4,7 @@ import android.opengl.GLES20
 import cn.xiaochuankeji.gift.GLRenderer
 
 
-open class GLTextureOutputRenderer : GLRenderer() {
+open class GLTextureOutputRenderer: GLRenderer() {
     protected var frameBuffer: IntArray? = null
     protected var texture_out: IntArray? = null
     protected var depthRenderBuffer: IntArray? = null
@@ -96,26 +96,6 @@ open class GLTextureOutputRenderer : GLRenderer() {
         initFBO()
     }
 
-    private fun getMaxWidth(): Int {
-        val maxTextureSize = IntArray(1)
-        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0)
-        val maxSize = maxTextureSize[0]
-
-        val textureWidth = Math.min(getWidth(), maxSize)
-        return textureWidth
-    }
-
-    private fun getMaxHeight(): Int {
-        val maxTextureSize = IntArray(1)
-        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0)
-        val maxSize = maxTextureSize[0]
-
-        val textureHeight = Math.min(getHeight(), maxSize)
-        return textureHeight
-    }
-
-
-
     private fun initFBO() {
         if (frameBuffer != null) {
             GLES20.glDeleteFramebuffers(1, frameBuffer, 0)
@@ -142,8 +122,8 @@ open class GLTextureOutputRenderer : GLRenderer() {
             GLES20.GL_TEXTURE_2D,
             0,
             GLES20.GL_RGBA,
-            getMaxWidth(),
-            getMaxHeight(),
+            getWidth(),
+            getHeight(),
             0,
             GLES20.GL_RGBA,
             GLES20.GL_UNSIGNED_BYTE,

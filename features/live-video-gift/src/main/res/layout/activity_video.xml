@@ -27,7 +27,7 @@
         <FrameLayout
             android:id="@+id/fl_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@id/btn_start_play" />

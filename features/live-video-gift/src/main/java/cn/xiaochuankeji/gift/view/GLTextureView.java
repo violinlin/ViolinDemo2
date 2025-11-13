@@ -3,6 +3,8 @@ package cn.xiaochuankeji.gift.view;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGL11;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -15,11 +17,10 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLDebugHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 
-import com.violin.base.act.LogUtil;
+import android.util.Log;
 
 
 public class GLTextureView
@@ -435,7 +436,7 @@ public class GLTextureView
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (LOG_ATTACH_DETACH) {
-            LogUtil.d(TAG, "onAttachedToWindow reattach =" + mDetached);
+            Log.d(TAG, "onAttachedToWindow reattach =" + mDetached);
         }
         if (mDetached && (mRenderer != null)) {
             int renderMode = RENDERMODE_CONTINUOUSLY;
@@ -459,7 +460,7 @@ public class GLTextureView
     @Override
     protected void onDetachedFromWindow() {
         if (LOG_ATTACH_DETACH) {
-            LogUtil.d(TAG, "onDetachedFromWindow");
+            Log.d(TAG, "onDetachedFromWindow");
         }
         if (mGLThread != null) {
             mGLThread.requestExitAndWait();
@@ -656,9 +657,9 @@ public class GLTextureView
         public void destroyContext(EGL10 egl, EGLDisplay display,
                                    EGLContext context) {
             if (!egl.eglDestroyContext(display, context)) {
-                LogUtil.d("DefaultContextFactory", "display:" + display + " context: " + context);
+                Log.e("DefaultContextFactory", "display:" + display + " context: " + context);
                 if (LOG_THREADS) {
-                    LogUtil.d("DefaultContextFactory", "tid=" + Thread.currentThread().getId());
+                    Log.i("DefaultContextFactory", "tid=" + Thread.currentThread().getId());
                 }
                 EglHelper.throwEglException("eglDestroyContex", egl.eglGetError());
             }
@@ -963,7 +964,7 @@ public class GLTextureView
             if (mEglSurface == null || mEglSurface == EGL10.EGL_NO_SURFACE) {
                 int error = mEgl.eglGetError();
                 if (error == EGL10.EGL_BAD_NATIVE_WINDOW) {
-                    LogUtil.d("EglHelper", "createWindowSurface returned EGL_BAD_NATIVE_WINDOW.");
+                    Log.e("EglHelper", "createWindowSurface returned EGL_BAD_NATIVE_WINDOW.");
                 }
                 return false;
             }
@@ -1025,7 +1026,7 @@ public class GLTextureView
 
         public void destroySurface() {
             if (LOG_EGL) {
-                LogUtil.d("EglHelper", "destroySurface()  tid=" + Thread.currentThread().getId());
+                Log.w("EglHelper", "destroySurface()  tid=" + Thread.currentThread().getId());
             }
             destroySurfaceImp();
         }
@@ -1045,7 +1046,7 @@ public class GLTextureView
 
         public void finish() {
             if (LOG_EGL) {
-                LogUtil.w("EglHelper", "finish() tid=" + Thread.currentThread().getId());
+                Log.w("EglHelper", "finish() tid=" + Thread.currentThread().getId());
             }
             if (mEglContext != null) {
                 GLTextureView view = mGLSurfaceViewWeakRef.get();
@@ -1067,14 +1068,14 @@ public class GLTextureView
         public static void throwEglException(String function, int error) {
             String message = formatEglError(function, error);
             if (LOG_THREADS) {
-                LogUtil.e("EglHelper", "throwEglException tid=" + Thread.currentThread().getId() + " "
+                Log.e("EglHelper", "throwEglException tid=" + Thread.currentThread().getId() + " "
                         + message);
             }
             throw new RuntimeException(message);
         }
 
         public static void logEglErrorAsWarning(String tag, String function, int error) {
-            LogUtil.w(tag, formatEglError(function, error));
+            Log.w(tag, formatEglError(function, error));
         }
 
         public static String formatEglError(String function, int error) {
@@ -1113,12 +1114,12 @@ public class GLTextureView
         public void run() {
             setName("GLThread " + getId());
             if (LOG_THREADS) {
-                LogUtil.i("GLThread", "starting tid=" + getId());
+                Log.i("GLThread", "starting tid=" + getId());
             }
 
             try {
                 guardedRun();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 // fall thru and exit normally
             } finally {
                 sGLThreadManager.threadExiting(this);
@@ -1168,7 +1169,7 @@ public class GLTextureView
                 while (true) {
                     synchronized (sGLThreadManager) {
                         while (true) {
-                            if (mShouldExit) {
+                            if (mShouldExit.get()) {
                                 GLTextureView view = mGLSurfaceViewWeakRef.get();
                                 if (view != null) {
                                     view.mRenderer.onSurfaceDestroyed(gl);
@@ -1188,14 +1189,14 @@ public class GLTextureView
                                 mPaused = mRequestPaused;
                                 sGLThreadManager.notifyAll();
                                 if (LOG_PAUSE_RESUME) {
-                                    LogUtil.i("GLThread", "mPaused is now " + mPaused + " tid=" + getId());
+                                    Log.i("GLThread", "mPaused is now " + mPaused + " tid=" + getId());
                                 }
                             }
 
                             // Do we need to give up the EGL context?
                             if (mShouldReleaseEglContext) {
                                 if (LOG_SURFACE) {
-                                    LogUtil.i("GLThread", "releasing EGL context because asked to tid=" + getId());
+                                    Log.i("GLThread", "releasing EGL context because asked to tid=" + getId());
                                 }
                                 stopEglSurfaceLocked();
                                 stopEglContextLocked();
@@ -1213,7 +1214,7 @@ public class GLTextureView
                             // When pausing, release the EGL surface:
                             if (pausing && mHaveEglSurface) {
                                 if (LOG_SURFACE) {
-                                    LogUtil.i("GLThread", "releasing EGL surface because paused tid=" + getId());
+                                    Log.i("GLThread", "releasing EGL surface because paused tid=" + getId());
                                 }
                                 stopEglSurfaceLocked();
                             }
@@ -1226,7 +1227,7 @@ public class GLTextureView
                                 if (!preserveEglContextOnPause || sGLThreadManager.shouldReleaseEGLContextWhenPausing()) {
                                     stopEglContextLocked();
                                     if (LOG_SURFACE) {
-                                        LogUtil.i("GLThread", "releasing EGL context because paused tid=" + getId());
+                                        Log.i("GLThread", "releasing EGL context because paused tid=" + getId());
                                     }
                                 }
                             }
@@ -1236,7 +1237,7 @@ public class GLTextureView
                                 if (sGLThreadManager.shouldTerminateEGLWhenPausing()) {
                                     mEglHelper.finish();
                                     if (LOG_SURFACE) {
-                                        LogUtil.i("GLThread", "terminating EGL because paused tid=" + getId());
+                                        Log.i("GLThread", "terminating EGL because paused tid=" + getId());
                                     }
                                 }
                             }
@@ -1244,7 +1245,7 @@ public class GLTextureView
                             // Have we lost the SurfaceView surface?
                             if ((! mHasSurface) && (! mWaitingForSurface)) {
                                 if (LOG_SURFACE) {
-                                    LogUtil.i("GLThread", "noticed surfaceView surface lost tid=" + getId());
+                                    Log.i("GLThread", "noticed surfaceView surface lost tid=" + getId());
                                 }
                                 if (mHaveEglSurface) {
                                     stopEglSurfaceLocked();
@@ -1257,7 +1258,7 @@ public class GLTextureView
                             // Have we acquired the surface view surface?
                             if (mHasSurface && mWaitingForSurface) {
                                 if (LOG_SURFACE) {
-                                    LogUtil.i("GLThread", "noticed surfaceView surface acquired tid=" + getId());
+                                    Log.i("GLThread", "noticed surfaceView surface acquired tid=" + getId());
                                 }
                                 mWaitingForSurface = false;
                                 sGLThreadManager.notifyAll();
@@ -1265,7 +1266,7 @@ public class GLTextureView
 
                             if (doRenderNotification) {
                                 if (LOG_SURFACE) {
-                                    LogUtil.i("GLThread", "sending render notification tid=" + getId());
+                                    Log.i("GLThread", "sending render notification tid=" + getId());
                                 }
                                 wantRenderNotification = false;
                                 doRenderNotification = false;
@@ -1308,7 +1309,7 @@ public class GLTextureView
                                         h = mHeight;
                                         wantRenderNotification = true;
                                         if (LOG_SURFACE) {
-                                            LogUtil.i("GLThread",
+                                            Log.i("GLThread",
                                                     "noticing that we want render notification tid="
                                                             + getId());
                                         }
@@ -1326,7 +1327,7 @@ public class GLTextureView
 
                             // By design, this is the only place in a GLThread thread where we wait().
                             if (LOG_THREADS) {
-                                LogUtil.i("GLThread", "waiting tid=" + getId()
+                                Log.i("GLThread", "waiting tid=" + getId()
                                         + " mHaveEglContext: " + mHaveEglContext
                                         + " mHaveEglSurface: " + mHaveEglSurface
                                         + " mPaused: " + mPaused
@@ -1338,7 +1339,7 @@ public class GLTextureView
                                         + " mRequestRender: " + mRequestRender
                                         + " mRenderMode: " + mRenderMode);
                             }
-                            sGLThreadManager.wait();
+                            sGLThreadManager.wait(3000);
                         }
                     } // end of synchronized(sGLThreadManager)
 
@@ -1350,7 +1351,7 @@ public class GLTextureView
 
                     if (createEglSurface) {
                         if (LOG_SURFACE) {
-                            LogUtil.w("GLThread", "egl createSurface");
+                            Log.w("GLThread", "egl createSurface");
                         }
                         if (!mEglHelper.createSurface()) {
                             synchronized(sGLThreadManager) {
@@ -1371,7 +1372,7 @@ public class GLTextureView
 
                     if (createEglContext) {
                         if (LOG_RENDERER) {
-                            LogUtil.w("GLThread", "onSurfaceCreated");
+                            Log.w("GLThread", "onSurfaceCreated");
                         }
                         GLTextureView view = mGLSurfaceViewWeakRef.get();
                         if (view != null) {
@@ -1382,7 +1383,7 @@ public class GLTextureView
 
                     if (sizeChanged) {
                         if (LOG_RENDERER) {
-                            LogUtil.w("GLThread", "onSurfaceChanged(" + w + ", " + h + ")");
+                            Log.w("GLThread", "onSurfaceChanged(" + w + ", " + h + ")");
                         }
                         GLTextureView view = mGLSurfaceViewWeakRef.get();
                         if (view != null) {
@@ -1392,7 +1393,7 @@ public class GLTextureView
                     }
 
                     if (LOG_RENDERER_DRAW_FRAME) {
-                        LogUtil.w("GLThread", "onDrawFrame tid=" + getId());
+                        Log.w("GLThread", "onDrawFrame tid=" + getId());
                     }
                     {
                         GLTextureView view = mGLSurfaceViewWeakRef.get();
@@ -1406,7 +1407,7 @@ public class GLTextureView
                             break;
                         case EGL11.EGL_CONTEXT_LOST:
                             if (LOG_SURFACE) {
-                                LogUtil.i("GLThread", "egl context lost tid=" + getId());
+                                Log.i("GLThread", "egl context lost tid=" + getId());
                             }
                             lostEglContext = true;
                             break;
@@ -1476,7 +1477,7 @@ public class GLTextureView
         public void surfaceCreated() {
             synchronized(sGLThreadManager) {
                 if (LOG_THREADS) {
-                    LogUtil.i("GLThread", "surfaceCreated tid=" + getId());
+                    Log.i("GLThread", "surfaceCreated tid=" + getId());
                 }
                 mHasSurface = true;
                 sGLThreadManager.notifyAll();
@@ -1493,7 +1494,7 @@ public class GLTextureView
         public void surfaceDestroyed() {
             synchronized(sGLThreadManager) {
                 if (LOG_THREADS) {
-                    LogUtil.i("GLThread", "surfaceDestroyed tid=" + getId());
+                    Log.i("GLThread", "surfaceDestroyed tid=" + getId());
                 }
                 mHasSurface = false;
                 sGLThreadManager.notifyAll();
@@ -1510,13 +1511,13 @@ public class GLTextureView
         public void onPause() {
             synchronized (sGLThreadManager) {
                 if (LOG_PAUSE_RESUME) {
-                    LogUtil.i("GLThread", "onPause tid=" + getId());
+                    Log.i("GLThread", "onPause tid=" + getId());
                 }
                 mRequestPaused = true;
                 sGLThreadManager.notifyAll();
                 while ((! mExited) && (! mPaused)) {
                     if (LOG_PAUSE_RESUME) {
-                        LogUtil.i("Main thread", "onPause waiting for mPaused.");
+                        Log.i("Main thread", "onPause waiting for mPaused.");
                     }
                     try {
                         sGLThreadManager.wait();
@@ -1530,7 +1531,7 @@ public class GLTextureView
         public void onResume() {
             synchronized (sGLThreadManager) {
                 if (LOG_PAUSE_RESUME) {
-                    LogUtil.i("GLThread", "onResume tid=" + getId());
+                    Log.i("GLThread", "onResume tid=" + getId());
                 }
                 mRequestPaused = false;
                 mRequestRender = true;
@@ -1538,7 +1539,7 @@ public class GLTextureView
                 sGLThreadManager.notifyAll();
                 while ((! mExited) && mPaused && (!mRenderComplete)) {
                     if (LOG_PAUSE_RESUME) {
-                        LogUtil.i("Main thread", "onResume waiting for !mPaused.");
+                        Log.i("Main thread", "onResume waiting for !mPaused.");
                     }
                     try {
                         sGLThreadManager.wait();
@@ -1562,7 +1563,7 @@ public class GLTextureView
                 while (! mExited && !mPaused && !mRenderComplete
                         && ableToDraw()) {
                     if (LOG_SURFACE) {
-                        LogUtil.d("Main thread", "onWindowResize waiting for render complete from tid=" + getId());
+                        Log.i("Main thread", "onWindowResize waiting for render complete from tid=" + getId());
                     }
                     try {
                         sGLThreadManager.wait();
@@ -1576,12 +1577,15 @@ public class GLTextureView
         public void requestExitAndWait() {
             // don't call this from GLThread thread or it is a guaranteed
             // deadlock!
-            synchronized(sGLThreadManager) {
-                mShouldExit = true;
-                sGLThreadManager.notifyAll();
-                while (! mExited) {
+            mShouldExit.set(true);
+            synchronized (sGLThreadManager) {
+                if (!mExited) {
+                    sGLThreadManager.notifyAll();
+                }
+                while (!mExited) {
                     try {
-                        sGLThreadManager.wait();
+                        sGLThreadManager.wait(3000);
+                        break;
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }
@@ -1610,7 +1614,7 @@ public class GLTextureView
 
         // Once the thread is started, all accesses to the following member
         // variables are protected by the sGLThreadManager monitor
-        private boolean mShouldExit;
+        private final AtomicBoolean mShouldExit = new AtomicBoolean(false);
         private boolean mExited;
         private boolean mRequestPaused;
         private boolean mPaused;
@@ -1665,7 +1669,7 @@ public class GLTextureView
 
         private void flushBuilder() {
             if (mBuilder.length() > 0) {
-                LogUtil.v("GLTextureView", mBuilder.toString());
+                Log.v("GLTextureView", mBuilder.toString());
                 mBuilder.delete(0, mBuilder.length());
             }
         }
@@ -1686,7 +1690,7 @@ public class GLTextureView
 
         public synchronized void threadExiting(GLThread thread) {
             if (LOG_THREADS) {
-                LogUtil.i("GLThread", "exiting tid=" +  thread.getId());
+                Log.i("GLThread", "exiting tid=" +  thread.getId());
             }
             thread.mExited = true;
             if (mEglOwner == thread) {
@@ -1756,7 +1760,7 @@ public class GLTextureView
                 }
                 mLimitedGLESContexts = !mMultipleGLESContextsAllowed;
                 if (LOG_SURFACE) {
-                    LogUtil.w(TAG, "checkGLDriver renderer = \"" + renderer + "\" multipleContextsAllowed = "
+                    Log.w(TAG, "checkGLDriver renderer = \"" + renderer + "\" multipleContextsAllowed = "
                             + mMultipleGLESContextsAllowed
                             + " mLimitedGLESContexts = " + mLimitedGLESContexts);
                 }
