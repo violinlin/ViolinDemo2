@@ -8,6 +8,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
 import cn.xiaochuankeji.VideoActivity
+import com.fpt.metrics.MetricsHUD
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.FileUtils
 import com.violin.base.act.LogUtil
@@ -20,6 +21,7 @@ import com.violin.features.common.leak.LeakTestActivity
 import com.violin.nativelib.NativeLib
 import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
+import com.violin.views.views.ninepatch.NinePathActivity
 import kotlinx.android.synthetic.main.activity_main.btn_view
 import java.io.File
 import java.io.FileInputStream
@@ -38,6 +40,7 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         heartbeat()
         btn_view.text = "hello world"
         mBinding.btnNative.text = NativeLib().stringFromJNI()
+        MetricsHUD().show(this)
     }
 
     private val pollingTask = Runnable { heartbeat() }
@@ -48,6 +51,9 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     }
 
     override fun setupView() {
+        mBinding.btnNinePatch.setOnClickListener {
+            NinePathActivity.start(this)
+        }
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)
             LogUtil.d("MainActivity", Log.getStackTraceString(Throwable()))

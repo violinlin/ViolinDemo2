@@ -11,6 +11,9 @@
         <activity
             android:name=".views.ViewActivity"
             android:exported="false" />
+        <activity
+            android:name=".views.ninepatch.NinePathActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

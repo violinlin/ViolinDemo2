@@ -88,5 +88,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_clip_bord" />
 
+        <Button
+            android:id="@+id/btn_nine_patch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nine path"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="@id/btn_native"
+            app:layout_constraintTop_toTopOf="@id/btn_native" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

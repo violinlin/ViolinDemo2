@@ -39,6 +39,8 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['ffmpeg-kit-release.aar'])
+    api fileTree(dir: 'libs', include: ['metrics-debug.aar'])
+    api fileTree(dir: 'libs', include: ['webp_decoder-release.aar'])
 //    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r25-16k.aar'])
 //    api libs.ffmpeg.kit.full
 //    api fileTree(dir: 'libs', include: ['ffmpeg-kit-lts-ndk-r23-16k-release.aar'])
@@ -66,4 +68,5 @@ dependencies {
 //    api libs.ffmpegkit
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
+    implementation libs.mpandroidchart
 }
