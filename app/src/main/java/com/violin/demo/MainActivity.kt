@@ -8,7 +8,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
 import cn.xiaochuankeji.VideoActivity
-import com.fpt.metrics.MetricsHUD
 import com.violin.base.act.BaseBindingAct
 import com.violin.base.act.FileUtils
 import com.violin.base.act.LogUtil
@@ -40,7 +39,6 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         heartbeat()
         btn_view.text = "hello world"
         mBinding.btnNative.text = NativeLib().stringFromJNI()
-        MetricsHUD().show(this)
     }
 
     private val pollingTask = Runnable { heartbeat() }
