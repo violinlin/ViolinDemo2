@@ -5,6 +5,41 @@
     android:orientation="vertical">
 
     <Button
+        android:id="@+id/btn_webp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="头像框（老）" />
+
+    <FrameLayout
+        android:layout_width="52dp"
+        android:layout_height="30dp">
+
+        <ImageView
+            android:id="@+id/win_left_up"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="start|top" />
+
+        <ImageView
+            android:id="@+id/win_right_up"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="end|top" />
+
+        <ImageView
+            android:id="@+id/win_right_down"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="bottom|end" />
+
+        <ImageView
+            android:id="@+id/win_left_down"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="bottom|start" />
+    </FrameLayout>
+
+    <Button
         android:id="@+id/btn_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

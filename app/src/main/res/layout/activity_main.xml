@@ -95,7 +95,16 @@
             android:text="nine path"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="@id/btn_native"
-            app:layout_constraintTop_toTopOf="@id/btn_native" />
+            app:layout_constraintTop_toBottomOf="@id/btn_native" />
+
+        <Button
+            android:id="@+id/btn_gson"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="gson"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="@id/btn_nine_patch"
+            app:layout_constraintTop_toBottomOf="@id/btn_nine_patch" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

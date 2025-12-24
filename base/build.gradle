@@ -69,4 +69,6 @@ dependencies {
 //    api libs.bundles.ijkplayer
 //    api libs.alphaPlayer
     implementation libs.mpandroidchart
+
+    api libs.gson
 }

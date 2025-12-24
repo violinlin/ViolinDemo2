@@ -4,15 +4,14 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
 import cn.xiaochuankeji.VideoActivity
+import com.google.gson.Gson
+import com.google.gson.internal.GsonBuildConfig
 import com.violin.base.act.BaseBindingAct
-import com.violin.base.act.FileUtils
 import com.violin.base.act.LogUtil
 import com.violin.base.act.exts.binding
-import com.violin.base.act.utils.UnzipUtility
 import com.violin.demo.databinding.ActivityMainBinding
 import com.violin.features.common.CommonActivity
 import com.violin.features.common.crash.CrashActivity
@@ -22,6 +21,7 @@ import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
 import com.violin.views.views.ninepatch.NinePathActivity
 import kotlinx.android.synthetic.main.activity_main.btn_view
+import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -51,6 +51,15 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     override fun setupView() {
         mBinding.btnNinePatch.setOnClickListener {
             NinePathActivity.start(this)
+        }
+        mBinding.btnGson.setOnClickListener {
+            val string = "{\n" +
+                    "    \"blinds\": null,\n" +
+                    "    \"blindsss\": \"name\"\n" +
+                    "}"
+            val json = JSONObject(string)
+            LogUtil.d("GSONGSON","version:${GsonBuildConfig.VERSION}")
+            LogUtil.d("GSONGSON",Gson().toJson(json))
         }
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)

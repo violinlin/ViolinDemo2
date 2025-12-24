@@ -2,6 +2,7 @@
 agp = "8.5.0"
 exoplayerFfmpeg = "1.4.1"
 ffmpegKitFull = "2.1.0"
+gson = "2.9.0"
 kotlin = "1.9.22"
 coreKtx = "1.13.1"
 appcompat = "1.7.0"
@@ -31,6 +32,7 @@ ffmpeg-kit-full = { module = "com.antonkarpenko:ffmpeg-kit-full", version.ref = 
 fresco = { group = "com.facebook.fresco", name = "fresco", version.ref = "fresco" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-databinding-runtime = { group = "androidx.databinding", name = "databinding-runtime", version.ref = "databindingRuntime" }
