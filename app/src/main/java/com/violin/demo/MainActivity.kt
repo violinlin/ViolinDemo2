@@ -18,6 +18,7 @@ import com.violin.features.common.CommonActivity
 import com.violin.features.common.crash.CrashActivity
 import com.violin.features.common.leak.LeakTestActivity
 import com.violin.nativelib.NativeLib
+import com.violin.views.views.ImageViewActivity
 import com.violin.views.views.RecyclerviewActivity
 import com.violin.views.views.ViewActivity
 import com.violin.views.views.ninepatch.NinePathActivity
@@ -54,6 +55,9 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
     }
 
     override fun setupView() {
+        mBinding.btnImageview.setOnClickListener {
+            ImageViewActivity.start(this)
+        }
         mBinding.btnNinePatch.setOnClickListener {
             NinePathActivity.start(this)
         }

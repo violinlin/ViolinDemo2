@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".views.ImageViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.ViewPagerActivity"
             android:exported="false" />
         <activity
