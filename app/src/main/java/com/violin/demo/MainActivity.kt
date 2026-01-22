@@ -7,6 +7,7 @@ import android.util.Log
 import android.webkit.WebView
 import android.widget.Toast
 import cn.xiaochuankeji.VideoActivity
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.internal.GsonBuildConfig
 import com.violin.base.act.BaseBindingAct
@@ -39,6 +40,10 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
         heartbeat()
         btn_view.text = "hello world"
         mBinding.btnNative.text = NativeLib().stringFromJNI()
+        mBinding.ivIcon?.let {
+            Glide.with(it).load(NinePathActivity.HOST + "bubble_left_up.webp").into(it)
+        }
+
     }
 
     private val pollingTask = Runnable { heartbeat() }
@@ -58,8 +63,8 @@ class MainActivity : BaseBindingAct<ActivityMainBinding>() {
                     "    \"blindsss\": \"name\"\n" +
                     "}"
             val json = JSONObject(string)
-            LogUtil.d("GSONGSON","version:${GsonBuildConfig.VERSION}")
-            LogUtil.d("GSONGSON",Gson().toJson(json))
+            LogUtil.d("GSONGSON", "version:${GsonBuildConfig.VERSION}")
+            LogUtil.d("GSONGSON", Gson().toJson(json))
         }
         mBinding.btnView.setOnClickListener {
             ViewActivity.start(this)
