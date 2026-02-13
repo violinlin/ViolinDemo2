@@ -17,6 +17,7 @@ android {
         versionName "1.0"
     }
     buildFeatures {
+        viewBinding true
         dataBinding true
     }
 
@@ -57,7 +58,7 @@ android {
 dependencies {
     debugImplementation libs.leakcanary.android
     implementation project(":base")
-    implementation project(":nativelib")
+//    implementation project(":nativelib")
     implementation project(":views")
     implementation project(":features:common")
     implementation project(":features:live-video-gift")

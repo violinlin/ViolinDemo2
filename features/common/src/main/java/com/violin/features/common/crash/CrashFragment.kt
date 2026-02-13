@@ -2,50 +2,47 @@ package com.violin.features.common.crash
 
 import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.violin.base.act.BaseFragment
 import com.violin.base.act.LogUtil
-import com.violin.fretures.common.R
+import com.violin.fretures.common.databinding.ActivityCrashBinding
 
-class CrashActivity : AppCompatActivity() {
-    val TAG = "CrashActivity"
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_crash)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+class CrashFragment : BaseFragment<ActivityCrashBinding>() {
+    companion object {
+        val TAG = "CrashFragment"
+        fun newInstance(): CrashFragment {
+            return CrashFragment()
         }
-        initView()
     }
 
-    private fun initView() {
-        findViewById<View>(R.id.java_oom_crash).setOnClickListener {
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): ActivityCrashBinding {
+
+        return ActivityCrashBinding.inflate(inflater)
+    }
+
+    override fun initView() {
+        binding.javaOomCrash.setOnClickListener {
             createJavaOOM()
         }
-
-        findViewById<View>(R.id.thread_oom_crash).setOnClickListener {
+        binding.threadOomCrash.setOnClickListener {
             startCreatingThreads()
-
         }
-
-        findViewById<View>(R.id.bitmap_oom_crash).setOnClickListener {
+        binding.bitmapOomCrash.setOnClickListener {
             bitmapOOM()
         }
-        findViewById<View>(R.id.btn_test_anr).setOnClickListener {
+        binding.btnTestAnr.setOnClickListener {
             testThreadAnr()
         }
+
     }
+
 
     private fun testThreadAnr() {
         try {
@@ -111,7 +108,7 @@ class CrashActivity : AppCompatActivity() {
                 size.toInt(),
                 Bitmap.Config.ARGB_8888
             )
-            val imageView = ImageView(this)
+            val imageView = ImageView(binding.root.context)
             imageView.setImageBitmap(mBitmap)
         }
 
@@ -120,7 +117,7 @@ class CrashActivity : AppCompatActivity() {
     var mData: ByteArray? = null
     private fun createJavaOOM() {
         mData = ByteArray((Runtime.getRuntime().maxMemory().toInt() * 0.5).toInt())
-        window.decorView.postDelayed({
+        binding.root.postDelayed({
             val byte = ByteArray((Runtime.getRuntime().maxMemory().toInt() * 0.5).toInt())
             Log.d("CrashActivity", "MainActivity:" + getMemoryInfo())
         }, 1000)
@@ -128,7 +125,8 @@ class CrashActivity : AppCompatActivity() {
 
     fun getMemoryInfo(): String {
         val runtime = Runtime.getRuntime()
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager =
+            binding.root.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
 
@@ -139,13 +137,5 @@ class CrashActivity : AppCompatActivity() {
         | 剩余堆内存: ${runtime.freeMemory() / 1024 / 1024} MB
         | 当前线程数:${Thread.activeCount()}
     """.trimMargin()
-    }
-
-    companion object {
-        @JvmStatic
-        fun start(context: Context) {
-            val starter = Intent(context, CrashActivity::class.java)
-            context.startActivity(starter)
-        }
     }
 }

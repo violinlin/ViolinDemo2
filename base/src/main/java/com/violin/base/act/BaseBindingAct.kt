@@ -1,12 +1,9 @@
 package com.violin.base.act
 
-import android.util.SparseArray
 import androidx.annotation.CallSuper
-import androidx.core.util.forEach
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
+import androidx.viewbinding.ViewBinding
 
-abstract class BaseBindingAct<B : ViewDataBinding> : BaseAct() {
+abstract class BaseBindingAct<B : ViewBinding> : BaseAct() {
     protected abstract val mBinding: B
 //    private val _variables: SparseArray<ViewModel> by lazy { variables() }
 
