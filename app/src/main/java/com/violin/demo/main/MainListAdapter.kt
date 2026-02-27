@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.violin.base.act.beans.FeatureItemData
+import com.violin.base.act.beans.DetailActivityData
 import com.violin.demo.databinding.ItemMainViewLayoutBinding
 
 class MainListAdapter(
-    private val onItemClick: (FeatureItemData) -> Unit
-) : ListAdapter<FeatureItemData, MainListAdapter.DemoViewHolder>(DemoDiffCallback()) {
+    private val onItemClick: (DetailActivityData) -> Unit
+) : ListAdapter<DetailActivityData, MainListAdapter.DemoViewHolder>(DemoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DemoViewHolder {
         val binding = ItemMainViewLayoutBinding.inflate(
@@ -29,7 +29,7 @@ class MainListAdapter(
         private val binding: ItemMainViewLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: FeatureItemData) {
+        fun bind(item: DetailActivityData) {
             binding.apply {
                 tvTitle.text = item.title
                 root.setOnClickListener {
@@ -39,12 +39,12 @@ class MainListAdapter(
         }
     }
 
-    private class DemoDiffCallback : DiffUtil.ItemCallback<FeatureItemData>() {
-        override fun areItemsTheSame(oldItem: FeatureItemData, newItem: FeatureItemData): Boolean {
+    private class DemoDiffCallback : DiffUtil.ItemCallback<DetailActivityData>() {
+        override fun areItemsTheSame(oldItem: DetailActivityData, newItem: DetailActivityData): Boolean {
             return oldItem.fragmentClassName == newItem.fragmentClassName
         }
 
-        override fun areContentsTheSame(oldItem: FeatureItemData, newItem: FeatureItemData): Boolean {
+        override fun areContentsTheSame(oldItem: DetailActivityData, newItem: DetailActivityData): Boolean {
             return oldItem == newItem
         }
     }
