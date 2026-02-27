@@ -5,6 +5,6 @@ import kotlin.reflect.KClass
 
 data class FeatureItemData(
     val title: String,
-    val fragmentType: String,
+    val fragmentClassName: String,
     var activityClass: KClass<out Activity>? = null
 )

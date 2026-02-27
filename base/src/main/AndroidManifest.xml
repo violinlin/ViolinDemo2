@@ -11,6 +11,8 @@
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
 
-    <application android:allowBackup="true" />
+    <application android:allowBackup="true" >
+        <activity android:name=".act.DetailActivity"/>
+    </application>
 
 </manifest>

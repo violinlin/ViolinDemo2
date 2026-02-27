@@ -41,7 +41,7 @@ class MainListAdapter(
 
     private class DemoDiffCallback : DiffUtil.ItemCallback<FeatureItemData>() {
         override fun areItemsTheSame(oldItem: FeatureItemData, newItem: FeatureItemData): Boolean {
-            return oldItem.fragmentType == newItem.fragmentType
+            return oldItem.fragmentClassName == newItem.fragmentClassName
         }
 
         override fun areContentsTheSame(oldItem: FeatureItemData, newItem: FeatureItemData): Boolean {

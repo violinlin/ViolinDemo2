@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.violin.base.act.BaseFragment
+import com.violin.base.act.DetailActivity
 import com.violin.base.act.beans.FeatureItemData
 import com.violin.features.views.ViewsListAdapter
 import com.violin.fretures.common.databinding.FragmentViewsBinding
@@ -33,11 +34,11 @@ class ViewsFragment : BaseFragment<FragmentViewsBinding>() {
                 startActivity(starter)
             } else {
                 // 点击列表项，跳转到DetailActivity并传递Fragment类型
-//                val intent = Intent(this, DetailActivity::class.java).apply {
-//                    putExtra(DetailActivity.EXTRA_FRAGMENT_TYPE, demoItem.fragmentType)
-//                    putExtra(DetailActivity.EXTRA_TITLE, demoItem.title)
-//                }
-//                startActivity(intent)
+                val intent = Intent(binding.root.context, DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.EXTRA_FRAGMENT_CLASSNAME, demoItem.fragmentClassName)
+                    putExtra(DetailActivity.EXTRA_TITLE, demoItem.title)
+                }
+                startActivity(intent)
             }
 
         }
@@ -52,11 +53,7 @@ class ViewsFragment : BaseFragment<FragmentViewsBinding>() {
 
     private fun loadMainList() {
         val list = ArrayList<FeatureItemData>()
-        list.add(FeatureItemData("Main", ""))
-        list.add(FeatureItemData("Crash", ""))
-        list.add(FeatureItemData("3", ""))
-        list.add(FeatureItemData("4", ""))
-        list.add(FeatureItemData("5", ""))
+        list.add(FeatureItemData("ViewPager", ViewpagerFragment::class.java.name))
         adapter.submitList(list)
 
     }
