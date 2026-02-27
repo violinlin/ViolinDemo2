@@ -1,4 +1,4 @@
-package com.violin.demo.main
+package com.violin.features.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.violin.base.act.beans.FeatureItemData
-import com.violin.demo.databinding.ItemMainViewLayoutBinding
+import com.violin.fretures.common.databinding.ItemViewsViewLayoutBinding
 
-class MainListAdapter(
+class ViewsListAdapter(
     private val onItemClick: (FeatureItemData) -> Unit
-) : ListAdapter<FeatureItemData, MainListAdapter.DemoViewHolder>(DemoDiffCallback()) {
+) : ListAdapter<FeatureItemData, ViewsListAdapter.DemoViewHolder>(DemoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DemoViewHolder {
-        val binding = ItemMainViewLayoutBinding.inflate(
+        val binding = ItemViewsViewLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -26,7 +26,7 @@ class MainListAdapter(
     }
 
     inner class DemoViewHolder(
-        private val binding: ItemMainViewLayoutBinding
+        private val binding: ItemViewsViewLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FeatureItemData) {

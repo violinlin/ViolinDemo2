@@ -61,5 +61,6 @@ dependencies {
 //    implementation project(":nativelib")
     implementation project(":views")
     implementation project(":features:common")
+    implementation project(":features:views")
     implementation project(":features:live-video-gift")
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.violin.base.act.BaseActivity
 import com.violin.demo.databinding.ActivityDetailLayoutBinding
 import com.violin.features.common.crash.CrashFragment
+import com.violin.features.views.viewpager.ViewsFragment
 
 class DetailActivity : BaseActivity<ActivityDetailLayoutBinding>() {
     override fun createBinding(inflater: LayoutInflater): ActivityDetailLayoutBinding {
@@ -25,6 +26,10 @@ class DetailActivity : BaseActivity<ActivityDetailLayoutBinding>() {
         val fragment: Fragment = when (fragmentType) {
             CrashFragment.TAG -> {
                 CrashFragment.newInstance()
+            }
+
+            ViewsFragment.TAG -> {
+                ViewsFragment.newInstance()
             }
 
             else -> {
