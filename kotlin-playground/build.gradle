@@ -1,0 +1,23 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+// 纯 Kotlin JVM 模块，不依赖 Android，用于练习 Kotlin 语法、写可直接运行的代码
+plugins {
+    alias(libs.plugins.jetbrains.kotlin.jvm)
+    id 'application'
+}
+
+group = 'com.violin.playground'
+version = '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.named('compileKotlin', KotlinCompile).configure {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+application {
+    mainClass = 'MainKt'
+}
