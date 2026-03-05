@@ -1,8 +1,10 @@
 package com.violin.base.act
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Toast
 import com.violin.base.R
+import com.violin.base.act.dynamicres.DynamicContextWrapper
 import com.violin.base.databinding.ActivityDetailLayoutBinding
 
 class DetailActivity : BaseActivity<ActivityDetailLayoutBinding>() {
@@ -10,6 +12,9 @@ class DetailActivity : BaseActivity<ActivityDetailLayoutBinding>() {
         return ActivityDetailLayoutBinding.inflate(inflater)
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(DynamicContextWrapper(newBase))
+    }
     override fun initView() {
         // 设置标题
         val title = intent.getStringExtra(EXTRA_TITLE) ?: ""

@@ -1,3 +1,5 @@
+import java.security.MessageDigest
+
 /**
  * Kotlin 练习入口。
  * 直接在这里写函数，在 main 里调用即可运行。
@@ -5,11 +7,18 @@
  */
 
 fun main() {
-    println("Hello Kotlin Playground!")
-    // 在下面调用你写的练习函数，例如：
-    // exampleExtension()
-    // exampleCoroutine()
+    val bean = Bean().apply {
+        this.name = "hello"
+    }
+    print(md5("hello"))
+
 }
+fun md5(input: String): String =
+    "md5_"+MessageDigest.getInstance("MD5")
+        .digest(input.toByteArray(Charsets.UTF_8))
+        .joinToString("") { "%02x".format(it) }
+
+data class Bean(var name: String? = null)
 
 
 // ========== 在这里写你的 Kotlin 练习代码 ==========

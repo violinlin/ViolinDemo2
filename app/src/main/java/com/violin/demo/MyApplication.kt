@@ -1,9 +1,11 @@
 package com.violin.demo
 
 import android.app.Application
+import android.content.Context
 import com.tencent.matrix.Matrix
 import com.tencent.matrix.trace.TracePlugin
 import com.tencent.matrix.trace.config.TraceConfig
+import com.violin.base.act.dynamicres.DynamicContextWrapper
 import com.violin.demo.matrix.DynamicConfigImpl
 import com.violin.demo.matrix.MatrixPluginListener
 
@@ -12,6 +14,11 @@ class MyApplication : Application() {
         super.onCreate()
         Thread.setDefaultUncaughtExceptionHandler(AUncaughtExceptionHandler(this))
         initMatrix()
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(DynamicContextWrapper(base))
+
     }
 
     private fun initMatrix() {

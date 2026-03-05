@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="string_cdata"><![CDATA[base64_VGhlIG1pY3JvcGhvbmUgaXMgZnVsbA==]]></string>
+    <string name="md5_e933c4103e12e046d5e1abd64205c6f6"><![CDATA[base64_VGhlIG1pY3JvcGhvbmUgaXMgZnVsbA==]]></string>
+</resources>
