@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id "com.google.protobuf" version "0.9.4"
 }
 
 android {
@@ -29,8 +30,30 @@ android {
         viewBinding true
         dataBinding true
     }
+
+    sourceSets {
+        getByName("main") {
+            java.srcDir("build/generated/source/proto/main/java")
+        }
+    }
 }
 
 dependencies {
     implementation project(":base")
+    implementation 'com.google.protobuf:protobuf-java:3.9.0'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.0"
+    }
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
 }

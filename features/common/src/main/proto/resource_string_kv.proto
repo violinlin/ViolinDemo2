@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+//package kvdemo;
+
+option java_package = "com.global.resource.proto";
+option java_multiple_files = true;
+
+// 多语言键值对
+message StringKeyValueMap {
+  map<string, string> entries = 1;
+}
+

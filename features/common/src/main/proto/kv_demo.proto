@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package kvdemo;
+
+option java_package = "com.violin.features.common.proto";
+option java_multiple_files = true;
+
+// 一个简单的 key-value map 示例
+message KeyValueMap {
+  map<string, string> entries = 1;
+}
+
