@@ -10,6 +10,7 @@ import com.violin.base.act.beans.DetailActivityData
 import com.violin.demo.databinding.ActivityMainLayoutBinding
 import com.violin.demo.main.MainListAdapter
 import com.violin.features.common.crash.CrashFragment
+import com.violin.features.common.image.ImagePickerDemoFragment
 import com.violin.features.common.proto.ProtoDemoFragment
 import com.violin.features.common.string.StringFragment
 import com.violin.features.views.viewpager.ViewsFragment
@@ -46,6 +47,7 @@ class MainActivity : BaseActivity<ActivityMainLayoutBinding>() {
         list.add(DetailActivityData("Views", ViewsFragment::class.java.name))
         list.add(DetailActivityData("Strings", StringFragment::class.java.name))
         list.add(DetailActivityData("ProtoBuf Demo", ProtoDemoFragment::class.java.name))
+        list.add(DetailActivityData("图片选择预览", ImagePickerDemoFragment::class.java.name))
         adapter.submitList(list)
 
     }
