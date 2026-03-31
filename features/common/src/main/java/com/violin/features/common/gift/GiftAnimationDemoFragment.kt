@@ -12,7 +12,9 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.animation.doOnEnd
 import androidx.core.view.children
+import com.bumptech.glide.Glide
 import com.violin.base.act.BaseFragment
+import com.violin.base.act.exts.load
 import com.violin.fretures.common.databinding.FragmentGiftAnimationDemoBinding
 import kotlin.random.Random
 
@@ -22,6 +24,7 @@ class GiftAnimationDemoFragment : BaseFragment<FragmentGiftAnimationDemoBinding>
     private var driftMode: DriftMode = DriftMode.CONVERGE
     private val pendingStageTasks = mutableListOf<Runnable>()
     private val runningAnimators = mutableSetOf<Animator>()
+    private val giftUrl = "http://img01.mehiya.com/img/png/id/115280546198"
 
     private enum class DriftMode {
         CONVERGE,
@@ -72,7 +75,7 @@ class GiftAnimationDemoFragment : BaseFragment<FragmentGiftAnimationDemoBinding>
         }
 
         val icon = ImageView(requireContext()).apply {
-            setImageResource(android.R.drawable.btn_star_big_on)
+            load(giftUrl)
             alpha = 0f
             scaleX = 0.7f
             scaleY = 0.7f
@@ -128,7 +131,7 @@ class GiftAnimationDemoFragment : BaseFragment<FragmentGiftAnimationDemoBinding>
         repeat(total) { index ->
             postStageTask(index * 90L) {
                 val icon = ImageView(requireContext()).apply {
-                    setImageResource(android.R.drawable.btn_star_big_on)
+                    load(giftUrl)
                     alpha = 0f
                     scaleX = 0.7f
                     scaleY = 0.7f
@@ -302,7 +305,7 @@ class GiftAnimationDemoFragment : BaseFragment<FragmentGiftAnimationDemoBinding>
         repeat(roseCount) { index ->
             val rose = ImageView(requireContext()).apply {
                 // 可替换成你的玫瑰资源：setImageResource(R.drawable.your_rose)
-                setImageResource(android.R.drawable.btn_star_big_on)
+                load(giftUrl)
                 alpha = 0.05f + index * 0.025f
                 scaleX = 0.9f
                 scaleY = 0.9f
