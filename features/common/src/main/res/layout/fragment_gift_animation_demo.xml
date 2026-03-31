@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="单次礼物动画" />
+            android:text="单次多个送礼" />
 
         <Button
             android:id="@+id/btn_combo_gift"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="连击动画" />
+            android:text="批量送礼" />
     </LinearLayout>
 
     <Button
@@ -41,6 +41,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="清空舞台" />
+
+    <Button
+        android:id="@+id/btn_rose_trail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="玫瑰虚影下落" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_drift_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="当前模式：收束型（短距离飘动）" />
 
     <FrameLayout
         android:id="@+id/fl_stage"
