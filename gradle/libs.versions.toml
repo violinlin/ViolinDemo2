@@ -3,7 +3,7 @@ agp = "8.5.0"
 exoplayerFfmpeg = "1.4.1"
 ffmpegKitFull = "2.1.0"
 gson = "2.9.0"
-kotlin = "1.9.22"
+kotlin = "2.0.20"
 coreKtx = "1.13.1"
 appcompat = "1.7.0"
 leakcanaryAndroid = "2.14"
@@ -15,6 +15,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
+composeBom = "2024.06.00"
 media3Exoplayer = "1.4.0"
 alphaPlayer = "1.0.4"
 ijkplayerVersion = "0.8.8"
@@ -46,6 +47,11 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 alphaPlayer = { group = "com.github.bytedance", name = "AlphaPlayer", version.ref = "alphaPlayer" }
 
 ijkplayer-java = { group = "tv.danmaku.ijk.media", name = "ijkplayer-java", version.ref = "ijkplayerVersion" }
@@ -74,6 +80,7 @@ ffmpegkit = { group = "ai.instavision", name = "ffmpegkit", version.ref = "ffmpe
 smartexceptionjava = {group = "com.arthenica",name="smart-exception-java",version.ref="smart-exception-java"}
 
 [bundles]
+compose = ["androidx-compose-ui", "androidx-compose-ui-tooling-preview", "androidx-compose-material3"]
 exoplayer = ["media3-exoplayer", "media3-exoplayer-dash", "media3-ui"]
 matrix = ["matrix-android-lib", "matrix-android-commons", "matrix-trace-canary", "matrix-resource-canary-android", "matrix-resource-canary-common", "matrix-io-canary", "matrix-sqlite-lint-android-sdk", "matrix-battery-canary", "matrix-hooks"]
 
@@ -86,6 +93,7 @@ matrix = ["matrix-android-lib", "matrix-android-commons", "matrix-trace-canary",
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }

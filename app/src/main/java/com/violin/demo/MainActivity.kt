@@ -50,6 +50,7 @@ class MainActivity : BaseActivity<ActivityMainLayoutBinding>() {
         list.add(DetailActivityData("ProtoBuf Demo", ProtoDemoFragment::class.java.name))
         list.add(DetailActivityData("图片选择预览", ImagePickerDemoFragment::class.java.name))
         list.add(DetailActivityData("送礼动画Demo", GiftAnimationDemoFragment::class.java.name))
+        list.add(DetailActivityData("Compose Learning", ComposeLearningFragment::class.java.name))
         adapter.submitList(list)
 
     }

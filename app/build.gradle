@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    // Compose 支持：
+    // app 模块内有 Compose 源码，因此需要保留 Compose 编译插件。
+    alias(libs.plugins.jetbrains.kotlin.compose)
 //    alias(libs.plugins.matrix)
     alias(libs.plugins.kace)
 }
@@ -19,6 +22,9 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+        // Compose 支持：
+        // app 模块内有 Compose 页面，因此需要开启 Compose 构建能力。
+        compose true
     }
 
     buildTypes {

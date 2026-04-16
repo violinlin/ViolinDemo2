@@ -52,6 +52,12 @@ dependencies {
     api libs.androidx.core.ktx
     api libs.androidx.appcompat
     api libs.material
+    // Compose 依赖托管：
+    // Compose 相关库统一放在 base 中管理，并透传给上层业务模块使用。
+    api platform(libs.androidx.compose.bom)
+    api libs.bundles.compose
+    debugApi libs.androidx.compose.ui.tooling
+    androidTestImplementation platform(libs.androidx.compose.bom)
     api libs.glide
     api libs.okhttp3.integration
     kapt libs.glide.compiler
