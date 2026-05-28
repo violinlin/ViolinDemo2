@@ -13,6 +13,7 @@ import com.violin.features.common.crash.CrashFragment
 import com.violin.features.common.gift.GiftAnimationDemoFragment
 import com.violin.features.common.image.ImagePickerDemoFragment
 import com.violin.features.common.network.NetworkTestFragment
+import com.violin.features.common.network.OkHttpLearningFragment
 import com.violin.features.common.proto.ProtoDemoFragment
 import com.violin.features.common.string.StringFragment
 import com.violin.features.views.viewpager.ViewsFragment
@@ -50,6 +51,7 @@ class MainActivity : BaseActivity<ActivityMainLayoutBinding>() {
         list.add(DetailActivityData("Strings", StringFragment::class.java.name))
         list.add(DetailActivityData("ProtoBuf Demo", ProtoDemoFragment::class.java.name))
         list.add(DetailActivityData("网络测试", NetworkTestFragment::class.java.name))
+        list.add(DetailActivityData("OkHttp 学习", OkHttpLearningFragment::class.java.name))
         list.add(DetailActivityData("图片选择预览", ImagePickerDemoFragment::class.java.name))
         list.add(DetailActivityData("送礼动画Demo", GiftAnimationDemoFragment::class.java.name))
         list.add(DetailActivityData("Compose Learning", ComposeLearningFragment::class.java.name))
