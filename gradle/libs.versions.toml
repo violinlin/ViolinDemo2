@@ -15,6 +15,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
+swiperefreshlayout = "1.1.0"
 composeBom = "2024.06.00"
 media3Exoplayer = "1.4.0"
 alphaPlayer = "1.0.4"
@@ -47,6 +48,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
@@ -100,4 +102,3 @@ kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kace = { id = "com.kanyun.kace", version.ref = "kace" }
 kotlin-android-extensions = { id = "kotlin-android-extensions" }
 matrix = { id = 'com.tencent.matrix-plugin', version.ref = "matrix" }
-
