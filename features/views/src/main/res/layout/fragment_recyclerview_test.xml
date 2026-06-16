@@ -20,6 +20,30 @@
             android:textAllCaps="false" />
 
         <Button
+            android:id="@+id/btn_front_add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="前插"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_front_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="前删"
+            android:textAllCaps="false" />
+
+        <Button
             android:id="@+id/btn_batch_delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

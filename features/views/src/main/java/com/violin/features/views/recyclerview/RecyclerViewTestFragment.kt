@@ -43,6 +43,12 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
         binding.btnBatchAdd.setOnClickListener {
             appendItems(BATCH_SIZE)
         }
+        binding.btnFrontAdd.setOnClickListener {
+            prependItems(BATCH_SIZE)
+        }
+        binding.btnFrontDelete.setOnClickListener {
+            deleteFrontItems(BATCH_SIZE)
+        }
         binding.btnBatchDelete.setOnClickListener {
             deleteTailItems(BATCH_SIZE)
         }
@@ -102,6 +108,7 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
         isLoadingMore = false
         items.clear()
         items.addAll(createItems(INITIAL_SIZE))
+        adapter.setData(items)
         submitCurrentItems()
     }
 
@@ -113,7 +120,24 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
         }
 
         val addCount = minOf(count, MAX_ITEMS - items.size)
-        items.addAll(createItems(addCount))
+        val newItems = createItems(addCount)
+        items.addAll(newItems)
+        adapter.addData(newItems)
+        hasMore = items.size < MAX_ITEMS
+        submitCurrentItems()
+    }
+
+    private fun prependItems(count: Int) {
+        if (items.size >= MAX_ITEMS) {
+            hasMore = false
+            submitCurrentItems()
+            return
+        }
+
+        val addCount = minOf(count, MAX_ITEMS - items.size)
+        val newItems = createItems(addCount)
+        items.addAll(0, newItems)
+        adapter.addFrontData(newItems)
         hasMore = items.size < MAX_ITEMS
         submitCurrentItems()
     }
@@ -123,6 +147,18 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
         repeat(deleteCount) {
             items.removeAt(items.lastIndex)
         }
+        adapter.removeTail(deleteCount)
+        hasMore = true
+        isLoadingMore = false
+        submitCurrentItems()
+    }
+
+    private fun deleteFrontItems(count: Int) {
+        val deleteCount = minOf(count, items.size)
+        repeat(deleteCount) {
+            items.removeAt(0)
+        }
+        adapter.removeFront(deleteCount)
         hasMore = true
         isLoadingMore = false
         submitCurrentItems()
@@ -131,6 +167,7 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
     private fun deleteItem(item: RecyclerViewTestItem) {
         val removed = items.removeAll { it.id == item.id }
         if (removed) {
+            adapter.removeItem(item)
             hasMore = true
             submitCurrentItems()
         }
@@ -150,7 +187,6 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
     }
 
     private fun submitCurrentItems() {
-        adapter.submitList(items.toList())
         binding.tvEmpty.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
         binding.btnBatchDelete.isEnabled = items.isNotEmpty()
         binding.tvSummary.text = "当前 ${items.size} 条，最多 $MAX_ITEMS 条"
