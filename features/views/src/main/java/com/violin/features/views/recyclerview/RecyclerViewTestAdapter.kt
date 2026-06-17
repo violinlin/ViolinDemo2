@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.violin.fretures.common.databinding.ItemRecyclerviewTestBinding
 
 class RecyclerViewTestAdapter(
-    private val onItemLongClick: (RecyclerViewTestItem) -> Unit
+    private val onItemLongClick: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerViewTestAdapter.ItemViewHolder>() {
 
     private val items = ArrayList<RecyclerViewTestItem>()
@@ -48,9 +48,8 @@ class RecyclerViewTestAdapter(
         notifyItemRangeRemoved(0, count)
     }
 
-    fun removeItem(item: RecyclerViewTestItem): Boolean {
-        val position = items.indexOfFirst { it.id == item.id }
-        if (position < 0) return false
+    fun removeAt(position: Int): Boolean {
+        if (position !in items.indices) return false
         items.removeAt(position)
         notifyItemRemoved(position)
         return true
@@ -92,7 +91,10 @@ class RecyclerViewTestAdapter(
                 }
             }
             binding.root.setOnLongClickListener {
-                onItemLongClick(item)
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemLongClick(position)
+                }
                 true
             }
         }

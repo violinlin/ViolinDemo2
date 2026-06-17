@@ -164,10 +164,10 @@ class RecyclerViewTestFragment : BaseFragment<FragmentRecyclerviewTestBinding>()
         submitCurrentItems()
     }
 
-    private fun deleteItem(item: RecyclerViewTestItem) {
-        val removed = items.removeAll { it.id == item.id }
-        if (removed) {
-            adapter.removeItem(item)
+    private fun deleteItem(position: Int) {
+        if (position in items.indices) {
+            items.removeAt(position)
+            adapter.removeAt(position)
             hasMore = true
             submitCurrentItems()
         }
