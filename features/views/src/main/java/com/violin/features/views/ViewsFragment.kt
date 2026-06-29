@@ -7,6 +7,7 @@ import com.violin.base.act.BaseFragment
 import com.violin.base.act.SchemeUtils
 import com.violin.base.act.beans.DetailActivityData
 import com.violin.features.views.ViewsListAdapter
+import com.violin.features.views.textview.TextViewTestFragment
 import com.violin.fretures.common.databinding.FragmentViewsBinding
 
 class ViewsFragment : BaseFragment<FragmentViewsBinding>() {
@@ -44,6 +45,7 @@ class ViewsFragment : BaseFragment<FragmentViewsBinding>() {
     private fun loadMainList() {
         val list = ArrayList<DetailActivityData>()
         list.add(DetailActivityData("ViewPager", ViewpagerFragment::class.java.name))
+        list.add(DetailActivityData("TextView 测试", TextViewTestFragment::class.java.name))
         adapter.submitList(list)
 
     }
